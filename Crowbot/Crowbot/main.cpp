@@ -1,26 +1,25 @@
 #include "resource.h"
 
-int displayLuaFunction(lua_State*);
-
-int displayLuaFunction(lua_State *l)
+int addition(lua_State *l)
 {
     // number of input arguments
     int argc = lua_gettop(l);
     // print input arguments
     std::cout << "[C++] Function called from Lua with " << argc
               << " input arguments" << std::endl;
+    int sum=0;
     for(int i=0; i<argc; i++)
     {
         std::cout << " input argument #" << argc-i << ": "
                   << lua_tostring(l, lua_gettop(l)) << std::endl;
+        sum+=lua_tointeger(l, lua_gettop(l));
         lua_pop(l, 1);
     }
     // push to the stack the multiple return values
-    std::cout << "[C++] Returning some values" << std::endl;
-    lua_pushnumber(l, 12);
-    lua_pushstring(l, "See you space cowboy");
+    std::cout << "[C++] Returning the sum" << std::endl;
+    lua_pushnumber(l, sum);
     // number of return values
-    return 2;
+    return 1;
 }
 
 int main(int argc, char **argv)
@@ -32,11 +31,11 @@ int main(int argc, char **argv)
 	//testing lua, will fit perfectly with the system in place
     // push the C++ function to be called from Lua
     std::cout << "[C++] Pushing the C++ function" << std::endl;
-    lua_pushcfunction(lua_state, displayLuaFunction);
-    lua_setglobal(lua_state, "displayLuaFunction");
+    lua_pushcfunction(lua_state, addition);
+    lua_setglobal(lua_state, "addition");
     // load the script
     std::cout << "[C++] Loading the Lua script" << std::endl;
-    int status = luaL_loadfile(lua_state, "luascripts/parrotscript.lua");
+    int status = luaL_loadfile(lua_state, "luascripts/luascript.lua");
     std::cout << " return: " << status << std::endl;
     // run the script with the given arguments
     std::cout << "[C++] Running script" << std::endl;
@@ -49,6 +48,7 @@ int main(int argc, char **argv)
     {
         std::cout << " Could not load the script." << std::endl;
     }
+    std::cout<<"[C++] The return of result is: "<<result<<std::endl;
 	//initializing allegro
     al_init();
     al_init_image_addon();
