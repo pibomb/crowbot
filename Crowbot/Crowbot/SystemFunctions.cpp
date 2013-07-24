@@ -25,3 +25,28 @@ std::string leadZero(std::string str, unsigned int zeroes)
     }
     return str;
 }
+
+void lua_setlfunctionarg(bool bool_arg)
+{
+    lua_pushboolean(lua_state, bool_arg);
+}
+
+void lua_setlfunctionarg(int int_arg)
+{
+    lua_pushinteger(lua_state, int_arg);
+}
+
+void lua_setlfunctionarg(long long_arg)
+{
+    lua_pushinteger(lua_state, long_arg);
+}
+
+void lua_setlfunctionarg(std::string string_arg)
+{
+    lua_pushstring(lua_state, string_arg.c_str());
+}
+
+void lua_setlfunctionargs()
+{
+    //
+}

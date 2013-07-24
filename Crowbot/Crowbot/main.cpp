@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 	//opening libraries for lua, otherwise functions dont work
 	luaL_openlibs(lua_state);
 	//testing lua, will fit perfectly with the system in place
-    lua_makefunction(lua_state,
+    lua_makecfunction(lua_state,
                      [](lua_State *l) -> int
                      {
                          ((Frame*)lua_tointeger(l, 1))->delayTime();
@@ -46,16 +46,11 @@ int main(int argc, char **argv)
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
-    if(luaL_loadfile(lua_state, "luascripts/updateloop.lua")==LUA_OK)
-    {
-        lua_setglobal(lua_state, "updatelua");
-    }
+    lua_makelfunction(lua_state, "luascripts/updateloop.lua", "updatelua");
     while(game)
     {
         //menu flickering caused by unlimited framerate?
-        lua_getglobal(lua_state, "updatelua");
-        lua_pushinteger(lua_state, intptr_t(&game));
-        lua_pcall(lua_state, 1, LUA_MULTRET, 0);
+        lua_runlfunction(lua_state, "updatelua", intptr_t(&game));
         /*
         game.delayTime();
         game.update();//unskippable stuff
