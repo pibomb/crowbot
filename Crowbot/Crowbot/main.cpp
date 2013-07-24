@@ -1,18 +1,55 @@
 #include "resource.h"
 
+int displayLuaFunction(lua_State*);
+
+int displayLuaFunction(lua_State *l)
+{
+    // number of input arguments
+    int argc = lua_gettop(l);
+    // print input arguments
+    std::cout << "[C++] Function called from Lua with " << argc
+              << " input arguments" << std::endl;
+    for(int i=0; i<argc; i++)
+    {
+        std::cout << " input argument #" << argc-i << ": "
+                  << lua_tostring(l, lua_gettop(l)) << std::endl;
+        lua_pop(l, 1);
+    }
+    // push to the stack the multiple return values
+    std::cout << "[C++] Returning some values" << std::endl;
+    lua_pushnumber(l, 12);
+    lua_pushstring(l, "See you space cowboy");
+    // number of return values
+    return 2;
+}
+
 int main(int argc, char **argv)
 {
 	//opening lua
 	lua_state = luaL_newstate();
-
 	//opening libraries for lua, otherwise functions dont work
 	luaL_openlibs(lua_state);
-
 	//testing lua, will fit perfectly with the system in place
-	luaL_dostring(lua_state, "print 'hello world'");
-
+    // push the C++ function to be called from Lua
+    std::cout << "[C++] Pushing the C++ function" << std::endl;
+    lua_pushcfunction(lua_state, displayLuaFunction);
+    lua_setglobal(lua_state, "displayLuaFunction");
+    // load the script
+    std::cout << "[C++] Loading the Lua script" << std::endl;
+    int status = luaL_loadfile(lua_state, "luascripts/parrotscript.lua");
+    std::cout << " return: " << status << std::endl;
+    // run the script with the given arguments
+    std::cout << "[C++] Running script" << std::endl;
+    int result = 0;
+    if(status == LUA_OK)
+    {
+        result = lua_pcall(lua_state, 0, LUA_MULTRET, 0);
+    }
+    else
+    {
+        std::cout << " Could not load the script." << std::endl;
+    }
 	//initializing allegro
-
     al_init();
     al_init_image_addon();
     al_init_primitives_addon();
@@ -25,12 +62,10 @@ int main(int argc, char **argv)
     disp_data.width*=0.8;
     disp_data.height*=0.8;
     display=al_create_display(disp_data.width, disp_data.height);
-
 	if(!display)
     {
         return -1;
     }
-
 	al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
     al_install_keyboard();
@@ -38,6 +73,7 @@ int main(int argc, char **argv)
     al_install_audio();
     al_init_acodec_addon();
     al_reserve_samples(5);
+    /*
     Lexxer lex;
     //std::string str;
     //std::getline(std::cin, str);
@@ -53,6 +89,7 @@ int main(int argc, char **argv)
     robo.executeFunction("hello");
     robo.executeFunction("function");
     robo.executeFunction("function");
+    */
     al_destroy_display(display);
 
     return 0;
