@@ -115,4 +115,7 @@ enum class MOUSEBUTTON : int
 #define AL_COL_GREEN (al_map_rgb(0, 255, 0))
 #define AL_COL_BLUE (al_map_rgb(0, 0, 255))
 
+// Lua Macros
+#define lua_makefunction(_a, _b, _c) lua_pushcfunction(_a, _b);lua_setglobal(_a, _c);
+
 #endif // BASICRESOURCE_H_INCLUDED

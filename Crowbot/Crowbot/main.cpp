@@ -31,10 +31,20 @@ int main(int argc, char **argv)
 	//testing lua, will fit perfectly with the system in place
     // push the C++ function to be called from Lua
     std::cout << "[C++] Pushing the C++ function" << std::endl;
-    lua_pushcfunction(lua_state, addition);
-    lua_setglobal(lua_state, "addition");
+    lua_makefunction(lua_state, addition, "addition");
+    lua_makefunction(lua_state,
+                     [](lua_State *l) -> int
+                     {
+                         std::cout<<"[C++] Delaying"<<std::endl;
+                         ((Frame*)lua_tointeger(l, 1))->delayTime();
+                         lua_pop(l, 1);
+                         return 0;
+                     }
+                     , "delay");
     // load the script
     std::cout << "[C++] Loading the Lua script" << std::endl;
+    lua_pushinteger(lua_state, 10);
+    lua_setglobal(lua_state, "ten");
     int status = luaL_loadfile(lua_state, "luascripts/luascript.lua");
     std::cout << " return: " << status << std::endl;
     // run the script with the given arguments
@@ -78,10 +88,16 @@ int main(int argc, char **argv)
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
+    lua_pushinteger(lua_state, intptr_t(&game));
+    lua_setglobal(lua_state, "the_frame");
     while(game)
     {
         //menu flickering caused by unlimited framerate?
-        game.delayTime();
+        if(luaL_loadfile(lua_state, "luascripts/delay.lua") == LUA_OK)
+        {
+            lua_pcall(lua_state, 0, LUA_MULTRET, 0);
+        }
+        //game.delayTime();
         game.update();//unskippable stuff
         game.render();//frame-skippable stuff
         al_flip_display();
