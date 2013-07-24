@@ -50,7 +50,7 @@ void Lexxer::generateTokens(std::string raw)
             possible_token.clear();
         }
     }
-    current_token=0;
+    resetLexxer();
 }
 
 std::string Lexxer::getNextToken()
@@ -60,4 +60,9 @@ std::string Lexxer::getNextToken()
         return "__END";
     }
     return tokens[current_token++];
+}
+
+void Lexxer::resetLexxer()
+{
+    current_token=0;
 }

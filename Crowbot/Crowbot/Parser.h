@@ -7,7 +7,7 @@ class Parser
 {
 private:
 public:
-    //std::function<void()> parse();
+    void parse(Lexxer &lexxer, std::string name, std::string directory);
 };
 
 #endif // PARSER_H_INCLUDED

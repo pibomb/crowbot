@@ -11,6 +11,7 @@ private:
 public:
     void generateTokens(std::string raw);
     std::string getNextToken();
+    void resetLexxer();
 };
 
 #endif // LEXXER_H_INCLUDED

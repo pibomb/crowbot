@@ -1,6 +1,6 @@
 #include "resource.h"
 
-#define SHOW_TOKENS
+//#define SHOW_TOKENS
 
 std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexxer lexxer)
 {

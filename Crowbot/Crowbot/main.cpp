@@ -60,12 +60,14 @@ int main(int argc, char **argv)
     }
     game.end();
     game.destroy();
-    /*
     Lexxer lex;
+    Parser psr;
     //std::string str;
     //std::getline(std::cin, str);
     //lex.generateTokens(str);
-    lex.generateTokens("output \"Hello, World!\n\" dump");
+    lex.generateTokens("output \"Hello, World!\\n\"");
+    psr.parse(lex, "userscript", "luascripts/");
+    /*
     Compiler cmp;
     Robot robo;
     auto f=cmp.compile(lex);
