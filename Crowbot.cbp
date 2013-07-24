@@ -125,8 +125,12 @@
 			<Add library="user32" />
 			<Add library="kernel32" />
 		</Linker>
+		<Unit filename="Animated.cpp" />
+		<Unit filename="Animated.h" />
 		<Unit filename="Compiler.cpp" />
 		<Unit filename="Compiler.h" />
+		<Unit filename="Drawable.cpp" />
+		<Unit filename="Drawable.h" />
 		<Unit filename="Entity.cpp" />
 		<Unit filename="Entity.h" />
 		<Unit filename="GlobalVariables.cpp" />
@@ -135,8 +139,12 @@
 		<Unit filename="Lexxer.h" />
 		<Unit filename="Parser.cpp" />
 		<Unit filename="Parser.h" />
+		<Unit filename="Pixel.cpp" />
+		<Unit filename="Pixel.h" />
 		<Unit filename="Robot.cpp" />
 		<Unit filename="Robot.h" />
+		<Unit filename="SystemFunctions.cpp" />
+		<Unit filename="SystemFunctions.h" />
 		<Unit filename="basicresource.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="resource.h" />
