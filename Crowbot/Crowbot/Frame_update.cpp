@@ -1342,14 +1342,7 @@ void Frame::update()
             {
                 for(auto &it : buttons)
                 {
-                    if(it->contains(ev.mouse.x, ev.mouse.y))
-                    {
-                        it->hover=true;
-                    }
-                    else
-                    {
-                        it->hover=false;
-                    }
+                    it->hover=(it->contains(ev.mouse.x, ev.mouse.y));
                 }
                 break;
             }
@@ -2725,14 +2718,7 @@ void Frame::update()
             {
                 for(auto &it : buttons)
                 {
-                    if(it->contains(ev.mouse.x, ev.mouse.y))
-                    {
-                        it->hover=true;
-                    }
-                    else
-                    {
-                        it->hover=false;
-                    }
+                    it->hover=(it->contains(ev.mouse.x, ev.mouse.y));
                 }
                 break;
             }
@@ -4235,16 +4221,9 @@ void Frame::update()
             }
             case ALLEGRO_EVENT_MOUSE_AXES:
             {
-                for(auto it=buttons.begin(); it!=buttons.end(); it++)
+                for(auto &it : buttons)
                 {
-                    if((*it)->contains(ev.mouse.x, ev.mouse.y))
-                    {
-                        (*it)->hover=true;
-                    }
-                    else
-                    {
-                        (*it)->hover=false;
-                    }
+                    it->hover=(it->contains(ev.mouse.x, ev.mouse.y));
                 }
                 break;
             }

@@ -558,12 +558,12 @@ void Frame::restart(Rect region_arg, int mapid_arg, FRAMETYPE id_arg)
 void Frame::onLeftUp()
 {
     al_get_mouse_state(&cursorState);
-    for(auto it=buttons.begin(); it!=buttons.end(); it++)
+    for(auto &it : buttons)
     {
-        if((*it) && (*it)->contains(cursorState.x, cursorState.y) && activeButton==*it)
+        if(it->contains(cursorState.x, cursorState.y) && it==activeButton)
         {
             activeButton=nullptr;
-            (*it)->release();
+            it->release();
             break;
         }
     }

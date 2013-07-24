@@ -1,1 +1,3 @@
-updateloop(the_frame)
+function updatelua(f)
+    updateloop(f)
+end

@@ -13,7 +13,10 @@ void Button::press()
 void Button::release()
 {
     pressed--;
-    onPress();
+    if(hover)
+    {
+        onPress();
+    }
 }
 
 bool Button::contains(int x_arg, int y_arg)

@@ -46,15 +46,16 @@ int main(int argc, char **argv)
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
-    lua_pushinteger(lua_state, intptr_t(&game));
-    lua_setglobal(lua_state, "the_frame");
+    if(luaL_loadfile(lua_state, "luascripts/updateloop.lua")==LUA_OK)
+    {
+        lua_setglobal(lua_state, "updatelua");
+    }
     while(game)
     {
         //menu flickering caused by unlimited framerate?
-        if(luaL_loadfile(lua_state, "luascripts/updateloop.lua")==LUA_OK)
-        {
-            lua_pcall(lua_state, 0, LUA_MULTRET, 0);
-        }
+        lua_getglobal(lua_state, "updatelua");
+        lua_pushinteger(lua_state, intptr_t(&game));
+        lua_pcall(lua_state, 1, LUA_MULTRET, 0);
         /*
         game.delayTime();
         game.update();//unskippable stuff
