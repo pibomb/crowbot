@@ -2,6 +2,17 @@
 
 int main(int argc, char **argv)
 {
+	//opening lua
+	lua_state = lua_open();
+	
+	//opening libraries for lua, otherwise functions dont work
+	luaL_openlibs(lua_state);
+
+	//testing lua, will fit perfectly with the system in place
+	luaL_dostring(lua_state, "print 'hello world'");
+
+	//initializing allegro
+
     al_init();
     al_init_image_addon();
     al_init_primitives_addon();
@@ -14,11 +25,13 @@ int main(int argc, char **argv)
     disp_data.width*=0.8;
     disp_data.height*=0.8;
     display=al_create_display(disp_data.width, disp_data.height);
-    if(!display)
+    
+	if(!display)
     {
         return -1;
     }
-    al_clear_to_color(al_map_rgb(0, 0, 0));
+    
+	al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
     al_install_keyboard();
     al_install_mouse();

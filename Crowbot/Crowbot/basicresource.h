@@ -46,4 +46,11 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 
+//Its a C library and there is some name clashing if you dont enclose with extern "C"
+extern "C"
+{
+	#include <lua5.1/lua.h>
+	#include <lua5.1/lauxlib.h>
+	#include <lua5.1/lualib.h>
+}
 #endif // BASICRESOURCE_H_INCLUDED

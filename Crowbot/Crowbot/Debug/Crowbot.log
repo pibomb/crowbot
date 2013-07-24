@@ -1,10 +1,7 @@
-﻿Build started 23/07/2013 11:49:46 PM.
+﻿Build started 24/07/2013 12:06:02 AM.
      1>Project "C:\Users\apaar\Documents\Crowbot\Crowbot\Crowbot\Crowbot.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D _MBCS /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt main.cpp
-         main.cpp
-       Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\apaar\Documents\Crowbot\Crowbot\Debug\Crowbot.exe" /INCREMENTAL /NOLOGO "allegro-5.0.8-monolith-md-debug.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\apaar\Documents\Crowbot\Crowbot\Debug\Crowbot.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\apaar\Documents\Crowbot\Crowbot\Debug\Crowbot.lib" /MACHINE:X86 Debug\Animated.obj
+     1>Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\apaar\Documents\Crowbot\Crowbot\Debug\Crowbot.exe" /INCREMENTAL /NOLOGO "allegro-5.0.8-monolith-md-debug.lib" lua5.1.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\apaar\Documents\Crowbot\Crowbot\Debug\Crowbot.pdb" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\apaar\Documents\Crowbot\Crowbot\Debug\Crowbot.lib" /MACHINE:X86 Debug\Animated.obj
          Debug\Compiler.obj
          Debug\Drawable.obj
          Debug\Entity.obj
@@ -20,4 +17,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:04.24
+Time Elapsed 00:00:02.36
