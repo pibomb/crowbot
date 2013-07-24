@@ -2,14 +2,14 @@
 
 #define SHOW_TOKENS
 
-std::function<void()> Compiler::compile(Lexxer lexxer, Robot *robot)
+std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexxer lexxer)
 {
     if(lexxer.getNextToken()=="__BEGIN")
     {
 #ifdef SHOW_TOKENS
         printf("<Token: [__BEGIN]>\n");
 #endif
-        std::vector<std::function<void()>> lines;
+        std::vector<std::function<void(Robot*, std::vector<int>)>> lines;
         std::string tok;
         while(tok!="__END")
         {
@@ -19,13 +19,23 @@ std::function<void()> Compiler::compile(Lexxer lexxer, Robot *robot)
 #endif
             if(tok=="__FUNC")
             {
-                tok=lexxer.getNextToken();
+                std::string function_name=lexxer.getNextToken();
 #ifdef SHOW_TOKENS
-                printf("<Function Token: [%s]>\n", tok.c_str());
+                printf("<Function Token: [%s]>\n", function_name.c_str());
 #endif
-                lines.push_back([robot, tok]()
+                std::vector<int> args;
+                tok=lexxer.getNextToken();
+                while(tok!="__/FUNC")
+                {
+#ifdef SHOW_TOKENS
+                    printf("<Argument Token: [%s]>\n", tok.c_str());
+#endif
+                    args.push_back(strToInt(tok));
+                    tok=lexxer.getNextToken();
+                }
+                lines.push_back([function_name, args](Robot* robot_arg, std::vector<int> args_arg)
                                 {
-                                    robot->executeFunction(tok);
+                                    robot_arg->executeFunction(function_name, args);
                                 }
                                 );
             }
@@ -35,20 +45,31 @@ std::function<void()> Compiler::compile(Lexxer lexxer, Robot *robot)
 #ifdef SHOW_TOKENS
                 printf("<Output Token: [%s]>\n", tok.c_str());
 #endif
-                lines.push_back([tok]()
+                lines.push_back([tok](Robot* robot_arg, std::vector<int> args_arg)
                                 {
                                     std::cout<<tok;
                                 }
                                 );
             }
+            else if(tok=="dump")
+            {
+                lines.push_back([](Robot *robot_arg, std::vector<int> args_arg)
+                                {
+                                    for(auto it : args_arg)
+                                    {
+                                        printf("%d\n", it);
+                                    }
+                                }
+                                );
+            }
         }
-        return [lines]()
+        return [lines](Robot *robot_arg, std::vector<int> args_arg)
                         {
                             for(auto it : lines)
                             {
-                                it();
+                                it(robot_arg, args_arg);
                             }
                         };
     }
-    return [](){};
+    return [](Robot *robot_arg, std::vector<int>){};
 }

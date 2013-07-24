@@ -10,7 +10,7 @@ class Compiler
 {
 private:
 public:
-    std::function<void()> compile(Lexxer lexxer, Robot *robot);
+    std::function<void(Robot*, std::vector<int>)> compile(Lexxer lexxer);
 };
 
 #endif // COMPILER_H_INCLUDED

@@ -29,12 +29,12 @@ int main(int argc, char **argv)
     //std::string str;
     //std::getline(std::cin, str);
     //lex.generateTokens(str);
-    lex.generateTokens("output \"Hello, World!\n\"");
+    lex.generateTokens("output \"Hello, World!\n\" dump");
     Compiler cmp;
     Robot robo;
-    auto f=cmp.compile(lex, &robo);
-    lex.generateTokens("hello() hello()");
-    auto g=cmp.compile(lex, &robo);
+    auto f=cmp.compile(lex);
+    lex.generateTokens("hello(1, 2) hello(3, 4, 5, 6)");
+    auto g=cmp.compile(lex);
     robo.addFunction("hello", f);
     robo.addFunction("function", g);
     robo.executeFunction("hello");

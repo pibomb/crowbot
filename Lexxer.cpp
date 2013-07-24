@@ -4,7 +4,7 @@ void Lexxer::generateTokens(std::string raw)
 {
     tokens.clear();
     tokens.push_back("__BEGIN");
-    raw=" "+raw;
+    raw=" "+raw+" ";
     unsigned int pos=0;
     unsigned int epos=raw.find_first_of(" \"(", pos+1);
     std::string possible_token;
@@ -19,7 +19,7 @@ void Lexxer::generateTokens(std::string raw)
         {
             unsigned int qpos=raw.find("\"", epos+1);
             possible_token=raw.substr(epos+1, qpos-epos-1);
-            pos=qpos;
+            pos=qpos+1;
         }
         else if(raw[epos]=='(')
         {
@@ -32,12 +32,10 @@ void Lexxer::generateTokens(std::string raw)
             {
                 spos=possible_token.find(",");
                 tokens.push_back(possible_token.substr(0, spos));
-                possible_token.erase(0, spos+1);
-                while(!possible_token.empty() && possible_token[0]==' ')
-                {
-                    possible_token.erase(0, 1);
-                }
+                possible_token.erase(0, spos);
+                possible_token.erase(0, possible_token.find_first_not_of(" ,"));
             }
+            tokens.push_back("__/FUNC");
             pos=ppos;
         }
         else
