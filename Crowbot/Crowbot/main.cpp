@@ -74,6 +74,20 @@ int main(int argc, char **argv)
     al_init_acodec_addon();
     al_reserve_samples(5);
     resource.initialize();
+
+    Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
+    game.start(FRAMETYPE::STARTSCREEN);
+    al_set_target_bitmap(al_get_backbuffer(display));
+    while(game)
+    {
+        //menu flickering caused by unlimited framerate?
+        game.delayTime();
+        game.update();//unskippable stuff
+        game.render();//frame-skippable stuff
+        al_flip_display();
+    }
+    game.end();
+    game.destroy();
     /*
     Lexxer lex;
     //std::string str;

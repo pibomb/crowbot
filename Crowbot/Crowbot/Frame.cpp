@@ -386,8 +386,7 @@ void Frame::start(FRAMETYPE id_arg)
         al_start_timer(timer);
         break;
     }
-    /*
-    case FRAME_CAMPAIGN_STRATEGY:
+    case FRAMETYPE::STAGE:
     {
         if(!(event_queue=al_create_event_queue())||!(timer=al_create_timer(1.0/frames_per_second)))
         {
@@ -397,95 +396,11 @@ void Frame::start(FRAMETYPE id_arg)
         al_register_event_source(event_queue, al_get_timer_event_source(timer));
         al_register_event_source(event_queue, al_get_keyboard_event_source());
         al_register_event_source(event_queue, al_get_mouse_event_source());
-        idToAudio.stop();
-        idToAudio[AUDIO_DUNGEON].play(ALLEGRO_PLAYMODE_LOOP);
-        activeTile=nullptr;
-        selectedTile=nullptr;
-        activeMenu=new Menu;
-        currentMap.loadMap(this, "maps", mapID);
-        underlyingMap=al_create_bitmap(0, 0);
-        movesLeft=new Counter([this]() ->std::string
-                              {
-                                  return intToStr(getPlayer()->getMoves());
-                              }, idToImage[IMG_ENERGY_LEFT_SYMBOL].get());
-        movesLeft->push(this);
-        std::function<void()> btnFunc;
-        switch(getID())
-        {
-#ifdef ENET_ENABLED
-        case FRAME_MULTIPLAYER_STRATEGY:
-        {
-            btnFunc=[this]()
-            {
-                if(isConnectedOverLAN() && getPlayer()->state==PLAYSTATE::IS_TURN)
-                {
-                    getPlayer()->endTurn();
-                    sendInfo(getPacket(static_cast<char>(ACTIONTYPE::END)));
-                }
-                return;
-            };
-            break;
-        }
-#endif
-        case FRAME_CAMPAIGN_STRATEGY:
-        {
-            btnFunc=[this]()
-            {
-                if(getPlayer()->state==PLAYSTATE::IS_TURN)
-                {
-                    getPlayer()->endTurn();
-                    getPlayer()->beginTurn(getWorld());
-                }
-                return;
-            };
-            break;
-        }
-        default:
-        {
-            btnFunc=[]()
-            {
-                return;
-            };
-            break;
-        }
-        }
-        addButton(new Button(
-                             region.getBR().getX()-128,
-                             region.getBR().getY()-32,
-                             region.getBR().getX(),
-                             region.getBR().getY(),
-                             btnFunc,
-                             "End Turn",
-                             BTN_END_TURN,
-                             idToFont.getFont(FONT_DEFAULT_GAME, FONT_SIZE_DEFAULT_GAME),
-                             AL_COL_WHITE,
-                             idToImage[IMG_BUTTON_BACKGROUND].get(),
-                             idToImage[IMG_BUTTON_BACKGROUND_H].get(),
-                             idToImage[IMG_BUTTON_BACKGROUND_D].get()));
-        chatlog->insert("System", "Starting campaign mode...", AL_COL_YELLOW, CMSG_NOTICE, 0);
-        Dialogue dl(Rect(0, disp_data.height/2, disp_data.width, disp_data.height),
-                    []()
-                    {
-                        return;
-                    },
-                    std::bind(&Frame::end, this),
-                    idToImage[IMG_ENERGY_LEFT_SYMBOL].get(),
-                    idToImage[IMG_HP_BAR_ENEMY_BASIC].get(),
-                    idToImage[IMG_BUTTON_BACKGROUND].get(),
-                    idToImage[IMG_BUTTON_BACKGROUND].get(),
-                    event_queue,
-                    FONT_ORBITRON_LT,
-                    48,
-                    30.0,
-                    0.0,
-                    "[[Talos]]So, we made it. We have to find the Magus!\n[[Lyra]]Idiot. Where the hell are we going to find an ancient psychopathic wizard?\n[[Talos]]Luckily for me, I like grabbing anything that seems important. Here, check this out!\n[[Lyra]]Where did you get this?!\n[[Talos]]It was on Raakel's wall!\n[[Lyra]]So, you just took it?\n[[Talos]]It looked important!\n[[Lyra]]Sigh... anyways, where is this place?\n[[Talos]]I think it's my old academy. Well, the parts that survived the explosion. Look, here's the headmaster's tower!\n[[Lyra]]So?\n[[Talos]]Professor always bragged that the school had a huge supply of energized Polarium metal. Maybe that's what the Magus is after.\n[[Lyra]]Hmmm... possible.");
-        if(dl.run()==RETURN_SHUTDOWN)
-        {
-            return;
-        }
+        //resource.stopAllAudio();
         al_start_timer(timer);
         break;
     }
+/*
     case FRAME_MULTIPLAYER_STRATEGY:
     {
         if(!(event_queue=al_create_event_queue())||!(timer=al_create_timer(1.0/frames_per_second)))
@@ -609,12 +524,6 @@ void Frame::end()
         camera->background->inner.clear();
         camera->foreground->inner.clear();
         camera->menus->inner.clear();
-        if(movesLeft)
-        {
-            movesLeft->pull();
-            delete movesLeft;
-            movesLeft=nullptr;
-        }
         valid=false;
     }
 }

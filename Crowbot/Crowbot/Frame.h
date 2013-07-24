@@ -32,7 +32,6 @@ private:
     ENetPeer *peer;
 #endif
     Camera *camera;
-    Counter *movesLeft;
     Button *activeButton;
     std::list<Button*> buttons;
     std::vector<bool> key;
@@ -87,7 +86,6 @@ public:
         peer(nullptr),
 #endif
         camera(new Camera(0, 0, region.getWidth(), region.getHeight(), 0, 0)),
-        movesLeft(nullptr),
         activeButton(nullptr)
     {
         camera->push(this);

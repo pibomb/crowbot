@@ -16,10 +16,6 @@ void Frame::update()
             {
             case ALLEGRO_EVENT_TIMER:
             {
-                if(key[ALLEGRO_KEY_ESCAPE])
-                {
-                    valid=false;
-                }
                 invalidate();
                 break;
             }
@@ -1224,6 +1220,11 @@ void Frame::update()
             }
             case ALLEGRO_EVENT_KEY_CHAR:
             {
+                if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE)
+                {
+                    valid=false;
+                    break;
+                }
                 /*
                 int unichar=ev.keyboard.unichar;
                 if(unichar>=32)
@@ -1369,8 +1370,7 @@ void Frame::update()
         }
         break;
     }
-/*
-    case FRAME_CAMPAIGN_STRATEGY:
+    case FRAMETYPE::STAGE:
     {
         for(ALLEGRO_EVENT ev; valid && al_get_next_event(event_queue, &ev);)
         {
@@ -1378,32 +1378,21 @@ void Frame::update()
             {
             case ALLEGRO_EVENT_TIMER:
             {
-                if(chatlog->visible)
+                if(key[ALLEGRO_KEY_UP])
                 {
-                    //
+                    camera->setY(camera->getY()+8);
                 }
-                else
+                if(key[ALLEGRO_KEY_DOWN])
                 {
-                    if(key[ALLEGRO_KEY_UP])
-                    {
-                        camera->setY(camera->getY()+8);
-                    }
-                    if(key[ALLEGRO_KEY_DOWN])
-                    {
-                        camera->setY(camera->getY()-8);
-                    }
-                    if(key[ALLEGRO_KEY_LEFT])
-                    {
-                        camera->setX(camera->getX()+8);
-                    }
-                    if(key[ALLEGRO_KEY_RIGHT])
-                    {
-                        camera->setX(camera->getX()-8);
-                    }
+                    camera->setY(camera->getY()-8);
                 }
-                if(key[ALLEGRO_KEY_ESCAPE])
+                if(key[ALLEGRO_KEY_LEFT])
                 {
-                    valid=false;
+                    camera->setX(camera->getX()+8);
+                }
+                if(key[ALLEGRO_KEY_RIGHT])
+                {
+                    camera->setX(camera->getX()-8);
                 }
                 if(mouse[MOUSEBUTTON::RIGHT])
                 {
@@ -1735,7 +1724,6 @@ void Frame::update()
                 case ALLEGRO_KEY_BACKSPACE:
                 {
                     key[ALLEGRO_KEY_BACKSPACE]=true;
-                    chatlog->deleteChar();
                     break;
                 }
                 case ALLEGRO_KEY_TAB:
@@ -1821,13 +1809,11 @@ void Frame::update()
                 case ALLEGRO_KEY_PGUP:
                 {
                     key[ALLEGRO_KEY_PGUP]=true;
-                    chatlog->pageUp();
                     break;
                 }
                 case ALLEGRO_KEY_PGDN:
                 {
                     key[ALLEGRO_KEY_PGDN]=true;
-                    chatlog->pageDown();
                     break;
                 }
                 case ALLEGRO_KEY_LEFT:
@@ -1843,19 +1829,11 @@ void Frame::update()
                 case ALLEGRO_KEY_UP:
                 {
                     key[ALLEGRO_KEY_UP]=true;
-                    if(chatlog->visible)
-                    {
-                        chatlog->retreat();
-                    }
                     break;
                 }
                 case ALLEGRO_KEY_DOWN:
                 {
                     key[ALLEGRO_KEY_DOWN]=true;
-                    if(chatlog->visible)
-                    {
-                        chatlog->advance();
-                    }
                     break;
                 }
                 case ALLEGRO_KEY_PAD_SLASH:
@@ -2625,6 +2603,12 @@ void Frame::update()
             }
             case ALLEGRO_EVENT_KEY_CHAR:
             {
+                if(ev.keyboard.keycode==ALLEGRO_KEY_ESCAPE)
+                {
+                    valid=false;
+                    break;
+                }
+                /*
                 int unichar=ev.keyboard.unichar;
                 if(unichar>=32)
                 {
@@ -2692,6 +2676,7 @@ void Frame::update()
                     break;
                 }
                 }
+                */
                 break;
             }
             case ALLEGRO_EVENT_MOUSE_BUTTON_DOWN:
@@ -2738,15 +2723,15 @@ void Frame::update()
             }
             case ALLEGRO_EVENT_MOUSE_AXES:
             {
-                for(auto it=buttons.begin(); it!=buttons.end(); it++)
+                for(auto &it : buttons)
                 {
-                    if((*it)->contains(ev.mouse.x, ev.mouse.y))
+                    if(it->contains(ev.mouse.x, ev.mouse.y))
                     {
-                        (*it)->hover=true;
+                        it->hover=true;
                     }
                     else
                     {
-                        (*it)->hover=false;
+                        it->hover=false;
                     }
                 }
                 break;
@@ -2754,10 +2739,13 @@ void Frame::update()
             case ALLEGRO_EVENT_DISPLAY_SWITCH_OUT:
             {
                 std::fill(key.begin(), key.end(), false);
-                std::fill(mouse.begin(), mouse.end(), false);
-                for(auto it=buttons.begin(); it!=buttons.end(); it++)
+                for(auto &it : mouse)
                 {
-                    (*it)->hover=false;
+                    it.second=false;
+                }
+                for(auto &it : buttons)
+                {
+                    it->hover=false;
                 }
                 break;
             }
@@ -2765,6 +2753,7 @@ void Frame::update()
         }
         break;
     }
+/*
 #ifdef ENET_ENABLED
     case FRAME_MULTIPLAYER_STRATEGY:
     {
