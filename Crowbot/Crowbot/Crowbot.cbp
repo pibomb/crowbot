@@ -131,14 +131,25 @@
 		</Linker>
 		<Unit filename="Animated.cpp" />
 		<Unit filename="Animated.h" />
+		<Unit filename="Button.cpp" />
+		<Unit filename="Button.h" />
+		<Unit filename="Camera.cpp" />
+		<Unit filename="Camera.h" />
 		<Unit filename="Compiler.cpp" />
 		<Unit filename="Compiler.h" />
+		<Unit filename="Counter.cpp" />
+		<Unit filename="Counter.h" />
 		<Unit filename="Drawable.cpp" />
 		<Unit filename="Drawable.h" />
 		<Unit filename="Entity.cpp" />
 		<Unit filename="Entity.h" />
+		<Unit filename="Frame.cpp" />
+		<Unit filename="Frame.h" />
+		<Unit filename="Frame_update.cpp" />
 		<Unit filename="GlobalVariables.cpp" />
 		<Unit filename="GlobalVariables.h" />
+		<Unit filename="Layer.cpp" />
+		<Unit filename="Layer.h" />
 		<Unit filename="Lexxer.cpp" />
 		<Unit filename="Lexxer.h" />
 		<Unit filename="Parser.cpp" />

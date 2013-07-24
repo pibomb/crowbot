@@ -55,7 +55,7 @@ std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexxer lexxer)
             {
                 lines.push_back([](Robot *robot_arg, std::vector<int> args_arg)
                                 {
-                                    for(auto it : args_arg)
+                                    for(auto &it : args_arg)
                                     {
                                         printf("%d\n", it);
                                     }
@@ -65,7 +65,7 @@ std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexxer lexxer)
         }
         return [lines](Robot *robot_arg, std::vector<int> args_arg)
                         {
-                            for(auto it : lines)
+                            for(auto &it : lines)
                             {
                                 it(robot_arg, args_arg);
                             }

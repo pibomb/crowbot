@@ -73,6 +73,7 @@ int main(int argc, char **argv)
     al_install_audio();
     al_init_acodec_addon();
     al_reserve_samples(5);
+    resource.initialize();
     /*
     Lexxer lex;
     //std::string str;
@@ -90,6 +91,7 @@ int main(int argc, char **argv)
     robo.executeFunction("function");
     robo.executeFunction("function");
     */
+    resource.cleanup();
     al_destroy_display(display);
 
     return 0;

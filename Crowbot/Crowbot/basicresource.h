@@ -49,4 +49,70 @@
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
 
+// Frame Definitions
+enum class FRAMETYPE : int
+{
+    INVALID=0,
+    STARTSCREEN,
+    STAGE
+};
+
+// Font Definitions
+enum class FONTTYPE : int
+{
+    ARIAL=0,
+    FFF_TUSJ,
+    FREEDOM,
+    MONTESERRAT,
+    MONTESERRAT_B,
+    AMBLE,
+    AMBLE_B,
+    AMBLE_I,
+    AMBLE_BI,
+    ORBITRON,
+    ORBITRON_LT,
+    ORBITRON_B
+};
+
+#define FONT_DEFAULT_GAME FONTTYPE::MONTESERRAT
+#define FONT_SIZE_DEFAULT_GAME 15
+#define FONT_SIZE_LARGE_GAME 48
+
+//Audio Definitions
+
+enum class AUDIOTYPE : int
+{
+    INVALID=0
+};
+
+// Image Definitions
+enum class IMAGETYPE : int
+{
+    INVALID=0,
+    RECTANGLE,
+    DEFAULT_BUTTON,
+    DEFAULT_BUTTON_H,
+    DEFAULT_BUTTON_D
+};
+
+// Button Definitions
+enum class BUTTONTYPE : int
+{
+    INVALID=0
+};
+
+// Mouse Definitions
+enum class MOUSEBUTTON : int
+{
+    LEFT=0,
+    RIGHT
+};
+
+// Color Definitions
+#define AL_COL_BLACK (al_map_rgb(0, 0, 0))
+#define AL_COL_WHITE (al_map_rgb(255, 255, 255))
+#define AL_COL_RED (al_map_rgb(255, 0, 0))
+#define AL_COL_GREEN (al_map_rgb(0, 255, 0))
+#define AL_COL_BLUE (al_map_rgb(0, 0, 255))
+
 #endif // BASICRESOURCE_H_INCLUDED
