@@ -1,27 +1,5 @@
 #include "resource.h"
 
-int addition(lua_State *l)
-{
-    // number of input arguments
-    int argc = lua_gettop(l);
-    // print input arguments
-    std::cout << "[C++] Function called from Lua with " << argc
-              << " input arguments" << std::endl;
-    int sum=0;
-    for(int i=0; i<argc; i++)
-    {
-        std::cout << " input argument #" << argc-i << ": "
-                  << lua_tostring(l, lua_gettop(l)) << std::endl;
-        sum+=lua_tointeger(l, lua_gettop(l));
-        lua_pop(l, 1);
-    }
-    // push to the stack the multiple return values
-    std::cout << "[C++] Returning the sum" << std::endl;
-    lua_pushnumber(l, sum);
-    // number of return values
-    return 1;
-}
-
 int main(int argc, char **argv)
 {
 	//opening lua
@@ -29,36 +7,16 @@ int main(int argc, char **argv)
 	//opening libraries for lua, otherwise functions dont work
 	luaL_openlibs(lua_state);
 	//testing lua, will fit perfectly with the system in place
-    // push the C++ function to be called from Lua
-    std::cout << "[C++] Pushing the C++ function" << std::endl;
-    lua_makefunction(lua_state, addition, "addition");
     lua_makefunction(lua_state,
                      [](lua_State *l) -> int
                      {
-                         std::cout<<"[C++] Delaying"<<std::endl;
                          ((Frame*)lua_tointeger(l, 1))->delayTime();
+                         ((Frame*)lua_tointeger(l, 1))->update();
+                         ((Frame*)lua_tointeger(l, 1))->render();
                          lua_pop(l, 1);
                          return 0;
                      }
-                     , "delay");
-    // load the script
-    std::cout << "[C++] Loading the Lua script" << std::endl;
-    lua_pushinteger(lua_state, 10);
-    lua_setglobal(lua_state, "ten");
-    int status = luaL_loadfile(lua_state, "luascripts/luascript.lua");
-    std::cout << " return: " << status << std::endl;
-    // run the script with the given arguments
-    std::cout << "[C++] Running script" << std::endl;
-    int result = 0;
-    if(status == LUA_OK)
-    {
-        result = lua_pcall(lua_state, 0, LUA_MULTRET, 0);
-    }
-    else
-    {
-        std::cout << " Could not load the script." << std::endl;
-    }
-    std::cout<<"[C++] The return of result is: "<<result<<std::endl;
+                     , "updateloop");
 	//initializing allegro
     al_init();
     al_init_image_addon();
@@ -93,13 +51,15 @@ int main(int argc, char **argv)
     while(game)
     {
         //menu flickering caused by unlimited framerate?
-        if(luaL_loadfile(lua_state, "luascripts/delay.lua") == LUA_OK)
+        if(luaL_loadfile(lua_state, "luascripts/updateloop.lua")==LUA_OK)
         {
             lua_pcall(lua_state, 0, LUA_MULTRET, 0);
         }
-        //game.delayTime();
+        /*
+        game.delayTime();
         game.update();//unskippable stuff
         game.render();//frame-skippable stuff
+        */
         al_flip_display();
     }
     game.end();
