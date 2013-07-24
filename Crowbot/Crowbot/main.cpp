@@ -46,7 +46,11 @@ int main(int argc, char **argv)
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
-    lua_makelfunction(lua_state, "luascripts/updateloop.lua", "updatelua");
+    Lexxer lex;
+    Parser psr;
+    lex.generateTokens("updateloop(f)");
+    psr.parse(lex, "updatelua", "f", "luascripts/");
+    lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
     while(game)
     {
         //menu flickering caused by unlimited framerate?
@@ -60,13 +64,6 @@ int main(int argc, char **argv)
     }
     game.end();
     game.destroy();
-    Lexxer lex;
-    Parser psr;
-    //std::string str;
-    //std::getline(std::cin, str);
-    //lex.generateTokens(str);
-    lex.generateTokens("output \"Hello, World!\\n\"");
-    psr.parse(lex, "userscript", "luascripts/");
     /*
     Compiler cmp;
     Robot robo;

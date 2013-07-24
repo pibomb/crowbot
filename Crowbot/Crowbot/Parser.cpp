@@ -2,7 +2,7 @@
 
 #define SHOW_TOKENS
 
-void Parser::parse(Lexxer &lexxer, std::string name, std::string directory)
+void Parser::parse(Lexxer &lexxer, std::string name, std::string fargs, std::string directory)
 {
     std::ofstream fout(directory+name+".lua");
     if(lexxer.getNextToken()=="__BEGIN")
@@ -12,7 +12,7 @@ void Parser::parse(Lexxer &lexxer, std::string name, std::string directory)
 #endif
         int indent=4;
         std::string tok, line;
-        fout<<"function "<<name<<"("<<")"<<std::endl;
+        fout<<"function "<<name<<"("<<fargs<<")"<<std::endl;
         while(tok!="__END")
         {
             tok=lexxer.getNextToken();
@@ -27,12 +27,16 @@ void Parser::parse(Lexxer &lexxer, std::string name, std::string directory)
                 printf("<Function Token: [%s]>\n", function_name.c_str());
 #endif
                 tok=lexxer.getNextToken();
-                while(tok!="__/FUNC")
+                for(int i=0; tok!="__/FUNC"; i++)
                 {
 #ifdef SHOW_TOKENS
                     printf("<Argument Token: [%s]>\n", tok.c_str());
 #endif
-                    line+=tok+" ";
+                    if(i>0)
+                    {
+                        line+=", ";
+                    }
+                    line+=tok;
                     tok=lexxer.getNextToken();
                 }
                 line+=")";
