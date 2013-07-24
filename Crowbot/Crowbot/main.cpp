@@ -3,8 +3,8 @@
 int main(int argc, char **argv)
 {
 	//opening lua
-	lua_state = lua_open();
-	
+	lua_state = luaL_newstate();
+
 	//opening libraries for lua, otherwise functions dont work
 	luaL_openlibs(lua_state);
 
@@ -25,12 +25,12 @@ int main(int argc, char **argv)
     disp_data.width*=0.8;
     disp_data.height*=0.8;
     display=al_create_display(disp_data.width, disp_data.height);
-    
+
 	if(!display)
     {
         return -1;
     }
-    
+
 	al_clear_to_color(al_map_rgb(0, 0, 0));
     al_flip_display();
     al_install_keyboard();
@@ -54,8 +54,6 @@ int main(int argc, char **argv)
     robo.executeFunction("function");
     robo.executeFunction("function");
     al_destroy_display(display);
-
-	std::cin.get();
 
     return 0;
 }

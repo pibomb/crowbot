@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="Animated.cpp" open="1" top="0" tabpos="1">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="Compiler.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1692" topLine="44" />
+	</File>
+	<File name="Compiler.h" open="0" top="0" tabpos="0">
+		<Cursor position="138" topLine="0" />
+	</File>
+	<File name="Drawable.h" open="0" top="0" tabpos="0">
+		<Cursor position="18" topLine="0" />
+	</File>
+	<File name="GlobalVariables.h" open="1" top="0" tabpos="2">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="Lexxer.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="378" topLine="0" />
+	</File>
+	<File name="Lexxer.h" open="0" top="0" tabpos="0">
+		<Cursor position="54" topLine="0" />
+	</File>
+	<File name="Parser.cpp" open="1" top="0" tabpos="3">
+		<Cursor position="23" topLine="0" />
+	</File>
+	<File name="Parser.h" open="0" top="0" tabpos="0">
+		<Cursor position="86" topLine="0" />
+	</File>
+	<File name="Pixel.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2823" topLine="133" />
+	</File>
+	<File name="Pixel.h" open="1" top="0" tabpos="4">
+		<Cursor position="0" topLine="0" />
+	</File>
+	<File name="Robot.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="406" topLine="0" />
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="1048" topLine="24" />
+	</File>
+	<File name="resource.h" open="0" top="0" tabpos="0">
+		<Cursor position="318" topLine="0" />
+	</File>
+</CodeBlocks_layout_file>

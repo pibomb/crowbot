@@ -1,7 +1,9 @@
-bin/
-obj/
-idl/bin/
-idl/obj/
+Crowbot/Crowbot/bin/
+Crowbot/Crowbot/Debug/
+Crowbot/Crowbot/Release/
+Crowbot/Crowbot/obj/
+Crowbot/Debug/
+Crowbot/Release/
 *.depend
 *.layout
 *.o
