@@ -2,9 +2,9 @@
 
 //#define SHOW_TOKENS
 
-std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexxer lexxer)
+std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexer lexer)
 {
-    if(lexxer.getNextToken()=="__BEGIN")
+    if(lexer.getNextToken()=="__BEGIN")
     {
 #ifdef SHOW_TOKENS
         printf("<Token: [__BEGIN]>\n");
@@ -13,25 +13,25 @@ std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexxer lexxer)
         std::string tok;
         while(tok!="__END")
         {
-            tok=lexxer.getNextToken();
+            tok=lexer.getNextToken();
 #ifdef SHOW_TOKENS
             printf("<Token: [%s]>\n", tok.c_str());
 #endif
             if(tok=="__FUNC")
             {
-                std::string function_name=lexxer.getNextToken();
+                std::string function_name=lexer.getNextToken();
 #ifdef SHOW_TOKENS
                 printf("<Function Token: [%s]>\n", function_name.c_str());
 #endif
                 std::vector<int> args;
-                tok=lexxer.getNextToken();
+                tok=lexer.getNextToken();
                 while(tok!="__/FUNC")
                 {
 #ifdef SHOW_TOKENS
                     printf("<Argument Token: [%s]>\n", tok.c_str());
 #endif
                     args.push_back(strToInt(tok));
-                    tok=lexxer.getNextToken();
+                    tok=lexer.getNextToken();
                 }
                 lines.push_back([function_name, args](Robot* robot_arg, std::vector<int> args_arg)
                                 {
@@ -41,7 +41,7 @@ std::function<void(Robot*, std::vector<int>)> Compiler::compile(Lexxer lexxer)
             }
             else if(tok=="output")
             {
-                tok=lexxer.getNextToken();
+                tok=lexer.getNextToken();
 #ifdef SHOW_TOKENS
                 printf("<Output Token: [%s]>\n", tok.c_str());
 #endif

@@ -2,10 +2,10 @@
 
 #define SHOW_TOKENS
 
-void Parser::parse(Lexxer &lexxer, std::string name, std::string fargs, std::string directory)
+void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::string directory)
 {
     std::ofstream fout(directory+name+".lua");
-    if(lexxer.getNextToken()=="__BEGIN")
+    if(lexer.getNextToken()=="__BEGIN")
     {
 #ifdef SHOW_TOKENS
         printf("<Token: [__BEGIN]>\n");
@@ -15,18 +15,18 @@ void Parser::parse(Lexxer &lexxer, std::string name, std::string fargs, std::str
         fout<<"function "<<name<<"("<<fargs<<")"<<std::endl;
         while(tok!="__END")
         {
-            tok=lexxer.getNextToken();
+            tok=lexer.getNextToken();
 #ifdef SHOW_TOKENS
             printf("<Token: [%s]>\n", tok.c_str());
 #endif
             if(tok=="__FUNC")
             {
-                std::string function_name=lexxer.getNextToken();
+                std::string function_name=lexer.getNextToken();
                 line+=function_name+"(";
 #ifdef SHOW_TOKENS
                 printf("<Function Token: [%s]>\n", function_name.c_str());
 #endif
-                tok=lexxer.getNextToken();
+                tok=lexer.getNextToken();
                 for(int i=0; tok!="__/FUNC"; i++)
                 {
 #ifdef SHOW_TOKENS
@@ -37,14 +37,14 @@ void Parser::parse(Lexxer &lexxer, std::string name, std::string fargs, std::str
                         line+=", ";
                     }
                     line+=tok;
-                    tok=lexxer.getNextToken();
+                    tok=lexer.getNextToken();
                 }
                 line+=")";
             }
             else if(tok=="output")
             {
                 line+="io.print(\"";
-                tok=lexxer.getNextToken();
+                tok=lexer.getNextToken();
 #ifdef SHOW_TOKENS
                 printf("<Output Token: [%s]>\n", tok.c_str());
 #endif
@@ -63,6 +63,6 @@ void Parser::parse(Lexxer &lexxer, std::string name, std::string fargs, std::str
         }
         fout<<"end"<<std::endl;
     }
-    lexxer.resetLexxer();
+    lexer.resetLexer();
     fout.close();
 }

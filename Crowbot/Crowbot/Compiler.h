@@ -3,14 +3,14 @@
 
 #include "basicresource.h"
 
-class Lexxer;
+class Lexer;
 class Robot;
 
 class Compiler
 {
 private:
 public:
-    std::function<void(Robot*, std::vector<int>)> compile(Lexxer lexxer);
+    std::function<void(Robot*, std::vector<int>)> compile(Lexer lexer);
 };
 
 #endif // COMPILER_H_INCLUDED

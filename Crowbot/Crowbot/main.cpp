@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
-    Lexxer lex;
+    Lexer lex;
     Parser psr;
     lex.generateTokens("updateloop(f)");
     psr.parse(lex, "updatelua", "f", "luascripts/");

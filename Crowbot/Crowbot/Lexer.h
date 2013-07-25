@@ -1,9 +1,9 @@
-#ifndef LEXXER_H_INCLUDED
-#define LEXXER_H_INCLUDED
+#ifndef LEXER_H_INCLUDED
+#define LEXER_H_INCLUDED
 
 #include "basicresource.h"
 
-class Lexxer
+class Lexer
 {
 private:
     int current_token;
@@ -11,7 +11,7 @@ private:
 public:
     void generateTokens(std::string raw);
     std::string getNextToken();
-    void resetLexxer();
+    void resetLexer();
 };
 
-#endif // LEXXER_H_INCLUDED
+#endif // LEXER_H_INCLUDED
