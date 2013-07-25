@@ -134,6 +134,6 @@ enum class MOUSEBUTTON : int
 #define lua_regmfunctions(_a, _b) {luaL_newmetatable(_a,_b);lua_pushvalue(_a,-1);lua_setfield(_a,-2,"__index");}
 #define lua_makememfunction(_a, _b, _c) ([](lua_State*l)->int{_a**ud=static_cast<_a**>(luaL_testudata(l,1,_b));lua_remove(l,1);_a*obj=(*ud);(_c);})
 #define lua_makemfunction(_a, _b, _c, _d, _e) {lua_pushcfunction(_a,lua_makememfunction(_d,_c,_e));lua_setfield(_a,-2,_b);}
-#define lua_prepmfunctions(_a, _b, _c, _d, _e) {*static_cast<_d**>(lua_newuserdata(_a,sizeof(_d*)))=_e;luaL_setmetatable(_a,_c);lua_setglobal(_a,_b);}
+#define lua_prepmfunctions(_a, _b, _c, _d, _e) {*static_cast<_d**>(lua_newuserdata(_a,sizeof(_d*)))=_e;luaL_setmetatable(_a,_c);lua_setglobal(_a,_b);lua_remove(_a,1);}
 
 #endif // BASICRESOURCE_H_INCLUDED

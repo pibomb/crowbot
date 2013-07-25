@@ -43,7 +43,6 @@ int main(int argc, char **argv)
     resource.initialize();
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
-
     lua_regmfunctions(lua_state, "FrameMT");
     lua_makemfunction(lua_state, "delay", "FrameMT", Frame,
                                              {
@@ -61,7 +60,6 @@ int main(int argc, char **argv)
                                                 return 0;
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
-
     game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
     /*
