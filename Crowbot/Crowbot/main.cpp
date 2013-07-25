@@ -10,10 +10,9 @@ int main(int argc, char **argv)
     lua_makecfunction(lua_state,
                      [](lua_State *l) -> int
                      {
-                         ((Frame*)lua_tointeger(l, 1))->delayTime();
-                         ((Frame*)lua_tointeger(l, 1))->update();
-                         ((Frame*)lua_tointeger(l, 1))->render();
-                         lua_pop(l, 1);
+                         (reinterpret_cast<Frame*>(luaL_checkint(l, 1)))->delayTime();
+                         (reinterpret_cast<Frame*>(luaL_checkint(l, 1)))->update();
+                         (reinterpret_cast<Frame*>(luaL_checkint(l, 1)))->render();
                          return 0;
                      }
                      , "updateloop");
@@ -44,17 +43,38 @@ int main(int argc, char **argv)
     resource.initialize();
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
+
+    lua_regmfunctions(lua_state, "FrameMT");
+    lua_makemfunction(lua_state, "delay", "FrameMT", Frame,
+                                             {
+                                                 obj->delayTime();
+                                                 return 0;
+                                             });
+    lua_makemfunction(lua_state, "update", "FrameMT", Frame,
+                                            {
+                                                obj->update();
+                                                return 0;
+                                            });
+    lua_makemfunction(lua_state, "render", "FrameMT", Frame,
+                                            {
+                                                obj->render();
+                                                return 0;
+                                            });
+    lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
+
     game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
+    /*
     Lexer lex;
     Parser psr;
     lex.generateTokens("updateloop(f)");
     psr.parse(lex, "updatelua", "f", "luascripts/");
+    */
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
     while(game)
     {
         //menu flickering caused by unlimited framerate?
-        lua_runlfunction(lua_state, "updatelua", intptr_t(&game));
+        lua_runlfunction(lua_state, "updatelua", reinterpret_cast<intptr_t>(&game));
         /*
         game.delayTime();
         game.update();//unskippable stuff
@@ -86,6 +106,7 @@ int main(int argc, char **argv)
     robo.executeFunction("function");
     */
     resource.cleanup();
+    lua_close(lua_state);
     al_destroy_display(display);
 
     return 0;

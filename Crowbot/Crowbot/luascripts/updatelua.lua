@@ -1,3 +1,3 @@
-function updatelua(f)
-    updateloop(f)
-end
+the_frame:delay()
+the_frame:update()
+the_frame:render()
