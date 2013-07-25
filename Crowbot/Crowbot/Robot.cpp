@@ -1,5 +1,22 @@
 #include "resource.h"
 
+void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
+{
+    switch(keycode)
+    {
+    case ALLEGRO_KEY_LEFT:
+    {
+        move(4, 0);
+        break;
+    }
+    case ALLEGRO_KEY_RIGHT:
+    {
+        move(-4, 0);
+        break;
+    }
+    }
+}
+
 void Robot::addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg)
 {
     robotFunctions[function_name]=function_arg;

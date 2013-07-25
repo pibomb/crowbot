@@ -14,6 +14,8 @@ public:
     void setY(int y_arg);
     void getAll(int& x_out, int& y_out);
     void setAll(int x_arg, int y_arg);
+    void add(Pixel px_arg);
+    void add(int x_arg, int y_arg);
     Pixel transformBy(const ALLEGRO_TRANSFORM*trans)const{
         float fx=x,fy=y;
         al_transform_coordinates(trans,&fx,&fy);

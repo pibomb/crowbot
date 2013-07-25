@@ -22,8 +22,8 @@ public:
 	Rect& getRgn() {return rgn;};
 	void decHp(int amt) {ent_health -= amt;};
 	void incHp(int amt) {ent_health += amt;};
-	void move(Pixel amt) {ent_pos.setX(ent_pos.getX() + amt.getX()); ent_pos.setY(ent_pos.getY() + amt.getY());};
-	void move(int x, int y) {ent_pos.setX(ent_pos.getX() + x); ent_pos.setY(ent_pos.getY() + y);};
+	void move(Pixel amt) {ent_pos.add(amt);};
+	void move(int x, int y) {ent_pos.add(x, y);};
 	Pixel& getVel() {return ent_vel;};
 	void setVel(Pixel vel) {ent_vel = vel;};
 	void setVel(int x, int y) {ent_vel = Pixel(x, y);};
