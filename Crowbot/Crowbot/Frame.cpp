@@ -543,10 +543,10 @@ void Frame::restart(Rect region_arg, int mapid_arg, FRAMETYPE id_arg)
     frames_per_second=60;
     valid=true;
     region=region_arg;
-    for(auto it=buttons.begin(); it!=buttons.end(); it++)
+    for(auto &it : buttons)
     {
-        (*it)->pull();
-        delete (*it);
+        it->pull();
+        delete it;
     }
     buttons.clear();
     if(id_arg!=FRAMETYPE::INVALID)

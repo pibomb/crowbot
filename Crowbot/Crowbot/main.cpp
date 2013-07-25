@@ -64,6 +64,15 @@ int main(int argc, char **argv)
     }
     game.end();
     game.destroy();
+    // Events example
+    EventHandler *evHandler=new EventHandler([]()
+                                             {
+                                                 std::cout<<"Goodbye, World!\n";
+                                             });
+    sysEvents.addEventHandler(evHandler);
+    evHandler->push(sysEvents[EVENTTYPE::INVALID]);
+    evHandler->add(EVENTTYPE::INVALID);
+    sysEvents[EVENTTYPE::INVALID].fire();
     /*
     Compiler cmp;
     Robot robo;

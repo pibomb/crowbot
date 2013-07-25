@@ -1,18 +1,24 @@
 #include "resource.h"
 
-Entity::Entity(const UINT& id, Pixel& position, const UINT& startHp) : ent_id(id), ent_pos(position), ent_health(startHp)
+Entity::Entity(const UINT& id, Pixel& position, const int& startHp):
+    ent_pos(position),
+    ent_health(startHp),
+    ent_id(id)
 {
+    //
 }
 
 void Entity::transformation()
 {
-	preset().preTranslate(Pixel(ent_pos.getX(), ent_pos.getY()));
+	preset().preTranslate(ent_pos);
 }
 
 void Entity::onDraw()
 {
+    //
 }
 
 void Entity::postDraw()
 {
+    //
 }

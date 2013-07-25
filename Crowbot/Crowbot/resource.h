@@ -72,6 +72,7 @@ public:
 #include "Counter.h"
 #include "Drawable.h"
 #include "Entity.h"
+#include "Event.h"
 #include "Frame.h"
 #include "GlobalVariables.h"
 #include "Layer.h"

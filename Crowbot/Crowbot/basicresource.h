@@ -79,7 +79,6 @@ enum class FONTTYPE : int
 #define FONT_SIZE_LARGE_GAME 48
 
 //Audio Definitions
-
 enum class AUDIOTYPE : int
 {
     INVALID=0
@@ -93,6 +92,19 @@ enum class IMAGETYPE : int
     DEFAULT_BUTTON,
     DEFAULT_BUTTON_H,
     DEFAULT_BUTTON_D
+};
+
+// Event Definitions
+enum class EVENTTYPE : int
+{
+    INVALID=0
+};
+
+// Event Options Definitions
+enum class EVENTOPTIONS : int
+{
+    INVALID=0,
+    WILDCARD
 };
 
 // Button Definitions
