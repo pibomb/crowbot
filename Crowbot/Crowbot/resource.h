@@ -75,7 +75,7 @@ public:
 #include "Frame.h"
 #include "GlobalVariables.h"
 #include "Layer.h"
-#include "Lexxer.h"
+#include "Lexer.h"
 #include "Parser.h"
 #include "Pixel.h"
 #include "Robot.h"

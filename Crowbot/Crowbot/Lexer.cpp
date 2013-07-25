@@ -1,6 +1,6 @@
 #include "resource.h"
 
-void Lexxer::generateTokens(std::string raw)
+void Lexer::generateTokens(std::string raw)
 {
     tokens.clear();
     tokens.push_back("__BEGIN");
@@ -50,10 +50,10 @@ void Lexxer::generateTokens(std::string raw)
             possible_token.clear();
         }
     }
-    resetLexxer();
+    resetLexer();
 }
 
-std::string Lexxer::getNextToken()
+std::string Lexer::getNextToken()
 {
     if(current_token==static_cast<int>(tokens.size()))
     {
@@ -62,7 +62,7 @@ std::string Lexxer::getNextToken()
     return tokens[current_token++];
 }
 
-void Lexxer::resetLexxer()
+void Lexer::resetLexer()
 {
     current_token=0;
 }

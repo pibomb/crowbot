@@ -150,8 +150,8 @@
 		<Unit filename="GlobalVariables.h" />
 		<Unit filename="Layer.cpp" />
 		<Unit filename="Layer.h" />
-		<Unit filename="Lexxer.cpp" />
-		<Unit filename="Lexxer.h" />
+		<Unit filename="Lexer.cpp" />
+		<Unit filename="Lexer.h" />
 		<Unit filename="Parser.cpp" />
 		<Unit filename="Parser.h" />
 		<Unit filename="Pixel.cpp" />
