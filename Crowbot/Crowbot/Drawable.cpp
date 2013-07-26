@@ -27,14 +27,14 @@ void Drawable::render()
         al_compose_transform(&cur, &trans);
         al_use_transform(&cur);
         onDraw();
-        for(std::list<Drawable*>::iterator it=inner.begin(); it!=inner.end(); it++)
+        for(auto &it : inner)
         {
-            (*it)->invalidate();
+            it->invalidate();
         }
     }
-    for(std::list<Drawable*>::iterator it=inner.begin(); it!=inner.end(); it++)
+    for(auto &it: inner)
     {
-        (*it)->render();
+        it->render();
     }
     if(dirty)
     {
@@ -66,6 +66,30 @@ Drawable& Drawable::preTranslate(float x, float y)
 {
     al_translate_transform(&trans, x, y);
     return *this;
+}
+
+Drawable& Drawable::preRotate(float theta)
+{
+    al_rotate_transform(&trans, theta);
+    return *this;
+}
+
+Drawable& Drawable::preAll(float x, float y, float sx, float sy, float theta)
+{
+    al_build_transform(&trans, x, y, sx, sy, theta);
+    return *this;
+}
+
+Pixel Drawable::getTransformedTL()
+{
+    float x=0, y=0;
+    al_transform_coordinates(&trans, &x, &y);
+    return Pixel(x, y);
+}
+
+ALLEGRO_TRANSFORM* Drawable::getTransform()
+{
+    return &trans;
 }
 
 void Drawable::invalidate()

@@ -143,6 +143,8 @@
 		<Unit filename="Drawable.h" />
 		<Unit filename="Entity.cpp" />
 		<Unit filename="Entity.h" />
+		<Unit filename="Event.cpp" />
+		<Unit filename="Event.h" />
 		<Unit filename="Frame.cpp" />
 		<Unit filename="Frame.h" />
 		<Unit filename="Frame_update.cpp" />
@@ -152,6 +154,7 @@
 		<Unit filename="Layer.h" />
 		<Unit filename="Lexer.cpp" />
 		<Unit filename="Lexer.h" />
+		<Unit filename="Observer.h" />
 		<Unit filename="Parser.cpp" />
 		<Unit filename="Parser.h" />
 		<Unit filename="Pixel.cpp" />

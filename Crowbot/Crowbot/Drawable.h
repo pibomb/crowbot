@@ -39,6 +39,10 @@ public:
     Drawable& preScale(float sx, float sy);
     Drawable& preTranslate(Pixel px);
     Drawable& preTranslate(float x, float y);
+    Drawable& preRotate(float theta);
+    Drawable& preAll(float x, float y, float sx, float sy, float theta);
+    Pixel getTransformedTL();
+    ALLEGRO_TRANSFORM* getTransform();
     void invalidate();
     void invalidateRegion(const Rect& _area);
     virtual void transformation()=0;

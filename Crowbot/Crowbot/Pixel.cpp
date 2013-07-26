@@ -1,32 +1,32 @@
 #include "resource.h"
 
-int Pixel::getX() const
+float Pixel::getX() const
 {
     return x;
 }
 
-void Pixel::setX(int x_arg)
+void Pixel::setX(float x_arg)
 {
     x=x_arg;
 }
 
-int Pixel::getY() const
+float Pixel::getY() const
 {
     return y;
 }
 
-void Pixel::setY(int y_arg)
+void Pixel::setY(float y_arg)
 {
     y=y_arg;
 }
 
-void Pixel::getAll(int& x_out, int& y_out)
+void Pixel::getAll(float& x_out, float& y_out)
 {
     x_out=x;
     y_out=y;
 }
 
-void Pixel::setAll(int x_arg, int y_arg)
+void Pixel::setAll(float x_arg, float y_arg)
 {
     x=x_arg;
     y=y_arg;
@@ -37,7 +37,7 @@ void Pixel::add(Pixel px_arg)
     setAll(getX()+px_arg.getX(), getY()+px_arg.getY());
 }
 
-void Pixel::add(int x_arg, int y_arg)
+void Pixel::add(float x_arg, float y_arg)
 {
     setAll(getX()+x_arg, getY()+y_arg);
 }
@@ -45,7 +45,7 @@ void Pixel::add(int x_arg, int y_arg)
 #ifndef NDEBUG
 void Pixel::print()
 {
-    printf("%d %d\n", x, y);
+    printf("%f %f\n", x, y);
 }
 #endif
 
@@ -54,7 +54,7 @@ Pixel Rect::getTL()
     return tl;
 }
 
-void Rect::getTL(int& tlx_out, int& tly_out)
+void Rect::getTL(float& tlx_out, float& tly_out)
 {
     tlx_out=tl.getX();
     tly_out=tl.getY();
@@ -65,7 +65,7 @@ void Rect::setTL(Pixel tl_arg)
     tl=tl_arg;
 }
 
-void Rect::setTL(int tlx_arg, int tly_arg)
+void Rect::setTL(float tlx_arg, float tly_arg)
 {
     tl.setX(tlx_arg);
     tl.setY(tly_arg);
@@ -76,7 +76,7 @@ Pixel Rect::getBR()
     return br;
 }
 
-void Rect::getBR(int& brx_out, int& bry_out)
+void Rect::getBR(float& brx_out, float& bry_out)
 {
     brx_out=br.getX();
     bry_out=br.getY();
@@ -87,7 +87,7 @@ void Rect::setBR(Pixel br_arg)
     br=br_arg;
 }
 
-void Rect::setBR(int brx_arg, int bry_arg)
+void Rect::setBR(float brx_arg, float bry_arg)
 {
     br.setX(brx_arg);
     br.setY(bry_arg);
@@ -108,29 +108,29 @@ void Rect::shift(Pixel tl_arg)
     *this=Rect(tl_arg.getX(), tl_arg.getY(), getWidth()+tl_arg.getX(), getHeight()+tl_arg.getY());
 }
 
-int Rect::getWidth()
+float Rect::getWidth()
 {
     return br.getX()-tl.getX();
 }
 
-int Rect::getHeight()
+float Rect::getHeight()
 {
     return br.getY()-tl.getY();
 }
 
-void Rect::getAll(int& tlx_out, int& tly_out, int& brx_out, int& bry_out)
+void Rect::getAll(float& tlx_out, float& tly_out, float& brx_out, float& bry_out)
 {
     tl.getAll(tlx_out, tly_out);
     br.getAll(brx_out, bry_out);
 }
 
-void Rect::setAll(int tlx_arg, int tly_arg, int brx_arg, int bry_arg)
+void Rect::setAll(float tlx_arg, float tly_arg, float brx_arg, float bry_arg)
 {
     tl.setAll(tlx_arg, tly_arg);
     br.setAll(brx_arg, bry_arg);
 }
 
-void Rect::translate(int x_arg, int y_arg)
+void Rect::translate(float x_arg, float y_arg)
 {
     tl.setX(tl.getX()+x_arg);
     tl.setY(tl.getY()+y_arg);
@@ -173,7 +173,7 @@ bool Rect::contains(Pixel px_arg)
     return px_arg.getX()>tl.getX() && px_arg.getX()<br.getX() && px_arg.getY()>tl.getY() && px_arg.getY()<br.getY();
 }
 
-bool Rect::contains(int x_arg, int y_arg)
+bool Rect::contains(float x_arg, float y_arg)
 {
     return x_arg>tl.getX() && x_arg<br.getX() && y_arg>tl.getY() && y_arg<br.getY();
 }
@@ -181,7 +181,7 @@ bool Rect::contains(int x_arg, int y_arg)
 #ifndef NDEBUG
 void Rect::print()
 {
-    printf("%d %d %d %d\n", tl.getX(), tl.getY(), br.getX(), br.getY());
+    printf("%f %f %f %f\n", tl.getX(), tl.getY(), br.getX(), br.getY());
 }
 #endif
 
