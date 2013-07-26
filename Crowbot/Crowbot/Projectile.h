@@ -22,7 +22,7 @@ public:
     {
         //
     }
-    void set(Pixel px);
+    void set(Pixel pos_arg, Pixel vel_arg);
     void update();
 };
 

@@ -1,10 +1,10 @@
 #include "resource.h"
 
-void Projectile::set(Pixel px)
+void Projectile::set(Pixel pos_arg, Pixel vel_arg)
 {
     is_valid=true;
-    pro_pos=px;
-    pro_vel=Pixel(0, 1);
+    pro_pos=pos_arg;
+    pro_vel=vel_arg;
     EventTriggerHandler *evtrig=new EventTriggerHandler([this]()
                                            {
                                                this->update();
