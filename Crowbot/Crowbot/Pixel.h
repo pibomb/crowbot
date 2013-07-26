@@ -14,7 +14,7 @@ public:
     void setY(float y_arg);
     void getAll(float& x_out, float& y_out);
     void setAll(float x_arg, float y_arg);
-    void add(Pixel px_arg);
+    void add(const Pixel& px_arg);
     void add(float x_arg, float y_arg);
     Pixel transformBy(const ALLEGRO_TRANSFORM*trans)const{
         float fx=x,fy=y;
@@ -24,12 +24,7 @@ public:
 #ifndef NDEBUG
     void print();
 #endif
-    /*
-    operator hexpt() const
-    {
-        return hexpt((float)x, (float)y);
-    }
-    */
+    void operator+=(const Pixel& px_arg);
     Pixel()
     {
         //

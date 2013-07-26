@@ -45,6 +45,11 @@ bool EventData::validate(EventCondition& other)
     return other.checkData(data);
 }
 
+void EventHandler::setCallback(std::function<void()> callback_arg)
+{
+    callback=callback_arg;
+}
+
 void EventHandler::add(EVENTTYPE eventID, std::vector<EVENTOPTIONS> options, std::function<bool(std::vector<int>)> checkData_arg)
 {
     eventSequence.push(EventCondition(eventID, options, checkData_arg));
@@ -52,20 +57,20 @@ void EventHandler::add(EVENTTYPE eventID, std::vector<EVENTOPTIONS> options, std
 
 void EventHandler::pull(EventSource& eventSource)
 {
-    if(iters[eventSource.getID()]!=eventSource.handlers.end())
+    auto it=iters.find(eventSource.getID());
+    if(it!=iters.end())
     {
-        eventSource.handlers.erase(iters[eventSource.getID()]);
-        iters[eventSource.getID()]=eventSource.handlers.end();
+        eventSource.handlers.erase(it->second);
+        iters.erase(it);
     }
 }
 
 void EventHandler::push(EventSource& eventSource)
 {
-    eventSource.handlers.push_front(this);
-    iters[eventSource.getID()]=eventSource.handlers.begin();
+    iters[eventSource.getID()]=eventSource.handlers.insert(eventSource.handlers.begin(), this);
 }
 
-void EventHandler::accept(EventData event)
+void EventHandler::accept(EventData& event)
 {
     if(!complete() && event.validate(eventSequence.front()))
     {
@@ -80,6 +85,14 @@ void EventHandler::accept(EventData event)
 bool EventHandler::complete()
 {
     return eventSequence.empty();
+}
+
+void EventTriggerHandler::accept(EventData& event)
+{
+    if(event.validate(eventSequence.front()))
+    {
+        callback();
+    }
 }
 
 EVENTTYPE EventSource::getID()

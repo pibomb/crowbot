@@ -70,8 +70,8 @@ int main(int argc, char **argv)
     psr.parse(lex, "updatelua", "f", "luascripts/");
     */
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
-    // Temp
-    Robot rob(0, Pixel(0, 0), 0);
+    // Temp test
+    Robot rob(0, Pixel(0.0, 0.0), 0, &game);
     rob.push(&game);
     /*
     lua_regmfunctions(lua_state, "RobotMT");
@@ -104,6 +104,10 @@ int main(int argc, char **argv)
         game.render();//frame-skippable stuff
         */
         al_flip_display();
+    }
+    for(auto &it : rob.inner)
+    {
+        delete it;
     }
     game.end();
     game.destroy();

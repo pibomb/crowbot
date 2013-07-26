@@ -1371,6 +1371,7 @@ void Frame::update()
             {
             case ALLEGRO_EVENT_TIMER:
             {
+                sysEvents[EVENTTYPE::TIMER].fire();
                 for(auto &it : observers)
                 {
                     it->onTimerKeyState(key);

@@ -2,7 +2,20 @@
 
 void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
 {
-    //
+    switch(keycode)
+    {
+    case ALLEGRO_KEY_SPACE:
+    {
+        Projectile *proj=new Projectile();
+        proj->set(ent_pos);
+        proj->push(frame);
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
 }
 
 void Robot::onTimerKeyState(const std::vector<bool> &keystates)

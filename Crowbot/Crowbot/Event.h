@@ -77,21 +77,41 @@ public:
 
 class EventHandler
 {
-private:
+protected:
     std::map<EVENTTYPE, std::list<EventHandler*>::iterator> iters;
     std::queue<EventCondition> eventSequence;
     std::function<void()> callback;
 public:
-    void add(EVENTTYPE eventID, std::vector<EVENTOPTIONS> options=std::vector<EVENTOPTIONS>(), std::function<bool(std::vector<int>)> checkData_arg=[](std::vector<int>){return true;});
-    void pull(EventSource& eventSource);
-    void push(EventSource& eventSource);
-    void accept(EventData event);
-    bool complete();
     EventHandler(std::function<void()> callback_arg):
         callback(callback_arg)
     {
         //
     }
+    virtual ~EventHandler()
+    {
+        //
+    }
+    void setCallback(std::function<void()> callback_arg);
+    void add(EVENTTYPE eventID, std::vector<EVENTOPTIONS> options=std::vector<EVENTOPTIONS>(), std::function<bool(std::vector<int>)> checkData_arg=[](std::vector<int>){return true;});
+    void pull(EventSource& eventSource);
+    void push(EventSource& eventSource);
+    virtual void accept(EventData& event);
+    bool complete();
+};
+
+class EventTriggerHandler : public EventHandler
+{
+public:
+    EventTriggerHandler(std::function<void()> callback_arg):
+        EventHandler(callback_arg)
+    {
+        //
+    }
+    ~EventTriggerHandler()
+    {
+        //
+    }
+    void accept(EventData& event);
 };
 
 class EventSource

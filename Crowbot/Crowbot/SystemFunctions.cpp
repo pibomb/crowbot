@@ -26,6 +26,11 @@ std::string leadZero(std::string str, unsigned int zeroes)
     return str;
 }
 
+bool is_pixel_onscreen(Pixel& px)
+{
+    return px.getX()>=0 && px.getY()>=0 && px.getX()<disp_data.width && px.getY()<disp_data.height;
+}
+
 void lua_setlfunctionarg(bool bool_arg)
 {
     lua_pushboolean(lua_state, bool_arg);

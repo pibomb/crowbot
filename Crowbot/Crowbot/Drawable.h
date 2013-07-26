@@ -7,24 +7,24 @@
 class Drawable
 {
 protected:
-    bool dirty;
-    ALLEGRO_TRANSFORM trans;
-    Rect rgn;
-    Drawable *outer;
-    std::list<Drawable*>::iterator this_position;
+    bool drawable_is_dirty;
+    ALLEGRO_TRANSFORM drawable_trans;
+    Rect drawable_rgn;
+    Drawable *drawable_outer;
+    std::list<Drawable*>::iterator drawable_this_position;
 public:
     std::list<Drawable*> inner;
     Drawable():
-        dirty(true),
-        rgn(Rect(-10000, -10000, 10000, 10000)),
-        outer(nullptr)
+        drawable_is_dirty(true),
+        drawable_rgn(Rect(-10000, -10000, 10000, 10000)),
+        drawable_outer(nullptr)
     {
         preset();
     }
-    Drawable(Rect rgn):
-        dirty(true),
-        rgn(rgn),
-        outer(nullptr)
+    Drawable(Rect drawable_rgn_arg):
+        drawable_is_dirty(true),
+        drawable_rgn(drawable_rgn),
+        drawable_outer(nullptr)
     {
         preset();
     }

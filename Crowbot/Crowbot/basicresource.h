@@ -98,7 +98,9 @@ enum class IMAGETYPE : int
 // Event Definitions
 enum class EVENTTYPE : int
 {
-    INVALID=0
+    INVALID=0,
+    TIMER,
+    KEYPRESS
 };
 
 // Event Options Definitions

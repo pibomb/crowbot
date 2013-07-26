@@ -80,6 +80,7 @@ public:
 #include "Observer.h"
 #include "Parser.h"
 #include "Pixel.h"
+#include "Projectile.h"
 #include "Robot.h"
 #include "SystemFunctions.h"
 

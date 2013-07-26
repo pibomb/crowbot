@@ -32,7 +32,7 @@ void Pixel::setAll(float x_arg, float y_arg)
     y=y_arg;
 }
 
-void Pixel::add(Pixel px_arg)
+void Pixel::add(const Pixel& px_arg)
 {
     setAll(getX()+px_arg.getX(), getY()+px_arg.getY());
 }
@@ -40,6 +40,11 @@ void Pixel::add(Pixel px_arg)
 void Pixel::add(float x_arg, float y_arg)
 {
     setAll(getX()+x_arg, getY()+y_arg);
+}
+
+void Pixel::operator+= (const Pixel& px_arg)
+{
+    add(px_arg);
 }
 
 #ifndef NDEBUG

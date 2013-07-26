@@ -3,18 +3,22 @@
 
 #include "basicresource.h"
 
+class Frame;
+
 class Entity : public Drawable
 {
-private:
+protected:
 	Pixel ent_vel;
 	Pixel ent_pos;
 	int ent_health;
 	UINT ent_id;
+	Rect rgn;
+	Frame *frame;
 	virtual void transformation() override;
 	virtual void onDraw() override;
 	virtual void postDraw() override;
 public:
-	explicit Entity(const UINT id, Pixel position, const int startHp);
+	explicit Entity(const UINT id, Pixel position, const int startHp, Frame *frame_arg);
 	virtual ~Entity();
 	UINT getId() {return ent_id;};
 	int getHp() {return ent_health;};
@@ -24,10 +28,10 @@ public:
 	void decHp(int amt) {ent_health -= amt;};
 	void incHp(int amt) {ent_health += amt;};
 	void move(Pixel amt) {ent_pos.add(amt);};
-	void move(int x, int y) {ent_pos.add(x, y);};
+	void move(float x, float y) {ent_pos.add(x, y);};
 	Pixel& getVel() {return ent_vel;};
 	void setVel(Pixel vel) {ent_vel = vel;};
-	void setVel(int x, int y) {ent_vel = Pixel(x, y);};
+	void setVel(float x, float y) {ent_vel = Pixel(x, y);};
 };
 
 #endif // ENTITY_H_INCLUDED

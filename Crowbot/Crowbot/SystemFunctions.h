@@ -3,9 +3,12 @@
 
 #include "basicresource.h"
 
+class Pixel;
+
 std::string intToStr(int _int);
 int strToInt(std::string _str);
 std::string leadZero(std::string str, unsigned int zeroes);
+bool is_pixel_onscreen(Pixel& px);
 void lua_setlfunctionarg(bool bool_arg);
 void lua_setlfunctionarg(int int_arg);
 void lua_setlfunctionarg(long long_arg);
