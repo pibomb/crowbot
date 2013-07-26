@@ -63,25 +63,18 @@ int main(int argc, char **argv)
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
     al_set_target_bitmap(al_get_backbuffer(display));
-    /*
-    Lexer lex;
-    Parser psr;
-    lex.generateTokens("updateloop(f)");
-    psr.parse(lex, "updatelua", "f", "luascripts/");
-    */
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
     // Temp test
     Robot rob(0, Pixel(0.0, 0.0), 0, &game);
     rob.push(&game);
-    /*
     lua_regmfunctions(lua_state, "RobotMT");
-    lua_makemfunction(lua_state, "press", "RobotMT", Robot,
+    lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
-                                                 obj->onKeyPress(luaL_checkint(l, 1), ALLEGRO_KEY_RIGHT, luaL_checkint(l, 2));
+                                                 obj->shootProjectile(0, Pixel(0, 0), DEG_TO_RAD(luaL_checkint(l, 1)), DEG_TO_RAD(luaL_checkint(l, 2)));
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
-    *//*
+    /*
     luaE_beginmfunctions(lua_state, "RobotMT");
     luaE_regmfunctions();
     luaE_makemfunction("press", Robot,
@@ -134,6 +127,12 @@ int main(int argc, char **argv)
     robo.executeFunction("function");
     robo.executeFunction("function");
     */
+
+    Lexer lex;
+    Parser psr;
+    lex.generateTokens("for(a; 5; 1) { updateloop(f) }");
+    psr.parse(lex, "userscript", "f", "luascripts/");
+
     resource.cleanup();
     lua_close(lua_state);
     al_destroy_display(display);

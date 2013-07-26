@@ -17,13 +17,19 @@ int strToInt(std::string _str)
     return _int;
 }
 
-std::string leadZero(std::string str, unsigned int zeroes)
+std::string leadZero(std::string _str, unsigned int zeroes)
 {
-    while(str.length()<zeroes)
+    while(_str.length()<zeroes)
     {
-        str="0"+str;
+        _str="0"+_str;
     }
-    return str;
+    return _str;
+}
+
+std::string trimSpaces(std::string _str)
+{
+    unsigned int _pos=_str.find_first_not_of(" ");
+    return _str.substr(_pos, _str.find_last_not_of(" ")-_pos+1);
 }
 
 bool is_pixel_onscreen(Pixel& px)

@@ -41,6 +41,24 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
                 }
                 line+=")";
             }
+            else if(tok=="__FOR")
+            {
+                line+="for "+lexer.getNextToken()+", "+lexer.getNextToken()+", "+lexer.getNextToken()+" do";
+            }
+            else if(tok=="__/FOR")
+            {
+                line+="end";
+            }
+            else if(tok=="__INDENT")
+            {
+                indent+=4;
+                continue;
+            }
+            else if(tok=="__/INDENT")
+            {
+                indent-=4;
+                continue;
+            }
             else if(tok=="output")
             {
                 line+="io.print(\"";

@@ -24,6 +24,7 @@ public:
 #ifndef NDEBUG
     void print();
 #endif
+    Pixel operator+(const Pixel& px_arg);
     void operator+=(const Pixel& px_arg);
     Pixel()
     {

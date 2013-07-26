@@ -38,6 +38,13 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
     }
 }
 
+void Robot::shootProjectile(int id_arg, Pixel pos_arg, float angle_arg, float speed_arg)
+{
+    Projectile *proj=new Projectile();
+    proj->set(ent_pos+pos_arg, Pixel(cos(angle_arg)*speed_arg, sin(angle_arg)*speed_arg));
+    proj->push(frame);
+}
+
 void Robot::addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg)
 {
     robotFunctions[function_name]=function_arg;
