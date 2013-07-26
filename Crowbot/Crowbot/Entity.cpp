@@ -8,6 +8,11 @@ Entity::Entity(const UINT id, Pixel position, const int startHp):
     //
 }
 
+Entity::~Entity()
+{
+    //
+}
+
 void Entity::transformation()
 {
 	preset().preTranslate(ent_pos);

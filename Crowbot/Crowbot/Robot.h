@@ -3,8 +3,9 @@
 
 #include "basicresource.h"
 #include "Entity.h"
+#include "Observer.h"
 
-class Robot : public Entity
+class Robot : public Entity, public Observer
 {
 private:
     std::map<std::string, std::function<void(Robot*, std::vector<int>)>> robotFunctions;
@@ -20,6 +21,7 @@ public:
         //
     }
     void onKeyPress(int unichar, int keycode, unsigned int modifiers);
+    void onTimerKeyState(const std::vector<bool> &keystates);
     void addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg);
     void executeFunction(std::string function_name, std::vector<int> args=std::vector<int>());
 };

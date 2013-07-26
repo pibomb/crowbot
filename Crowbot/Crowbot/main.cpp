@@ -73,7 +73,7 @@ int main(int argc, char **argv)
     // Temp
     Robot rob(0, Pixel(0, 0), 0);
     rob.push(&game);
-
+    /*
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "press", "RobotMT", Robot,
                                              {
@@ -81,7 +81,7 @@ int main(int argc, char **argv)
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
-    /*
+    *//*
     luaE_beginmfunctions(lua_state, "RobotMT");
     luaE_regmfunctions();
     luaE_makemfunction("press", Robot,
@@ -92,6 +92,7 @@ int main(int argc, char **argv)
     luaE_prepmfunctions("the_robot", Robot, &rob);
     luaE_endmfunctions();
     */
+    game.addObserver(&rob);
     game.start(FRAMETYPE::STARTSCREEN);
     while(game)
     {
@@ -106,6 +107,7 @@ int main(int argc, char **argv)
     }
     game.end();
     game.destroy();
+    /*
     // Events example
     EventHandler *evHandler=new EventHandler([]()
                                              {
@@ -115,6 +117,7 @@ int main(int argc, char **argv)
     evHandler->push(sysEvents[EVENTTYPE::INVALID]);
     evHandler->add(EVENTTYPE::INVALID);
     sysEvents[EVENTTYPE::INVALID].fire();
+    */
     /*
     Compiler cmp;
     Robot robo;

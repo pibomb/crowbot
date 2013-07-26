@@ -2,18 +2,26 @@
 
 void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
 {
-    switch(keycode)
-    {
-    case ALLEGRO_KEY_LEFT:
+    //
+}
+
+void Robot::onTimerKeyState(const std::vector<bool> &keystates)
+{
+    if(keystates[ALLEGRO_KEY_LEFT])
     {
         move(-4, 0);
-        break;
     }
-    case ALLEGRO_KEY_RIGHT:
+    if(keystates[ALLEGRO_KEY_RIGHT])
     {
         move(4, 0);
-        break;
     }
+    if(keystates[ALLEGRO_KEY_UP])
+    {
+        move(0, -4);
+    }
+    if(keystates[ALLEGRO_KEY_DOWN])
+    {
+        move(0, 4);
     }
 }
 

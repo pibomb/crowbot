@@ -77,6 +77,7 @@ public:
 #include "GlobalVariables.h"
 #include "Layer.h"
 #include "Lexer.h"
+#include "Observer.h"
 #include "Parser.h"
 #include "Pixel.h"
 #include "Robot.h"

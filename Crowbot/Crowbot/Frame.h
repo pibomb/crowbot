@@ -8,6 +8,8 @@
 #include "Button.h"
 #include "GlobalVariables.h"
 
+class Observer;
+
 class Frame : public Drawable
 {
 private:
@@ -36,6 +38,8 @@ private:
     std::list<Button*> buttons;
     std::vector<bool> key;
     std::map<MOUSEBUTTON, bool> mouse;
+    std::list<Observer*> observers;
+    std::map<Observer*, std::list<Observer*>::iterator> observerIters;
     void onLeftUp();
     void onLeftClick();
     void transformation();
@@ -51,6 +55,8 @@ public:
     int getY(int y_arg);
     Rect getRegion();
     void addButton(Button *button_arg);
+    void addObserver(Observer *observer_arg);
+    void removeObserver(Observer *observer_arg);
 #ifdef ENET_ENABLED
     bool startLANConnection();
     void endLANConnection();

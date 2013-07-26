@@ -1371,6 +1371,10 @@ void Frame::update()
             {
             case ALLEGRO_EVENT_TIMER:
             {
+                for(auto &it : observers)
+                {
+                    it->onTimerKeyState(key);
+                }
                 if(key[ALLEGRO_KEY_UP])
                 {
                     camera->setY(camera->getY()+8);
@@ -2600,6 +2604,10 @@ void Frame::update()
                 {
                     valid=false;
                     break;
+                }
+                for(auto &it : observers)
+                {
+                    it->onKeyPress(ev.keyboard.unichar, ev.keyboard.keycode, ev.keyboard.modifiers);
                 }
                 /*
                 int unichar=ev.keyboard.unichar;

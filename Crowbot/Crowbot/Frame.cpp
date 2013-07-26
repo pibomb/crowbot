@@ -40,6 +40,21 @@ void Frame::addButton(Button *button_arg)
     buttons.push_front(button_arg);
     (*buttons.begin())->push(this);
 }
+
+void Frame::addObserver(Observer *observer_arg)
+{
+    observerIters[observer_arg]=observers.insert(observers.begin(), observer_arg);
+}
+
+void Frame::removeObserver(Observer *observer_arg)
+{
+    auto it=observerIters.find(observer_arg);
+    if(it!=observerIters.end())
+    {
+        observers.erase(it->second);
+        observerIters.erase(it);
+    }
+}
 #ifdef ENET_ENABLED
 bool Frame::startLANConnection()
 {
