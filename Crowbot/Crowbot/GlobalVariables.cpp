@@ -5,3 +5,4 @@ ALLEGRO_DISPLAY_MODE disp_data;
 lua_State *lua_state;
 ResourceSystem resource;
 EventSystem sysEvents;
+char* _lua_temp_char_ptr=nullptr;

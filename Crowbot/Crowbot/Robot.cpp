@@ -6,12 +6,12 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
     case ALLEGRO_KEY_LEFT:
     {
-        move(4, 0);
+        move(-4, 0);
         break;
     }
     case ALLEGRO_KEY_RIGHT:
     {
-        move(-4, 0);
+        move(4, 0);
         break;
     }
     }
@@ -29,4 +29,9 @@ void Robot::executeFunction(std::string function_name, std::vector<int> args)
     {
         it->second(this, args);
     }
+}
+
+void Robot::onDraw()
+{
+    al_draw_bitmap(resource.getImage(IMAGETYPE::INVALID), 0, 0, 0);
 }

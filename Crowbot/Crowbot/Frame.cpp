@@ -376,7 +376,7 @@ void Frame::start(FRAMETYPE id_arg)
                              disp_data.width/2+200,
                              disp_data.height/2,
                              std::bind(&Frame::restart, this, getRegion(), mapID, FRAMETYPE::STAGE),
-                             "Start Campaign",
+                             "Start Game",
                              BUTTONTYPE::INVALID,
                              resource.getFont(FONT_DEFAULT_GAME, FONT_SIZE_LARGE_GAME),
                              AL_COL_WHITE,

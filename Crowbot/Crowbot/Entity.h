@@ -11,10 +11,10 @@ private:
 	int ent_health;
 	UINT ent_id;
 public:
-	explicit Entity(const UINT& id, Pixel& position, const int& startHp);
-	virtual void transformation();
-	virtual void onDraw();
-	virtual void postDraw();
+	explicit Entity(const UINT id, Pixel position, const int startHp);
+	virtual void transformation() override;
+	virtual void onDraw() override;
+	virtual void postDraw() override;
 	UINT getId() {return ent_id;};
 	int getHp() {return ent_health;};
 	const bool getLive() {return ent_health > 0;};

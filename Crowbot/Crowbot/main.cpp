@@ -6,6 +6,7 @@ int main(int argc, char **argv)
 	lua_state = luaL_newstate();
 	//opening libraries for lua, otherwise functions dont work
 	luaL_openlibs(lua_state);
+	/*
 	//testing lua, will fit perfectly with the system in place
     lua_makecfunction(lua_state,
                      [](lua_State *l) -> int
@@ -16,6 +17,7 @@ int main(int argc, char **argv)
                          return 0;
                      }
                      , "updateloop");
+    */
 	//initializing allegro
     al_init();
     al_init_image_addon();
@@ -60,7 +62,6 @@ int main(int argc, char **argv)
                                                 return 0;
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
-    game.start(FRAMETYPE::STARTSCREEN);
     al_set_target_bitmap(al_get_backbuffer(display));
     /*
     Lexer lex;
@@ -69,10 +70,33 @@ int main(int argc, char **argv)
     psr.parse(lex, "updatelua", "f", "luascripts/");
     */
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
+    // Temp
+    Robot rob(0, Pixel(0, 0), 0);
+    rob.push(&game);
+
+    lua_regmfunctions(lua_state, "RobotMT");
+    lua_makemfunction(lua_state, "press", "RobotMT", Robot,
+                                             {
+                                                 obj->onKeyPress(luaL_checkint(l, 1), ALLEGRO_KEY_RIGHT, luaL_checkint(l, 2));
+                                                 return 0;
+                                             });
+    lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
+    /*
+    luaE_beginmfunctions(lua_state, "RobotMT");
+    luaE_regmfunctions();
+    luaE_makemfunction("press", Robot,
+                                     {
+                                         obj->onKeyPress(luaL_checkint(l, 1), ALLEGRO_KEY_RIGHT, luaL_checkint(l, 2));
+                                         return 0;
+                                     });
+    luaE_prepmfunctions("the_robot", Robot, &rob);
+    luaE_endmfunctions();
+    */
+    game.start(FRAMETYPE::STARTSCREEN);
     while(game)
     {
         //menu flickering caused by unlimited framerate?
-        lua_runlfunction(lua_state, "updatelua", reinterpret_cast<intptr_t>(&game));
+        lua_runlfunction(lua_state, "updatelua");
         /*
         game.delayTime();
         game.update();//unskippable stuff

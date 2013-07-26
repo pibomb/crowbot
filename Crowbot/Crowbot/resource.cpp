@@ -128,6 +128,7 @@ void ResourceSystem::initialize()
     registerImage(IMAGETYPE::DEFAULT_BUTTON, "images/btn_background.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_H, "images/btn_background_h.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_D, "images/btn_background_d.png");
+    registerImage(IMAGETYPE::INVALID, "images/robot.png");
 }
 
 void ResourceSystem::cleanup()
