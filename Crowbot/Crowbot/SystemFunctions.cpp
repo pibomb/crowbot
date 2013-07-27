@@ -26,6 +26,23 @@ std::string leadZero(std::string _str, unsigned int zeroes)
     return _str;
 }
 
+void removeAllSpaces(std::string& _str)
+{
+    bool quote=false;
+    for(unsigned int i=0; i<_str.length(); i++)
+    {
+        if(_str[i]=='"')
+        {
+            quote=!quote;
+        }
+        else if(_str[i]==' ' && !quote)
+        {
+            _str.erase(i, 1);
+            i--;
+        }
+    }
+}
+
 std::string trimSpaces(std::string _str)
 {
     unsigned int _pos=_str.find_first_not_of(" ");

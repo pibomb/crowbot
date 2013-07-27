@@ -7,7 +7,7 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin\Debug\TBSGW" prefix_auto="1" extension_auto="1" />
+				<Option output="bin\Debug\Crowbot" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
@@ -63,7 +63,7 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin\Release\TBSGW" prefix_auto="1" extension_auto="1" />
+				<Option output="bin\Release\Crowbot" prefix_auto="1" extension_auto="1" />
 				<Option object_output="obj\Release\" />
 				<Option type="0" />
 				<Option compiler="gcc" />
@@ -159,6 +159,8 @@
 		<Unit filename="Parser.h" />
 		<Unit filename="Pixel.cpp" />
 		<Unit filename="Pixel.h" />
+		<Unit filename="Projectile.cpp" />
+		<Unit filename="Projectile.h" />
 		<Unit filename="Robot.cpp" />
 		<Unit filename="Robot.h" />
 		<Unit filename="SystemFunctions.cpp" />

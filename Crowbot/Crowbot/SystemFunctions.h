@@ -8,6 +8,7 @@ class Pixel;
 std::string intToStr(int _int);
 int strToInt(std::string _str);
 std::string leadZero(std::string _str, unsigned int zeroes);
+void removeAllSpaces(std::string& _str);
 std::string trimSpaces(std::string _str);
 bool is_pixel_onscreen(Pixel& px);
 void lua_setlfunctionarg(bool bool_arg);

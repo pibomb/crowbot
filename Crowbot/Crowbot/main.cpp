@@ -130,7 +130,17 @@ int main(int argc, char **argv)
 
     Lexer lex;
     Parser psr;
-    lex.generateTokens("for(a; 5; 1) { updateloop(f) }");
+    lex.generateTokens("for(a; 5; 1)\n\
+                       {\n\
+                           io.write(\"bonjour!\")\n\
+                           for(b; 7; 3)\n\
+                           {\n\
+                               if(b<a && !c)\n\
+                               {\n\
+                                   updateloop(f)\n\
+                               }\n\
+                           }\n\
+                       }");
     psr.parse(lex, "userscript", "f", "luascripts/");
 
     resource.cleanup();

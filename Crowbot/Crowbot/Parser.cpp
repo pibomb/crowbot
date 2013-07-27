@@ -7,31 +7,18 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
     std::ofstream fout(directory+name+".lua");
     if(lexer.getNextToken()=="__BEGIN")
     {
-#ifdef SHOW_TOKENS
-        printf("<Token: [__BEGIN]>\n");
-#endif
         int indent=4;
         std::string tok, line;
         fout<<"function "<<name<<"("<<fargs<<")"<<std::endl;
         while(tok!="__END")
         {
             tok=lexer.getNextToken();
-#ifdef SHOW_TOKENS
-            printf("<Token: [%s]>\n", tok.c_str());
-#endif
             if(tok=="__FUNC")
             {
-                std::string function_name=lexer.getNextToken();
-                line+=function_name+"(";
-#ifdef SHOW_TOKENS
-                printf("<Function Token: [%s]>\n", function_name.c_str());
-#endif
+                line+=lexer.getNextToken()+"(";
                 tok=lexer.getNextToken();
                 for(int i=0; tok!="__/FUNC"; i++)
                 {
-#ifdef SHOW_TOKENS
-                    printf("<Argument Token: [%s]>\n", tok.c_str());
-#endif
                     if(i>0)
                     {
                         line+=", ";
@@ -41,11 +28,91 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
                 }
                 line+=")";
             }
+            else if(tok=="__IF")
+            {
+                line+="if ";
+                tok=lexer.getNextToken();
+                while(tok!="__/IF")
+                {
+                    if(tok=="__NOT")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+="~= ";
+                        }
+                        else
+                        {
+                            line+="not ";
+                        }
+                    }
+                    else if(tok=="__AND")
+                    {
+                        if(lexer.peekNextToken()=="__AND")
+                        {
+                            lexer.skipNextToken();
+                            line+="and ";
+                        }
+                    }
+                    else if(tok=="__OR")
+                    {
+                        if(lexer.peekNextToken()=="__OR")
+                        {
+                            lexer.skipNextToken();
+                            line+="or ";
+                        }
+                    }
+                    else if(tok=="__EQUALS")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+="or ";
+                        }
+                    }
+                    else if(tok=="__LESS")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+="<= ";
+                        }
+                        else
+                        {
+                            line+="< ";
+                        }
+                    }
+                    else if(tok=="__GREATER")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+=">= ";
+                        }
+                        else
+                        {
+                            line+="< ";
+                        }
+                    }
+                    else
+                    {
+                        line+=tok+" ";
+                    }
+                    tok=lexer.getNextToken();
+                }
+                line+="then";
+            }
+            else if(tok=="__S/IF")
+            {
+                line+="end";
+            }
             else if(tok=="__FOR")
             {
-                line+="for "+lexer.getNextToken()+", "+lexer.getNextToken()+", "+lexer.getNextToken()+" do";
+                line+="for "+lexer.getNextToken();
+                line+=", "+lexer.getNextToken();
+                line+=", "+lexer.getNextToken()+" do";
             }
-            else if(tok=="__/FOR")
+            else if(tok=="__S/FOR")
             {
                 line+="end";
             }
@@ -61,12 +128,7 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
             }
             else if(tok=="output")
             {
-                line+="io.print(\"";
-                tok=lexer.getNextToken();
-#ifdef SHOW_TOKENS
-                printf("<Output Token: [%s]>\n", tok.c_str());
-#endif
-                line+=tok+"\")";
+                line+="io.print(\""+lexer.getNextToken()+"\")";
             }
             else
             {
