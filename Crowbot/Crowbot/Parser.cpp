@@ -67,7 +67,7 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
                         if(lexer.peekNextToken()=="__EQUALS")
                         {
                             lexer.skipNextToken();
-                            line+="or ";
+                            line+="== ";
                         }
                     }
                     else if(tok=="__LESS")

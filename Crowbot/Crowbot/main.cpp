@@ -130,12 +130,12 @@ int main(int argc, char **argv)
 
     Lexer lex;
     Parser psr;
-    lex.generateTokens("for(a; 5; 1)\n\
+    lex.generateTokens("for(i=0; 5; 1)\n\
                        {\n\
-                           io.write(\"bonjour!\")\n\
-                           for(b; 7; 3)\n\
+                           io.write(\"hello world!\")\n\
+                           for(j=0; 7;)\n\
                            {\n\
-                               if(b<a && !c)\n\
+                               if(i+j<5 && (i*j==0 || j>=2) && i!=3)\n\
                                {\n\
                                    updateloop(f)\n\
                                }\n\

@@ -81,6 +81,7 @@ void Lexer::generateTokens(std::string raw)
                 unsigned int ppos=raw.find(")\n", epos);
                 possible_token=raw.substr(epos+1, ppos-epos-1);
                 unsigned int spos;
+                int for_args=0;
                 while(!possible_token.empty())
                 {
                     spos=possible_token.find(";");
@@ -90,7 +91,12 @@ void Lexer::generateTokens(std::string raw)
                         possible_token.clear();
                         break;
                     }
+                    for_args++;
                     possible_token.erase(0, spos+1);
+                }
+                if(for_args<3)
+                {
+                    tokens.push_back("1");
                 }
                 pos=ppos;
             }
