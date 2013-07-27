@@ -7,11 +7,20 @@ class Lexer
 {
 private:
     int current_token;
+    int current_expression;
+    std::vector<std::string> expressions;
     std::vector<std::string> tokens;
+    void generateExpressions(std::string raw);
+    std::string getNextExpression();
+    std::string getNextValidExpression();
+    std::string peekNextExpression(int distance_arg=0);
+    void skipNextExpression();
+    int getCurrentExpressionPosition();
+    void resetExpressions();
 public:
-    void generateTokens(std::string raw);
+    std::string generateTokens(std::string raw);
     std::string getNextToken();
-    std::string peekNextToken(int distance_arg=1);
+    std::string peekNextToken(int distance_arg=0);
     void skipNextToken();
     void resetLexer();
 };

@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 
     Lexer lex;
     Parser psr;
-    lex.generateTokens("for(i=0; 5; 1)\n\
+    auto ret=lex.generateTokens("for(i=0; 5; 1)\n\
                        {\n\
                            io.write(\"hello world!\")\n\
                            for(j=0; 7;)\n\
@@ -141,6 +141,7 @@ int main(int argc, char **argv)
                                }\n\
                            }\n\
                        }");
+    std::cout<<"Errors: "<<ret<<std::endl;
     psr.parse(lex, "userscript", "f", "luascripts/");
 
     resource.cleanup();

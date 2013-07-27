@@ -1,160 +1,256 @@
 #include "resource.h"
 
-void Lexer::generateTokens(std::string raw)
+void Lexer::generateExpressions(std::string raw)
 {
-    tokens.clear();
-    tokens.push_back("__BEGIN");
     removeAllSpaces(raw);
-    raw=" "+raw;
-    unsigned int pos=0;
-    unsigned int epos=raw.find_first_of("\"()[]{}", pos+1);
-    std::string possible_token;
-    std::stack<std::string> braces;
-    std::string lastExpr;
-    while(epos!=std::string::npos)
+    raw+="\n";
+    expressions.clear();
+    unsigned int pos=raw.find("\n");
+    do
     {
-        if(raw[epos]=='"')
+        expressions.push_back(raw.substr(0, pos));
+        //raw.erase(0, raw.find_first_not_of("\n", pos));
+        raw.erase(0, pos+1);
+        pos=raw.find("\n");
+    }
+    while(pos!=std::string::npos);
+}
+
+std::string Lexer::getNextExpression()
+{
+    if(current_expression==static_cast<int>(expressions.size()))
+    {
+        return "__EOF";
+    }
+    return expressions[current_expression++];
+}
+
+std::string Lexer::peekNextExpression(int distance_arg)
+{
+    if(current_expression+distance_arg>=static_cast<int>(expressions.size()))
+    {
+        return "__EOF";
+    }
+    if(current_expression+distance_arg<0)
+    {
+        return "__INVALID";
+    }
+    return expressions[current_expression+distance_arg];
+}
+
+std::string Lexer::getNextValidExpression()
+{
+    std::string valid_expression=getNextExpression();
+    while(valid_expression.empty())
+    {
+        valid_expression=getNextExpression();
+    }
+    return valid_expression;
+}
+
+void Lexer::skipNextExpression()
+{
+    if(current_expression!=static_cast<int>(expressions.size()))
+    {
+        current_expression++;
+    }
+}
+
+int Lexer::getCurrentExpressionPosition()
+{
+    return current_expression;
+}
+
+void Lexer::resetExpressions()
+{
+    current_expression=0;
+}
+
+std::string Lexer::generateTokens(std::string raw)
+{
+    try
+    {
+        resetExpressions();
+        generateExpressions(raw);
+        tokens.clear();
+        tokens.push_back("__BEGIN");
+        std::stack<std::string> braces;
+        std::string tempString;
+        std::string curExpr;
+        std::string lastExpr;
+        curExpr=getNextValidExpression();
+        unsigned int pos=0;
+        unsigned int epos=curExpr.find_first_of("\"()[]{}", pos+1);
+        while(curExpr!="__EOF")
         {
-            lastExpr="__S/STRLIT"; // String Literal
-            unsigned int qpos=raw.find("\"", epos+1);
-            possible_token=raw.substr(epos+1, qpos-epos-1);
-            pos=qpos+1;
-        }
-        else if(raw[epos]=='(')
-        {
-            if(epos>=3 && raw.substr(epos-2, 2)=="if")
+            if(curExpr[epos]=='"')
             {
-                lastExpr="__S/IF"; // If Statement
-                tokens.push_back("__IF");
-                unsigned int ppos=raw.find(")\n", epos);
-                possible_token=raw.substr(epos+1, ppos-epos-1);
-                unsigned int spos;
-                while(!possible_token.empty())
+                lastExpr="__S/STRLIT"; // String Literal
+                unsigned int qpos=curExpr.find("\"", epos+1);
+                tempString=curExpr.substr(epos, qpos-epos);
+            }
+            else if(curExpr[epos]=='(')
+            {
+                if(epos>=2 && curExpr.substr(epos-2, 2)=="if")
                 {
-                    spos=possible_token.find_first_of("!&|=<>");
-                    if(spos==0)
+                    lastExpr="__S/IF"; // If Statement
+                    tokens.push_back("__IF");
+                    unsigned int ppos=curExpr.length()-1;
+                    tempString=curExpr.substr(epos+1, ppos-epos-1);
+                    if(tempString.empty())
                     {
-                        if(possible_token[spos]=='!')
+                        throw std::string("Empty if statement at line ")+intToStr(getCurrentExpressionPosition()+1);
+                    }
+                    unsigned int spos;
+                    while(!tempString.empty())
+                    {
+                        spos=tempString.find_first_of("!&|=<>");
+                        if(spos==0)
                         {
-                            tokens.push_back("__NOT");
+                            if(tempString[spos]=='!')
+                            {
+                                tokens.push_back("__NOT");
+                            }
+                            else if(tempString[spos]=='&')
+                            {
+                                tokens.push_back("__AND");
+                            }
+                            else if(tempString[spos]=='|')
+                            {
+                                tokens.push_back("__OR");
+                            }
+                            else if(tempString[spos]=='=')
+                            {
+                                tokens.push_back("__EQUALS");
+                            }
+                            else if(tempString[spos]=='<')
+                            {
+                                tokens.push_back("__LESS");
+                            }
+                            else if(tempString[spos]=='>')
+                            {
+                                tokens.push_back("__GREATER");
+                            }
+                            tempString.erase(0, 1);
                         }
-                        else if(possible_token[spos]=='&')
+                        else
                         {
-                            tokens.push_back("__AND");
+                            tokens.push_back(tempString.substr(0, spos));
+                            if(spos==std::string::npos)
+                            {
+                                tempString.clear();
+                                break;
+                            }
+                            tempString.erase(0, spos);
                         }
-                        else if(possible_token[spos]=='|')
+                    }
+                    tokens.push_back("__/IF");
+                }
+                else if(epos>=3 && curExpr.substr(epos-3, 3)=="for")
+                {
+                    lastExpr="__S/FOR"; // For loop
+                    tokens.push_back("__FOR");
+                    unsigned int ppos=curExpr.length()-1;
+                    tempString=curExpr.substr(epos+1, ppos-epos-1);
+                    if(tempString.empty())
+                    {
+                        throw std::string("Empty for loop at line ")+intToStr(getCurrentExpressionPosition()+1);
+                    }
+                    unsigned int spos;
+                    int for_args=0;
+                    while(!tempString.empty())
+                    {
+                        spos=tempString.find(";");
+                        tokens.push_back(tempString.substr(0, spos));
+                        if(spos==std::string::npos)
                         {
-                            tokens.push_back("__OR");
+                            tempString.clear();
+                            break;
                         }
-                        else if(possible_token[spos]=='=')
-                        {
-                            tokens.push_back("__EQUALS");
-                        }
-                        else if(possible_token[spos]=='<')
-                        {
-                            tokens.push_back("__LESS");
-                        }
-                        else if(possible_token[spos]=='>')
-                        {
-                            tokens.push_back("__GREATER");
-                        }
-                        possible_token.erase(0, 1);
+                        for_args++;
+                        tempString.erase(0, spos+1);
+                    }
+                    if(for_args<3)
+                    {
+                        tokens.push_back("1");
+                    }
+                }
+                else
+                {
+                    lastExpr="__S/FUNC"; // Function
+                    tokens.push_back("__FUNC");
+                    unsigned int ppos;
+                    if(curExpr.empty())
+                    {
+                        ppos=std::string::npos;
                     }
                     else
                     {
-                        tokens.push_back(possible_token.substr(0, spos));
+                        ppos=curExpr.length()-1;
+                    }
+                    tokens.push_back(curExpr.substr(pos, epos-pos));
+                    tempString=curExpr.substr(epos+1, ppos-epos-1);
+                    unsigned int spos;
+                    while(!tempString.empty())
+                    {
+                        spos=tempString.find(",");
+                        tokens.push_back(tempString.substr(0, spos));
                         if(spos==std::string::npos)
                         {
-                            possible_token.clear();
+                            tempString.clear();
                             break;
                         }
-                        possible_token.erase(0, spos);
+                        tempString.erase(0, spos+1);
                     }
+                    tokens.push_back("__/FUNC");
                 }
-                tokens.push_back("__/IF");
-                pos=ppos;
             }
-            else if(epos>=4 && raw.substr(epos-3, 3)=="for")
+            else if(curExpr[epos]=='{')
             {
-                lastExpr="__S/FOR"; // For loop
-                tokens.push_back("__FOR");
-                unsigned int ppos=raw.find(")\n", epos);
-                possible_token=raw.substr(epos+1, ppos-epos-1);
-                unsigned int spos;
-                int for_args=0;
-                while(!possible_token.empty())
+                braces.push(lastExpr);
+                lastExpr="__S/OBRACE"; // Open Braces
+                tokens.push_back("__INDENT");
+            }
+            else if(curExpr[epos]=='}')
+            {
+                lastExpr="__S/CBRACE"; // Close Braces
+                if(braces.empty())
                 {
-                    spos=possible_token.find(";");
-                    tokens.push_back(possible_token.substr(0, spos));
-                    if(spos==std::string::npos)
-                    {
-                        possible_token.clear();
-                        break;
-                    }
-                    for_args++;
-                    possible_token.erase(0, spos+1);
+                    throw std::string("Missing opening brace at line ")+intToStr(getCurrentExpressionPosition()+1);
                 }
-                if(for_args<3)
-                {
-                    tokens.push_back("1");
-                }
-                pos=ppos;
+                tempString=braces.top();
+                braces.pop();
+                tokens.push_back("__/INDENT");
             }
             else
             {
-                lastExpr="__S/FUNC"; // Function
-                tokens.push_back("__FUNC");
-                unsigned int ppos=raw.find(")\n", epos+1);
-                tokens.push_back(raw.substr(pos+1, epos-pos-1));
-                possible_token=raw.substr(epos+1, ppos-epos-1);
-                unsigned int spos;
-                while(!possible_token.empty())
-                {
-                    spos=possible_token.find(",");
-                    tokens.push_back(possible_token.substr(0, spos));
-                    if(spos==std::string::npos)
-                    {
-                        possible_token.clear();
-                        break;
-                    }
-                    possible_token.erase(0, spos+1);
-                }
-                tokens.push_back("__/FUNC");
-                pos=ppos;
+                tempString=curExpr.substr(pos, epos-pos-1);
             }
+            if(!tempString.empty())
+            {
+                tokens.push_back(tempString);
+                tempString.clear();
+            }
+            curExpr=getNextValidExpression();
+            pos=0;
+            epos=curExpr.find_first_of("\"()[]{}");
         }
-        else if(raw[epos]=='{')
-        {
-            braces.push(lastExpr);
-            lastExpr="__S/OBRACE"; // Open Braces
-            tokens.push_back("__INDENT");
-            pos=epos;
-        }
-        else if(raw[epos]=='}')
-        {
-            lastExpr="__S/CBRACE"; // Close Braces
-            possible_token=braces.top();
-            braces.pop();
-            tokens.push_back("__/INDENT");
-            pos=epos;
-        }
-        else
-        {
-            possible_token=raw.substr(pos+1, epos-pos-1);
-            pos=epos;
-        }
-        epos=raw.find_first_of("\n\"()[]{}", pos+1);
-        if(!possible_token.empty())
-        {
-            tokens.push_back(possible_token);
-            possible_token.clear();
-        }
+        resetExpressions();
+        resetLexer();
     }
-    resetLexer();
+    catch(std::string lexer_exception)
+    {
+        return lexer_exception;
+    }
+    catch(const char *lexer_exception)
+    {
+        return std::string(lexer_exception);
+    }
     for(int i=0; i<(int)tokens.size(); i++)
     {
         std::cout<<tokens[i]<<std::endl;
     }
+    return "";
 }
 
 std::string Lexer::getNextToken()
