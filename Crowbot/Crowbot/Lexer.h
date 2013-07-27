@@ -11,7 +11,7 @@ private:
 public:
     void generateTokens(std::string raw);
     std::string getNextToken();
-    std::string peekNextToken();
+    std::string peekNextToken(int distance_arg=1);
     void skipNextToken();
     void resetLexer();
 };

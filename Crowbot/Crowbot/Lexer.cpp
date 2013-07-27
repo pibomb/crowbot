@@ -166,13 +166,17 @@ std::string Lexer::getNextToken()
     return tokens[current_token++];
 }
 
-std::string Lexer::peekNextToken()
+std::string Lexer::peekNextToken(int distance_arg)
 {
-    if(current_token==static_cast<int>(tokens.size()))
+    if(current_token+distance_arg>=static_cast<int>(tokens.size()))
     {
         return "__END";
     }
-    return tokens[current_token];
+    if(current_token+distance_arg<0)
+    {
+        return "__INVALID";
+    }
+    return tokens[current_token+distance_arg];
 }
 
 void Lexer::skipNextToken()
