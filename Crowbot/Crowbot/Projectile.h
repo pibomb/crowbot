@@ -22,8 +22,13 @@ public:
     {
         //
     }
+    ~Projectile()
+    {
+        //
+    }
     void set(Pixel pos_arg, Pixel vel_arg);
     void update();
+    bool isActive();
 };
 
 #endif // PROJECTILE_H_INCLUDED

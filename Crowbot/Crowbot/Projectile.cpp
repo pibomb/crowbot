@@ -12,6 +12,7 @@ void Projectile::set(Pixel pos_arg, Pixel vel_arg)
     sysEvents.addEventHandler(evtrig);
     evtrig->push(sysEvents[EVENTTYPE::TIMER]);
     evtrig->add(EVENTTYPE::TIMER);
+    sysGC.watchProjectile(this);
 }
 
 void Projectile::update()
@@ -19,6 +20,7 @@ void Projectile::update()
     if(!is_pixel_onscreen(pro_pos))
     {
         is_valid=false;
+        pull();
     }
     else
     {
@@ -46,4 +48,9 @@ void Projectile::postDraw()
     {
         pro_vel=Pixel(0, 0);
     }
+}
+
+bool Projectile::isActive()
+{
+    return is_valid;
 }

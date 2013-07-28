@@ -43,6 +43,17 @@ int main(int argc, char **argv)
     al_init_acodec_addon();
     al_reserve_samples(5);
     resource.initialize();
+    sysGC.initialize();
+
+    Lexer lex;
+    Parser psr;
+    auto ret=lex.generateTokens("\
+                           for(i=0; 12;)\n\
+                           {\n\
+                                the_robot:shoot(i*30, 75)\n\
+                           }\n");
+    std::cout<<"Errors: "<<ret<<std::endl;
+    psr.parse(lex, "userscript", "", "luascripts/");
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     lua_regmfunctions(lua_state, "FrameMT");
@@ -91,6 +102,7 @@ int main(int argc, char **argv)
     while(game)
     {
         //menu flickering caused by unlimited framerate?
+        sysEvents[EVENTTYPE::COLLECTGARBAGE].fire();
         lua_runlfunction(lua_state, "updatelua");
         lua_runlfunction(lua_state, "userscript");
         /*
@@ -103,13 +115,6 @@ int main(int argc, char **argv)
     game.end();
     game.destroy();
     rob.pull();
-    int counter=0;
-    for(auto &it : game.inner)
-    {
-        counter++;
-        delete it;
-    }
-    std::cout<<"Deleted: "<<counter<<std::endl;
     /*
     // Events example
     EventHandler *evHandler=new EventHandler([]()
@@ -121,16 +126,7 @@ int main(int argc, char **argv)
     evHandler->add(EVENTTYPE::INVALID);
     sysEvents[EVENTTYPE::INVALID].fire();
     */
-    Lexer lex;
-    Parser psr;
-    auto ret=lex.generateTokens("\
-                           for(i=0; 12;)\n\
-                           {\n\
-                                the_robot:shoot(i*30, 75)\n\
-                           }\n");
-    std::cout<<"Errors: "<<ret<<std::endl;
-    psr.parse(lex, "userscript", "", "luascripts/");
-
+    sysGC.cleanup();
     resource.cleanup();
     lua_close(lua_state);
     al_destroy_display(display);

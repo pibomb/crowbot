@@ -9,7 +9,6 @@ void Lexer::generateExpressions(std::string raw)
     do
     {
         expressions.push_back(raw.substr(0, pos));
-        //raw.erase(0, raw.find_first_not_of("\n", pos));
         raw.erase(0, pos+1);
         pos=raw.find("\n");
     }
@@ -99,7 +98,7 @@ std::string Lexer::generateTokens(std::string raw)
                     tempString=curExpr.substr(epos+1, ppos-epos-1);
                     if(tempString.empty())
                     {
-                        throw std::string("Empty if statement at line ")+intToStr(getCurrentExpressionPosition()+1);
+                        throw "Empty if statement";
                     }
                     unsigned int spos;
                     while(!tempString.empty())
@@ -154,7 +153,7 @@ std::string Lexer::generateTokens(std::string raw)
                     tempString=curExpr.substr(epos+1, ppos-epos-1);
                     if(tempString.empty())
                     {
-                        throw std::string("Empty for loop at line ")+intToStr(getCurrentExpressionPosition()+1);
+                        throw "Empty for loop";
                     }
                     unsigned int spos;
                     int for_args=0;
@@ -170,7 +169,11 @@ std::string Lexer::generateTokens(std::string raw)
                         for_args++;
                         tempString.erase(0, spos+1);
                     }
-                    if(for_args<3)
+                    if(for_args<2)
+                    {
+                        throw "For loop missing arguments";
+                    }
+                    else if(for_args==2)
                     {
                         tokens.push_back("1");
                     }
@@ -216,7 +219,7 @@ std::string Lexer::generateTokens(std::string raw)
                 lastExpr="__S/CBRACE"; // Close Braces
                 if(braces.empty())
                 {
-                    throw std::string("Missing opening brace at line ")+intToStr(getCurrentExpressionPosition()+1);
+                    throw "Missing opening brace";
                 }
                 tempString=braces.top();
                 braces.pop();
@@ -235,16 +238,20 @@ std::string Lexer::generateTokens(std::string raw)
             pos=0;
             epos=curExpr.find_first_of("\"()[]{}");
         }
+        if(!braces.empty())
+        {
+            throw "Unclosed braces";
+        }
         resetExpressions();
         resetLexer();
     }
     catch(std::string lexer_exception)
     {
-        return lexer_exception;
+        return lexer_exception+" at line "+intToStr(getCurrentExpressionPosition()+1);
     }
     catch(const char *lexer_exception)
     {
-        return std::string(lexer_exception);
+        return std::string(lexer_exception)+" at line "+intToStr(getCurrentExpressionPosition()+1);
     }
     for(int i=0; i<(int)tokens.size(); i++)
     {

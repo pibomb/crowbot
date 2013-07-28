@@ -74,6 +74,7 @@ public:
 #include "Entity.h"
 #include "Event.h"
 #include "Frame.h"
+#include "GarbageCollection.h"
 #include "GlobalVariables.h"
 #include "Layer.h"
 #include "Lexer.h"

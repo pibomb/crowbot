@@ -101,7 +101,8 @@ enum class EVENTTYPE : int
 {
     INVALID=0,
     TIMER,
-    KEYPRESS
+    KEYPRESS,
+    COLLECTGARBAGE
 };
 
 // Event Options Definitions

@@ -6,7 +6,7 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
     case ALLEGRO_KEY_SPACE:
     {
-        Projectile *proj=new Projectile();
+        Projectile *proj=new Projectile;
         proj->set(ent_pos, Pixel(0, 5));
         proj->push(frame);
         break;
@@ -40,7 +40,7 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 
 void Robot::shootProjectile(int id_arg, Pixel pos_arg, float angle_arg, float speed_arg)
 {
-    Projectile *proj=new Projectile();
+    Projectile *proj=new Projectile;
     proj->set(ent_pos+pos_arg, Pixel(cos(angle_arg)*speed_arg, sin(angle_arg)*speed_arg));
     proj->push(frame);
 }
