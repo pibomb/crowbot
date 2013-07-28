@@ -62,9 +62,6 @@ int main(int argc, char **argv)
                                                 return 0;
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
-    al_set_target_bitmap(al_get_backbuffer(display));
-    lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
-    // Temp test
     Robot rob(0, Pixel(0.0, 0.0), 0, &game);
     rob.push(&game);
     lua_regmfunctions(lua_state, "RobotMT");
@@ -74,6 +71,10 @@ int main(int argc, char **argv)
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
+    al_set_target_bitmap(al_get_backbuffer(display));
+    lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
+    lua_makelfunction(lua_state, "luascripts/userscript.lua", "robotscript");
+    lua_runlfunction(lua_state, "robotscript");
     /*
     luaE_beginmfunctions(lua_state, "RobotMT");
     luaE_regmfunctions();
@@ -91,6 +92,7 @@ int main(int argc, char **argv)
     {
         //menu flickering caused by unlimited framerate?
         lua_runlfunction(lua_state, "updatelua");
+        lua_runlfunction(lua_state, "userscript");
         /*
         game.delayTime();
         game.update();//unskippable stuff
@@ -98,12 +100,16 @@ int main(int argc, char **argv)
         */
         al_flip_display();
     }
-    for(auto &it : rob.inner)
-    {
-        delete it;
-    }
     game.end();
     game.destroy();
+    rob.pull();
+    int counter=0;
+    for(auto &it : game.inner)
+    {
+        counter++;
+        delete it;
+    }
+    std::cout<<"Deleted: "<<counter<<std::endl;
     /*
     // Events example
     EventHandler *evHandler=new EventHandler([]()
@@ -115,34 +121,15 @@ int main(int argc, char **argv)
     evHandler->add(EVENTTYPE::INVALID);
     sysEvents[EVENTTYPE::INVALID].fire();
     */
-    /*
-    Compiler cmp;
-    Robot robo;
-    auto f=cmp.compile(lex);
-    lex.generateTokens("hello(1, 2) hello(3, 4, 5, 6)");
-    auto g=cmp.compile(lex);
-    robo.addFunction("hello", f);
-    robo.addFunction("function", g);
-    robo.executeFunction("hello");
-    robo.executeFunction("function");
-    robo.executeFunction("function");
-    */
-
     Lexer lex;
     Parser psr;
-    auto ret=lex.generateTokens("for(i=0; 5; 1)\n\
-                       {\n\
-                           io.write(\"hello world!\")\n\
-                           for(j=0; 7;)\n\
+    auto ret=lex.generateTokens("\
+                           for(i=0; 12;)\n\
                            {\n\
-                               if(i+j<5 && (i*j==0 || j>=2) && i!=3)\n\
-                               {\n\
-                                   updateloop(f)\n\
-                               }\n\
-                           }\n\
-                       }");
+                                the_robot:shoot(i*30, 75)\n\
+                           }\n");
     std::cout<<"Errors: "<<ret<<std::endl;
-    psr.parse(lex, "userscript", "f", "luascripts/");
+    psr.parse(lex, "userscript", "", "luascripts/");
 
     resource.cleanup();
     lua_close(lua_state);
