@@ -82,6 +82,15 @@ void EventHandler::accept(EventData& event)
     }
 }
 
+void EventHandler::destroy()
+{
+    for(auto &it : iters)
+    {
+        sysEvents[it.first].handlers.erase(it.second);
+    }
+    iters.clear();
+}
+
 bool EventHandler::complete()
 {
     return eventSequence.empty();

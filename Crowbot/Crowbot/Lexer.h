@@ -14,6 +14,7 @@ private:
     std::string getNextExpression();
     std::string getNextValidExpression();
     std::string peekNextExpression(int distance_arg=0);
+    std::string peekNextValidExpression();
     void skipNextExpression();
     int getCurrentExpressionPosition();
     void resetExpressions();

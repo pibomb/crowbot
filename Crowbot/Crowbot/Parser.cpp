@@ -7,7 +7,7 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
     std::ofstream fout(directory+name+".lua");
     if(lexer.getNextToken()=="__BEGIN")
     {
-        int indent=4;
+        int indent=4, tempIndent=0;
         std::string tok, line;
         fout<<"function "<<name<<"("<<fargs<<")"<<std::endl;
         while(tok!="__END")
@@ -91,7 +91,7 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
                         }
                         else
                         {
-                            line+="< ";
+                            line+="> ";
                         }
                     }
                     else
@@ -101,6 +101,86 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
                     tok=lexer.getNextToken();
                 }
                 line+="then";
+            }
+            else if(tok=="__ELSEIF")
+            {
+                tempIndent-=4;
+                line+="elseif ";
+                tok=lexer.getNextToken();
+                while(tok!="__/ELSEIF")
+                {
+                    if(tok=="__NOT")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+="~= ";
+                        }
+                        else
+                        {
+                            line+="not ";
+                        }
+                    }
+                    else if(tok=="__AND")
+                    {
+                        if(lexer.peekNextToken()=="__AND")
+                        {
+                            lexer.skipNextToken();
+                            line+="and ";
+                        }
+                    }
+                    else if(tok=="__OR")
+                    {
+                        if(lexer.peekNextToken()=="__OR")
+                        {
+                            lexer.skipNextToken();
+                            line+="or ";
+                        }
+                    }
+                    else if(tok=="__EQUALS")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+="== ";
+                        }
+                    }
+                    else if(tok=="__LESS")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+="<= ";
+                        }
+                        else
+                        {
+                            line+="< ";
+                        }
+                    }
+                    else if(tok=="__GREATER")
+                    {
+                        if(lexer.peekNextToken()=="__EQUALS")
+                        {
+                            lexer.skipNextToken();
+                            line+=">= ";
+                        }
+                        else
+                        {
+                            line+="> ";
+                        }
+                    }
+                    else
+                    {
+                        line+=tok+" ";
+                    }
+                    tok=lexer.getNextToken();
+                }
+                line+="then";
+            }
+            else if(tok=="__ELSE")
+            {
+                tempIndent-=4;
+                line+="else";
             }
             else if(tok=="__S/IF")
             {
@@ -134,10 +214,11 @@ void Parser::parse(Lexer &lexer, std::string name, std::string fargs, std::strin
             {
                 continue;
             }
-            for(int i=0; i<indent; i++)
+            for(int i=indent+tempIndent; i>0; i--)
             {
                 fout<<" ";
             }
+            tempIndent=0;
             fout<<line<<std::endl;
             line.clear();
         }

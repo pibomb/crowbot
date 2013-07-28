@@ -96,6 +96,7 @@ public:
     void pull(EventSource& eventSource);
     void push(EventSource& eventSource);
     virtual void accept(EventData& event);
+    void destroy();
     bool complete();
 };
 

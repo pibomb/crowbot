@@ -48,9 +48,16 @@ int main(int argc, char **argv)
     Lexer lex;
     Parser psr;
     auto ret=lex.generateTokens("\
-                           for(i=0; 12;)\n\
+                           for(i=0; 11;)\n\
                            {\n\
-                                the_robot:shoot(i*30, 75)\n\
+                                if(i>6)\n\
+                                {\n\
+                                    the_robot:shoot((11-i)*30, 75)\n\
+                                }\n\
+                                else\n\
+                                {\n\
+                                    the_robot:shoot(i*30, 75)\n\
+                                }\n\
                            }\n");
     std::cout<<"Errors: "<<ret<<std::endl;
     psr.parse(lex, "userscript", "", "luascripts/");
@@ -103,13 +110,11 @@ int main(int argc, char **argv)
     {
         //menu flickering caused by unlimited framerate?
         sysEvents[EVENTTYPE::COLLECTGARBAGE].fire();
+        //game.delayTime();
+        //game.update();
+        //game.render();
         lua_runlfunction(lua_state, "updatelua");
         lua_runlfunction(lua_state, "userscript");
-        /*
-        game.delayTime();
-        game.update();//unskippable stuff
-        game.render();//frame-skippable stuff
-        */
         al_flip_display();
     }
     game.end();

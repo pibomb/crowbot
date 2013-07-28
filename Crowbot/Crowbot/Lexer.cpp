@@ -24,19 +24,6 @@ std::string Lexer::getNextExpression()
     return expressions[current_expression++];
 }
 
-std::string Lexer::peekNextExpression(int distance_arg)
-{
-    if(current_expression+distance_arg>=static_cast<int>(expressions.size()))
-    {
-        return "__EOF";
-    }
-    if(current_expression+distance_arg<0)
-    {
-        return "__INVALID";
-    }
-    return expressions[current_expression+distance_arg];
-}
-
 std::string Lexer::getNextValidExpression()
 {
     std::string valid_expression=getNextExpression();
@@ -53,6 +40,29 @@ void Lexer::skipNextExpression()
     {
         current_expression++;
     }
+}
+
+std::string Lexer::peekNextExpression(int distance_arg)
+{
+    if(current_expression+distance_arg>=static_cast<int>(expressions.size()))
+    {
+        return "__EOF";
+    }
+    if(current_expression+distance_arg<0)
+    {
+        return "__INVALID";
+    }
+    return expressions[current_expression+distance_arg];
+}
+
+std::string Lexer::peekNextValidExpression()
+{
+    int i=0;
+    while(peekNextExpression(i).empty())
+    {
+        i++;
+    }
+    return peekNextExpression(i);
 }
 
 int Lexer::getCurrentExpressionPosition()
@@ -78,11 +88,26 @@ std::string Lexer::generateTokens(std::string raw)
         std::string curExpr;
         std::string lastExpr;
         curExpr=getNextValidExpression();
+        int ifBlock=0;
         unsigned int pos=0;
         unsigned int epos=curExpr.find_first_of("\"()[]{}", pos+1);
         while(curExpr!="__EOF")
         {
-            if(curExpr[epos]=='"')
+            if(curExpr=="else")
+            {
+                if(!ifBlock)
+                {
+                    throw "else without a previous if";
+                }
+                lastExpr="__S/ELSE"; // If Statement
+                ifBlock=3;
+                tokens.push_back("__ELSE");
+                if(curExpr.length()!=4)
+                {
+                    throw "Unexpected code after 'else'";
+                }
+            }
+            else if(curExpr[epos]=='"')
             {
                 lastExpr="__S/STRLIT"; // String Literal
                 unsigned int qpos=curExpr.find("\"", epos+1);
@@ -90,9 +115,10 @@ std::string Lexer::generateTokens(std::string raw)
             }
             else if(curExpr[epos]=='(')
             {
-                if(epos>=2 && curExpr.substr(epos-2, 2)=="if")
+                if(epos==2 && curExpr.substr(0, 2)=="if")
                 {
                     lastExpr="__S/IF"; // If Statement
+                    ifBlock=1;
                     tokens.push_back("__IF");
                     unsigned int ppos=curExpr.length()-1;
                     tempString=curExpr.substr(epos+1, ppos-epos-1);
@@ -145,7 +171,67 @@ std::string Lexer::generateTokens(std::string raw)
                     }
                     tokens.push_back("__/IF");
                 }
-                else if(epos>=3 && curExpr.substr(epos-3, 3)=="for")
+                else if(epos==6 && curExpr.substr(0, 6)=="elseif")
+                {
+                    if(ifBlock==0 || ifBlock==3)
+                    {
+                        throw "elseif without a previous if";
+                    }
+                    lastExpr="__S/ELSEIF"; // If Statement
+                    ifBlock=2;
+                    tokens.push_back("__ELSEIF");
+                    unsigned int ppos=curExpr.length()-1;
+                    tempString=curExpr.substr(epos+1, ppos-epos-1);
+                    if(tempString.empty())
+                    {
+                        throw "Empty else if statement";
+                    }
+                    unsigned int spos;
+                    while(!tempString.empty())
+                    {
+                        spos=tempString.find_first_of("!&|=<>");
+                        if(spos==0)
+                        {
+                            if(tempString[spos]=='!')
+                            {
+                                tokens.push_back("__NOT");
+                            }
+                            else if(tempString[spos]=='&')
+                            {
+                                tokens.push_back("__AND");
+                            }
+                            else if(tempString[spos]=='|')
+                            {
+                                tokens.push_back("__OR");
+                            }
+                            else if(tempString[spos]=='=')
+                            {
+                                tokens.push_back("__EQUALS");
+                            }
+                            else if(tempString[spos]=='<')
+                            {
+                                tokens.push_back("__LESS");
+                            }
+                            else if(tempString[spos]=='>')
+                            {
+                                tokens.push_back("__GREATER");
+                            }
+                            tempString.erase(0, 1);
+                        }
+                        else
+                        {
+                            tokens.push_back(tempString.substr(0, spos));
+                            if(spos==std::string::npos)
+                            {
+                                tempString.clear();
+                                break;
+                            }
+                            tempString.erase(0, spos);
+                        }
+                    }
+                    tokens.push_back("__/ELSEIF");
+                }
+                else if(epos==3 && curExpr.substr(0, 3)=="for")
                 {
                     lastExpr="__S/FOR"; // For loop
                     tokens.push_back("__FOR");
@@ -210,12 +296,29 @@ std::string Lexer::generateTokens(std::string raw)
             }
             else if(curExpr[epos]=='{')
             {
-                braces.push(lastExpr);
-                lastExpr="__S/OBRACE"; // Open Braces
-                tokens.push_back("__INDENT");
+                if(ifBlock<=1)
+                {
+                    braces.push(lastExpr);
+                    lastExpr="__S/OBRACE"; // Open Braces
+                    tokens.push_back("__INDENT");
+                }
             }
             else if(curExpr[epos]=='}')
             {
+                if(ifBlock)
+                {
+                    if((ifBlock==3 && braces.top()=="__S/IF") || (ifBlock==2 && !(peekNextValidExpression()=="else" || peekNextValidExpression().substr(0, 7)=="elseif(")))
+                    {
+                        ifBlock=0;
+                    }
+                    else
+                    {
+                        curExpr=getNextValidExpression();
+                        pos=0;
+                        epos=curExpr.find_first_of("\"()[]{}");
+                        continue;
+                    }
+                }
                 lastExpr="__S/CBRACE"; // Close Braces
                 if(braces.empty())
                 {
@@ -240,7 +343,7 @@ std::string Lexer::generateTokens(std::string raw)
         }
         if(!braces.empty())
         {
-            throw "Unclosed braces";
+            throw intToStr(braces.size())+" unclosed braces in total";
         }
         resetExpressions();
         resetLexer();

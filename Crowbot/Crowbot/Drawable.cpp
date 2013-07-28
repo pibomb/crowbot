@@ -21,6 +21,7 @@ void Drawable::render()
     ALLEGRO_TRANSFORM old=*al_get_current_transform();
     if(drawable_is_dirty)
     {
+        drawable_is_dirty=false;
         ALLEGRO_TRANSFORM cur;
         al_copy_transform(&cur, &old);
         transformation();
@@ -30,16 +31,16 @@ void Drawable::render()
         for(auto &it : inner)
         {
             it->invalidate();
+            it->render();
         }
-    }
-    for(auto &it : inner)
-    {
-        it->render();
-    }
-    if(drawable_is_dirty)
-    {
-        drawable_is_dirty=false;
         postDraw();
+    }
+    else
+    {
+        for(auto &it : inner)
+        {
+            it->render();
+        }
     }
     al_use_transform(&old);
 }

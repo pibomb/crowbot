@@ -5,26 +5,30 @@ void Projectile::set(Pixel pos_arg, Pixel vel_arg)
     is_valid=true;
     pro_pos=pos_arg;
     pro_vel=vel_arg;
-    EventTriggerHandler *evtrig=new EventTriggerHandler([this]()
-                                           {
-                                               this->update();
-                                           });
-    sysEvents.addEventHandler(evtrig);
-    evtrig->push(sysEvents[EVENTTYPE::TIMER]);
-    evtrig->add(EVENTTYPE::TIMER);
+    updateTrigger=new EventTriggerHandler(
+                                        [this]()
+                                        {
+                                            this->update();
+                                        });
+    updateTrigger->push(sysEvents[EVENTTYPE::TIMER]);
+    updateTrigger->add(EVENTTYPE::TIMER);
     sysGC.watchProjectile(this);
 }
 
 void Projectile::update()
 {
-    if(!is_pixel_onscreen(pro_pos))
+    if(is_valid)
     {
-        is_valid=false;
-        pull();
-    }
-    else
-    {
-        pro_pos+=pro_vel;
+        if(!is_pixel_onscreen(pro_pos))
+        {
+            is_valid=false;
+            pro_vel.setAll(0, 0);
+            pull();
+        }
+        else
+        {
+            pro_pos+=pro_vel;
+        }
     }
 }
 
@@ -42,11 +46,7 @@ void Projectile::postDraw()
 {
     if(is_valid)
     {
-        Rect(0, 0, 50, 50).render(AL_COL_RED);
-    }
-    else
-    {
-        pro_vel=Pixel(0, 0);
+        Rect(0, 0, 10, 10).render(AL_COL_RED);
     }
 }
 
