@@ -108,6 +108,11 @@ ALLEGRO_BITMAP* ResourceSystem::getImage(IMAGETYPE image_id)
     return internalImages[image_id];
 }
 
+AnimatedConstructorData ResourceSystem::getData(ENTITYTYPE entity_type_id)
+{
+    return internalEntityAnimatedConstructorData[entity_type_id];
+}
+
 AnimatedConstructorData ResourceSystem::getData(PROJECTILETYPE projectile_type_id)
 {
     return internalProjectileAnimatedConstructorData[projectile_type_id];
@@ -134,9 +139,35 @@ void ResourceSystem::initialize()
     registerImage(IMAGETYPE::DEFAULT_BUTTON, "images/btn_background.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_H, "images/btn_background_h.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_D, "images/btn_background_d.png");
+    registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, "images/player.png");
     registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, "images/slime_soldier_final.png");
+    // Entity Animation Data
+    internalData(Entity)[ENTITYTYPE::CROWBOT]=AnimatedConstructorData
+    (
+        // Spritesheet
+        getImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT),
+        // Width
+        120,
+        // Height
+        160,
+        // Frames
+        30,
+        // Sequence (optional)
+        // Current Sequence
+        1
+    );
+    internalData(Entity)[ENTITYTYPE::CROWBOT].sequence
+        [0]=AnimationData(0, 2, 150);
+    internalData(Entity)[ENTITYTYPE::CROWBOT].sequence
+        [1]=AnimationData(6, 6, 150);
+    internalData(Entity)[ENTITYTYPE::CROWBOT].sequence
+        [2]=AnimationData(12, 3, 150);
+    internalData(Entity)[ENTITYTYPE::CROWBOT].sequence
+        [3]=AnimationData(18, 3, 150);
+    internalData(Entity)[ENTITYTYPE::CROWBOT].sequence
+        [4]=AnimationData(24, 2, 150);
     // Projectile Animation Data
-    internalProjectileAnimatedConstructorData[PROJECTILETYPE::BULLET]=AnimatedConstructorData
+    internalData(Projectile)[PROJECTILETYPE::BULLET]=AnimatedConstructorData
     (
         // Spritesheet
         getImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET),
@@ -150,7 +181,7 @@ void ResourceSystem::initialize()
         // Current Sequence
         0
     );
-    internalProjectileAnimatedConstructorData[PROJECTILETYPE::BULLET].sequence
+    internalData(Projectile)[PROJECTILETYPE::BULLET].sequence
         [0]=AnimationData(4, 11, 150);
 }
 

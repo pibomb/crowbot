@@ -11,8 +11,8 @@ private:
     std::map<std::string, std::function<void(Robot*, std::vector<int>)>> robotFunctions;
 	virtual void onDraw() override;
 public:
-    Robot(const UINT id, Vec2 position, const int startHp, Frame *frame_arg):
-        Entity(id, position, startHp, frame_arg)
+    Robot(ENTITYTYPE entity_type_arg, const unsigned int& id, const Vec2& position, const int& startHp, Frame *frame_arg):
+        Entity(entity_type_arg, id, position, startHp, frame_arg)
     {
         //
     }

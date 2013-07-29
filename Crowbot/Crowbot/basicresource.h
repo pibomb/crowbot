@@ -96,7 +96,15 @@ enum class IMAGETYPE : int
     DEFAULT_BUTTON,
     DEFAULT_BUTTON_H,
     DEFAULT_BUTTON_D,
+    SPRITESHEET_ENTITY_CROWBOT,
     SPRITESHEET_PROJECTILE_BULLET
+};
+
+// Entity Definitions
+enum class ENTITYTYPE : int
+{
+    INVALID=0,
+    CROWBOT
 };
 
 // Projectile Definitions
@@ -161,4 +169,8 @@ enum class MOUSEBUTTON : int
 #define luaE_makemfunction(_a, _b, _c) {lua_pushcfunction(_ls,luaE_makememfunction(_b,_c));lua_setfield(_ls,-2,_a);}
 #define luaE_prepmfunctions(_a, _b, _c) {*static_cast<_b**>(lua_newuserdata(_ls,sizeof(_b*)))=_c;luaL_setmetatable(_ls,const_cast<const char*>(_lua_temp_char_ptr));lua_setglobal(_ls,_a);lua_remove(_ls,1);}
 #define luaE_endmfunctions() _lua_temp_char_ptr=nullptr;}
+
+// Other Macros
+#define internalData(_a) internal##_a##AnimatedConstructorData
+
 #endif // BASICRESOURCE_H_INCLUDED

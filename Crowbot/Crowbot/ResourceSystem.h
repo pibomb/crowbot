@@ -54,6 +54,7 @@ private:
     std::map<FONTTYPE, Font> internalFonts;
     std::map<AUDIOTYPE, Sample> internalAudio;
     std::map<IMAGETYPE, ALLEGRO_BITMAP*> internalImages;
+    std::map<ENTITYTYPE, AnimatedConstructorData> internalEntityAnimatedConstructorData;
     std::map<PROJECTILETYPE, AnimatedConstructorData> internalProjectileAnimatedConstructorData;
 public:
     void registerFont(FONTTYPE id, std::string directory);
@@ -64,6 +65,7 @@ public:
     void destroyAudio();
     void registerImage(IMAGETYPE image_id, std::string directory);
     ALLEGRO_BITMAP* getImage(IMAGETYPE image_id);
+    AnimatedConstructorData getData(ENTITYTYPE entity_type_id);
     AnimatedConstructorData getData(PROJECTILETYPE projectile_type_id);
     void initialize();
     void cleanup();

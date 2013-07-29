@@ -2,14 +2,15 @@
 #define ENTITY_H_INCLUDED
 
 #include "basicresource.h"
-#include "Drawable.h"
+#include "Animated.h"
 #include "Physics.h"
 
 class Frame;
 
-class Entity : public Drawable
+class Entity : public Animated
 {
 protected:
+    ENTITYTYPE entity_type;
 	Vec2 ent_vel;
 	Vec2 ent_pos;
 	int ent_health;
@@ -20,7 +21,7 @@ protected:
 	virtual void onDraw() override;
 	virtual void postDraw() override;
 public:
-	explicit Entity(const unsigned int& id, const Vec2& position, const int& startHp, Frame *frame_arg);
+	explicit Entity(ENTITYTYPE entity_type_arg, const unsigned int& id, const Vec2& position, const int& startHp, Frame *frame_arg);
 	virtual ~Entity();
 	unsigned int getId() {return ent_id;};
 	int getHp() const {return ent_health;};

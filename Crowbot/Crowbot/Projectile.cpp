@@ -30,7 +30,7 @@ void Projectile::update()
         }
         else
         {
-            float dist=pro_vel.getDist();
+            float dist=pro_vel.magnitude();
             if(dist!=max_vel)
             {
                 if(dist<max_vel)
@@ -49,8 +49,8 @@ void Projectile::update()
                 }
             }
             pro_pos+=pro_vel;
-            fuel_left-=pro_vel.getDist()*100;
-            //printf("Dist: %f Fuel: %d\n", pro_vel.getDist(), fuel_left);
+            fuel_left-=log(pro_vel.magnitude())*128;
+            //printf("Dist: %f Fuel: %d\n", pro_vel.magnitude(), fuel_left);
             if(fuel_left<=0.0)
             {
                 is_valid=false;

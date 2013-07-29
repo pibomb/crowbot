@@ -80,7 +80,7 @@ int main(int argc, char **argv)
                                                 return 0;
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
-    Robot rob(0, Vec2(0.0, 0.0), 0, &game);
+    Robot rob(ENTITYTYPE::CROWBOT, 0, Vec2(0.0, 0.0), 0, &game);
     rob.push(&game);
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
