@@ -17,6 +17,10 @@ public:
     {
         //
     }
+    void scaleMag(float theta, float newMag)
+    {
+        setAll(sin(M_PI/2-theta)*newMag, sin(theta)*newMag);
+    }
     float magnitude() const
     {
         return sqrt(getX()*getX()+getY()*getY());
@@ -95,10 +99,6 @@ public:
     float operator^ (const Vec2& other) const
     {
         return cross(other);
-    }
-    operator float() const
-    {
-        return magnitude();
     }
     operator Pixel() const
     {

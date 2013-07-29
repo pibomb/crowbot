@@ -52,11 +52,11 @@ int main(int argc, char **argv)
                            {\n\
                                 if(i>6)\n\
                                 {\n\
-                                    the_robot:shoot((11-i)*30, 75)\n\
+                                    the_robot.shoot((11-i)*30, 75)\n\
                                 }\n\
                                 else\n\
                                 {\n\
-                                    the_robot:shoot(i*30, 75)\n\
+                                    the_robot.shoot(i*30, 75)\n\
                                 }\n\
                            }\n");
     std::cout<<"Errors: "<<ret<<std::endl;

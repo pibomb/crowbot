@@ -1,13 +1,14 @@
 #include "resource.h"
 
-void Projectile::set(Vec2 pos_arg, Vec2 acc_arg, Vec2 vel_arg, int fuel_left_arg, float max_vel_arg)
+void Projectile::set(Vec2 pos_arg, Vec2 acc_arg, Vec2 vel_arg, int fuel_left_arg, float mass_arg)
 {
     is_valid=true;
     pro_pos=pos_arg;
     pro_acc=acc_arg;
     pro_vel=vel_arg;
     fuel_left=fuel_left_arg;
-    max_vel=max_vel_arg;
+    pro_mass=mass_arg;
+    max_vel=sqrt(2*(mass_arg*(acc_arg.magnitude()+9.8))/1.1839/10/0.04);
     updateTrigger=new EventTriggerHandler(
                                         [this]()
                                         {
@@ -35,22 +36,20 @@ void Projectile::update()
             {
                 if(dist<max_vel)
                 {
-                    pro_vel+=pro_acc;
+                    /*
+                    pro_vel.scaleMag(atan2(pro_vel.getY(), pro_vel.getX()), 1.2*pro_vel.magnitude()*0.04*10/2/pro_mass);
+                    pro_vel.add(0, 9.8/60.0);
+                    */
+                    pro_vel+=(pro_acc/60.0);
                 }
                 else
                 {
-                    float theta=atan2(pro_acc.getY(), pro_acc.getX());
-                    pro_acc.setAll(0, 0);
-                    if(theta<0)
-                    {
-                        theta+=180.0;
-                    }
-                    pro_vel.setAll(sin(M_PI/2-theta)*max_vel, sin(theta)*max_vel);
+                    pro_vel.scaleMag(atan2(pro_acc.getY(), pro_acc.getX()), max_vel);
                 }
             }
             pro_pos+=pro_vel;
-            fuel_left-=log(pro_vel.magnitude())*128;
-            //printf("Dist: %f Fuel: %d\n", pro_vel.magnitude(), fuel_left);
+            fuel_left-=100;
+            //printf("Dist: %f Fuel: %d Force: %f Energy: %f\n", pro_vel.magnitude(), fuel_left, force(), kenergy());
             if(fuel_left<=0.0)
             {
                 is_valid=false;
@@ -82,4 +81,14 @@ void Projectile::postDraw()
 bool Projectile::isActive()
 {
     return is_valid;
+}
+
+float Projectile::force()
+{
+    return pro_mass*pro_acc.magnitude();
+}
+
+float Projectile::kenergy()
+{
+    return pro_mass*pro_vel.magnitudeSquared()/2;
 }

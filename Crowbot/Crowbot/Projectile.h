@@ -17,6 +17,7 @@ private:
 	EventTriggerHandler *updateTrigger;
 	int reserved;
 	int fuel_left;
+	float pro_mass;
 	float max_vel;
 	bool is_valid;
 	void transformation() override;
@@ -31,6 +32,7 @@ public:
         pro_pos(Vec2(0, 0)),
         updateTrigger(nullptr),
         fuel_left(0),
+        pro_mass(0.0),
         max_vel(0.0),
         is_valid(false)
     {
@@ -44,9 +46,11 @@ public:
             delete updateTrigger;
         }
     }
-    void set(Vec2 pos_arg, Vec2 acc_arg, Vec2 vel_arg, int fuel_left_arg, float max_vel_arg);
+    void set(Vec2 pos_arg, Vec2 acc_arg, Vec2 vel_arg, int fuel_left_arg, float mass_arg);
     void update();
     bool isActive();
+    float force();
+    float kenergy();
 };
 
 #endif // PROJECTILE_H_INCLUDED

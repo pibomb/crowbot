@@ -277,7 +277,9 @@ std::string Lexer::generateTokens(std::string raw)
                     {
                         ppos=curExpr.length()-1;
                     }
-                    tokens.push_back(curExpr.substr(pos, epos-pos));
+                    tempString=curExpr.substr(pos, epos-pos);
+                    std::replace(tempString.begin(), tempString.end(), '.', ':');
+                    tokens.push_back(tempString);
                     tempString=curExpr.substr(epos+1, ppos-epos-1);
                     unsigned int spos;
                     while(!tempString.empty())

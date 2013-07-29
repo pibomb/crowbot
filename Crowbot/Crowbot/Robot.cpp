@@ -21,7 +21,7 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     }
     case ALLEGRO_KEY_D:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(0), 0.1);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(0), 10);
         break;
     }
     default:
@@ -54,7 +54,7 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 void Robot::shootProjectile(int id_arg, Vec2 pos_arg, float angle_arg, float speed_arg)
 {
     Projectile *proj=new Projectile;
-    proj->set(ent_pos+pos_arg, Vec2(cos(angle_arg)*speed_arg, sin(angle_arg)*speed_arg), Vec2(0, 0), 10000, 35.0);
+    proj->set(ent_pos+pos_arg, Vec2(cos(angle_arg)*speed_arg, sin(angle_arg)*speed_arg), Vec2(0, 0), 10000, 19.0);
     proj->push(frame);
 }
 
