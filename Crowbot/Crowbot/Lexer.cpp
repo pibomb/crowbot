@@ -268,7 +268,7 @@ std::string Lexer::generateTokens(std::string raw)
                 {
                     lastExpr="__S/FUNC"; // Function
                     tokens.push_back("__FUNC");
-                    unsigned int ppos;
+                    size_t ppos;
                     if(curExpr.empty())
                     {
                         ppos=std::string::npos;

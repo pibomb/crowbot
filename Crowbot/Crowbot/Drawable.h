@@ -23,7 +23,7 @@ public:
     }
     Drawable(Rect drawable_rgn_arg):
         drawable_is_dirty(true),
-        drawable_rgn(drawable_rgn),
+        drawable_rgn(drawable_rgn_arg),
         drawable_outer(nullptr)
     {
         preset();

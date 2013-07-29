@@ -8,7 +8,7 @@ int Animated::getCurrentSequence()
 void Animated::setCurrentSequence(int current_sequence_arg)
 {
     current_sequence=current_sequence_arg;
-    current_time=clock();
+    current_time=std::chrono::steady_clock::now();
     current_count=0;
 }
 
@@ -20,9 +20,9 @@ Rect Animated::get_current_region(int frame_arg)
 
 void Animated::draw_current_frame(float sx, float sy, int flags)
 {
-    if(clock()-current_time>=sequence[current_sequence].time)
+    if(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count()*1000>=sequence[current_sequence].time)
     {
-        current_time=clock();
+        current_time=std::chrono::steady_clock::now();
         current_count=(current_count+1)%sequence[current_sequence].count;
     }
     Rect region=get_current_region(sequence[current_sequence].start+current_count);
