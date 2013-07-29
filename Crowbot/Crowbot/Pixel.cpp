@@ -127,7 +127,7 @@ Pixel Rect::getBL()
 
 void Rect::shift(Pixel tl_arg)
 {
-    *this=Rect(tl_arg.getX(), tl_arg.getY(), getWidth()+tl_arg.getX(), getHeight()+tl_arg.getY());
+    setAll(tl_arg.getX(), tl_arg.getY(), getWidth()+tl_arg.getX(), getHeight()+tl_arg.getY());
 }
 
 float Rect::getWidth()

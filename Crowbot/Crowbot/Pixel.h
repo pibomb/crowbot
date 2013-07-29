@@ -27,10 +27,17 @@ public:
     {
         //
     }
-    Pixel(float x_arg, float y_arg)
+    Pixel(float x_arg, float y_arg):
+        x(x_arg),
+        y(y_arg)
     {
-        x=x_arg;
-        y=y_arg;
+        //
+    }
+    Pixel(const Pixel& other):
+        x(other.getX()),
+        y(other.getY())
+    {
+        //
     }
 };
 
@@ -86,15 +93,17 @@ public:
     {
         //
     }
-    Rect(float tlx_arg, float tly_arg, float brx_arg, float bry_arg)
+    Rect(float tlx_arg, float tly_arg, float brx_arg, float bry_arg):
+        tl(tlx_arg, tly_arg),
+        br(brx_arg, bry_arg)
     {
-        tl.setAll(tlx_arg, tly_arg);
-        br.setAll(brx_arg, bry_arg);
+        //
     }
-    Rect(Pixel tl_arg, Pixel br_arg)
+    Rect(Pixel tl_arg, Pixel br_arg):
+        tl(tl_arg),
+        br(br_arg)
     {
-        tl=tl_arg;
-        br=br_arg;
+        //
     }
 };
 

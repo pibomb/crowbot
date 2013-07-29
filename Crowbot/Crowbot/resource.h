@@ -19,6 +19,7 @@
 #include "Observer.h"
 #include "Parser.h"
 #include "Pixel.h"
+#include "Physics.h"
 #include "Projectile.h"
 #include "ResourceSystem.h"
 #include "Robot.h"
