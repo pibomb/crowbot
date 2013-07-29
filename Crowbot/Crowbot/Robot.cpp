@@ -39,7 +39,7 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 void Robot::shootProjectile(int id_arg, Pixel pos_arg, float angle_arg, float speed_arg)
 {
     Projectile *proj=new Projectile;
-    proj->set(ent_pos+pos_arg, Pixel(cos(angle_arg)*speed_arg, sin(angle_arg)*speed_arg));
+    proj->set(ent_pos+pos_arg, Pixel(cos(angle_arg)*speed_arg, sin(angle_arg)*speed_arg), Pixel(0, 0));
     proj->push(frame);
 }
 

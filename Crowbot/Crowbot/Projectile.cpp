@@ -1,9 +1,10 @@
 #include "resource.h"
 
-void Projectile::set(Pixel pos_arg, Pixel vel_arg)
+void Projectile::set(Pixel pos_arg, Pixel acc_arg, Pixel vel_arg)
 {
     is_valid=true;
     pro_pos=pos_arg;
+    pro_acc=acc_arg;
     pro_vel=vel_arg;
     updateTrigger=new EventTriggerHandler(
                                         [this]()
@@ -27,7 +28,33 @@ void Projectile::update()
         }
         else
         {
+            float dist=pro_vel.getDist();
+            if(dist!=max_vel)
+            {
+                if(dist<max_vel)
+                {
+                    pro_vel+=pro_acc;
+                }
+                else
+                {
+                    float theta=atan2(pro_acc.getY(), pro_acc.getX());
+                    pro_acc.setAll(0, 0);
+                    if(theta<0)
+                    {
+                        theta+=180.0;
+                    }
+                    pro_vel.setAll(sin(M_PI/2-theta)*max_vel, sin(theta)*max_vel);
+                }
+            }
             pro_pos+=pro_vel;
+            fuel_left-=sqrt(pro_vel.getDist())*80;
+            printf("Dist: %f Fuel: %d\n", pro_vel.getDist(), fuel_left);
+            if(fuel_left<=0.0)
+            {
+                is_valid=false;
+                pro_vel.setAll(0, 0);
+                pull();
+            }
         }
     }
 }

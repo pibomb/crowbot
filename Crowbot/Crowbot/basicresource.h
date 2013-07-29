@@ -143,8 +143,9 @@ enum class MOUSEBUTTON : int
 #define AL_COL_BLUE (al_map_rgb(0, 0, 255))
 
 // Math Macros
-#define DEG_TO_RAD(_a) (_a*3.141592653589793238/180.0)
-#define RAD_TO_DEG(_a) (_a/3.141592653589793238*180.0)
+#define M_PI 3.141592653589793238
+#define DEG_TO_RAD(_a) (_a*M_PI/180.0)
+#define RAD_TO_DEG(_a) (_a/M_PI*180.0)
 
 // Lua Macros
 #define lua_emptystack(_a) {lua_settop(_a, 0)}

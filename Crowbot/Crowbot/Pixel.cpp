@@ -42,6 +42,18 @@ void Pixel::add(float x_arg, float y_arg)
     setAll(getX()+x_arg, getY()+y_arg);
 }
 
+float Pixel::getDist()
+{
+    return sqrt(getX()*getX()+getY()*getY());
+}
+
+Pixel Pixel::transformBy(const ALLEGRO_TRANSFORM *trans) const
+{
+    float fx=getX(), fy=getY();
+    al_transform_coordinates(trans, &fx, &fy);
+    return Pixel(fx, fy);
+}
+
 Pixel Pixel::operator+ (const Pixel& px_arg)
 {
     return Pixel(getX()+px_arg.getX(), getY()+px_arg.getY());

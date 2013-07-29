@@ -16,11 +16,8 @@ public:
     void setAll(float x_arg, float y_arg);
     void add(const Pixel& px_arg);
     void add(float x_arg, float y_arg);
-    Pixel transformBy(const ALLEGRO_TRANSFORM*trans)const{
-        float fx=x,fy=y;
-        al_transform_coordinates(trans,&fx,&fy);
-        return Pixel(x, y);
-    }
+    float getDist();
+    Pixel transformBy(const ALLEGRO_TRANSFORM *trans) const;
 #ifndef NDEBUG
     void print();
 #endif
