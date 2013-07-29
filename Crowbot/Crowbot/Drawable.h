@@ -2,7 +2,7 @@
 #define DRAWABLE_H_INCLUDED
 
 #include "basicresource.h"
-#include "Pixel.h"
+#include "Physics.h"
 
 class Drawable
 {
@@ -38,6 +38,7 @@ public:
     Drawable& preset();
     Drawable& preScale(float sx, float sy);
     Drawable& preTranslate(Pixel px);
+    Drawable& preTranslate(Vec2 px);
     Drawable& preTranslate(float x, float y);
     Drawable& preRotate(float theta);
     Drawable& preAll(float x, float y, float sx, float sy, float theta);

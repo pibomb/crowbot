@@ -1,11 +1,13 @@
 #include "resource.h"
 
-void Projectile::set(Pixel pos_arg, Pixel acc_arg, Pixel vel_arg)
+void Projectile::set(Vec2 pos_arg, Vec2 acc_arg, Vec2 vel_arg, int fuel_left_arg, float max_vel_arg)
 {
     is_valid=true;
     pro_pos=pos_arg;
     pro_acc=acc_arg;
     pro_vel=vel_arg;
+    fuel_left=fuel_left_arg;
+    max_vel=max_vel_arg;
     updateTrigger=new EventTriggerHandler(
                                         [this]()
                                         {
@@ -47,8 +49,8 @@ void Projectile::update()
                 }
             }
             pro_pos+=pro_vel;
-            fuel_left-=sqrt(pro_vel.getDist())*80;
-            printf("Dist: %f Fuel: %d\n", pro_vel.getDist(), fuel_left);
+            fuel_left-=pro_vel.getDist()*100;
+            //printf("Dist: %f Fuel: %d\n", pro_vel.getDist(), fuel_left);
             if(fuel_left<=0.0)
             {
                 is_valid=false;

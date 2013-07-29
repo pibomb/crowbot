@@ -100,6 +100,10 @@ public:
     {
         return magnitude();
     }
+    operator Pixel() const
+    {
+        return Pixel(getX(), getY());
+    }
 };
 
 class AABB : public Vec2

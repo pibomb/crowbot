@@ -11,7 +11,7 @@ private:
     std::map<std::string, std::function<void(Robot*, std::vector<int>)>> robotFunctions;
 	virtual void onDraw() override;
 public:
-    Robot(const UINT id, Pixel position, const int startHp, Frame *frame_arg):
+    Robot(const UINT id, Vec2 position, const int startHp, Frame *frame_arg):
         Entity(id, position, startHp, frame_arg)
     {
         //
@@ -22,7 +22,7 @@ public:
     }
     void onKeyPress(int unichar, int keycode, unsigned int modifiers);
     void onTimerKeyState(const std::vector<bool> &keystates);
-    void shootProjectile(int id_arg, Pixel pos_arg, float angle_arg, float speed_arg);
+    void shootProjectile(int id_arg, Vec2 pos_arg, float angle_arg, float speed_arg);
     void addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg);
     void executeFunction(std::string function_name, std::vector<int> args=std::vector<int>());
 };

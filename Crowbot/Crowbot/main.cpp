@@ -80,12 +80,12 @@ int main(int argc, char **argv)
                                                 return 0;
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
-    Robot rob(0, Pixel(0.0, 0.0), 0, &game);
+    Robot rob(0, Vec2(0.0, 0.0), 0, &game);
     rob.push(&game);
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
-                                                 obj->shootProjectile(0, Pixel(0, 0), DEG_TO_RAD(luaL_checkint(l, 1)), DEG_TO_RAD(luaL_checkint(l, 2)));
+                                                 obj->shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(luaL_checkint(l, 1)), DEG_TO_RAD(luaL_checkint(l, 2)));
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
