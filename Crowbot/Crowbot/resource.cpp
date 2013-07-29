@@ -108,6 +108,11 @@ ALLEGRO_BITMAP* ResourceSystem::getImage(IMAGETYPE image_id)
     return internalImages[image_id];
 }
 
+AnimatedConstructorData ResourceSystem::getData(PROJECTILETYPE projectile_type_id)
+{
+    return internalProjectileAnimatedConstructorData[projectile_type_id];
+}
+
 void ResourceSystem::initialize()
 {
     // Fonts
@@ -124,11 +129,29 @@ void ResourceSystem::initialize()
     registerFont(FONTTYPE::ORBITRON_LT, "fonts/Orbitron/Orbitron Light.otf");
     registerFont(FONTTYPE::ORBITRON_B, "fonts/Orbitron/Orbitron Bold.otf");
     // Images
+    registerImage(IMAGETYPE::INVALID, "images/robot.png");
     registerImage(IMAGETYPE::RECTANGLE, "images/rectangle.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON, "images/btn_background.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_H, "images/btn_background_h.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_D, "images/btn_background_d.png");
-    registerImage(IMAGETYPE::INVALID, "images/robot.png");
+    registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, "images/slime_soldier_final.png");
+    // Projectile Animation Data
+    internalProjectileAnimatedConstructorData[PROJECTILETYPE::BULLET]=AnimatedConstructorData
+    (
+        // Spritesheet
+        getImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET),
+        // Width
+        100,
+        // Height
+        80,
+        // Frames
+        15,
+        // Sequence (optional)
+        // Current Sequence
+        0
+    );
+    internalProjectileAnimatedConstructorData[PROJECTILETYPE::BULLET].sequence
+        [0]=AnimationData(4, 11, 150);
 }
 
 void ResourceSystem::cleanup()

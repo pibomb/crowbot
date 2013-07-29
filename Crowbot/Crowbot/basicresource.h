@@ -95,7 +95,15 @@ enum class IMAGETYPE : int
     RECTANGLE,
     DEFAULT_BUTTON,
     DEFAULT_BUTTON_H,
-    DEFAULT_BUTTON_D
+    DEFAULT_BUTTON_D,
+    SPRITESHEET_PROJECTILE_BULLET
+};
+
+// Projectile Definitions
+enum class PROJECTILETYPE : int
+{
+    INVALID=0,
+    BULLET
 };
 
 // Event Definitions

@@ -2,29 +2,29 @@
 
 int Animated::getCurrentSequence()
 {
-    return current_sequence;
+    return acd.current_sequence;
 }
 
 void Animated::setCurrentSequence(int current_sequence_arg)
 {
-    current_sequence=current_sequence_arg;
+    acd.current_sequence=current_sequence_arg;
     current_time=std::chrono::steady_clock::now();
     current_count=0;
 }
 
 Rect Animated::get_current_region(int frame_arg)
 {
-    int x=(frame_arg%(al_get_bitmap_width(spritesheet)/ss_width))*ss_width, y=(frame_arg/(al_get_bitmap_width(spritesheet)/ss_width))*ss_height;
-    return Rect(x, y, x+ss_width, y+ss_height);
+    int x=(frame_arg%(al_get_bitmap_width(acd.spritesheet)/acd.ss_width))*acd.ss_width, y=(frame_arg/(al_get_bitmap_width(acd.spritesheet)/acd.ss_width))*acd.ss_height;
+    return Rect(x, y, x+acd.ss_width, y+acd.ss_height);
 }
 
 void Animated::draw_current_frame(float sx, float sy, int flags)
 {
-    if(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count()*1000>=sequence[current_sequence].time)
+    if(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count()*1000>=acd.sequence[acd.current_sequence].time)
     {
         current_time=std::chrono::steady_clock::now();
-        current_count=(current_count+1)%sequence[current_sequence].count;
+        current_count=(current_count+1)%acd.sequence[acd.current_sequence].count;
     }
-    Rect region=get_current_region(sequence[current_sequence].start+current_count);
-    al_draw_bitmap_region(spritesheet, region.getTL().getX(), region.getTL().getY(), region.getWidth(), region.getHeight(), sx, sy, flags);
+    Rect region=get_current_region(acd.sequence[acd.current_sequence].start+current_count);
+    al_draw_bitmap_region(acd.spritesheet, region.getTL().getX(), region.getTL().getY(), region.getWidth(), region.getHeight(), sx, sy, flags);
 }

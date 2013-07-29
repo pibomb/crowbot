@@ -39,15 +39,15 @@ void Projectile::transformation()
 
 void Projectile::onDraw()
 {
-    //
+    if(is_valid)
+    {
+        draw_current_frame(0, 0, 0);
+    }
 }
 
 void Projectile::postDraw()
 {
-    if(is_valid)
-    {
-        Rect(0, 0, 10, 10).render(AL_COL_RED);
-    }
+    //
 }
 
 bool Projectile::isActive()

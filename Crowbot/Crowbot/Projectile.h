@@ -2,13 +2,15 @@
 #define PROJECTILE_H_INCLUDED
 
 #include "basicresource.h"
-#include "Drawable.h"
+#include "Animated.h"
 #include "Pixel.h"
 #include "Event.h"
+#include "ResourceSystem.h"
 
-class Projectile : public Drawable
+class Projectile : public Animated
 {
 private:
+    PROJECTILETYPE projectile_type;
 	Pixel pro_vel;
 	Pixel pro_pos;
 	EventTriggerHandler *updateTrigger;
@@ -18,7 +20,9 @@ private:
 	void onDraw() override;
 	void postDraw() override;
 public:
-    Projectile():
+    Projectile(PROJECTILETYPE projectile_type_arg=PROJECTILETYPE::BULLET):
+        Animated(resource.getData(projectile_type_arg)),
+        projectile_type(projectile_type_arg),
         pro_vel(Pixel(0, 0)),
         pro_pos(Pixel(0, 0)),
         updateTrigger(nullptr),

@@ -114,7 +114,7 @@ int main(int argc, char **argv)
         //game.update();
         //game.render();
         lua_runlfunction(lua_state, "updatelua");
-        lua_runlfunction(lua_state, "userscript");
+        //lua_runlfunction(lua_state, "userscript");
         al_flip_display();
     }
     game.end();
