@@ -39,6 +39,10 @@ public:
             updateTrigger->destroy();
             delete updateTrigger;
         }
+        if(pro_body)
+        {
+            world.DestroyBody(pro_body);
+        }
     }
     void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg);
     void update();

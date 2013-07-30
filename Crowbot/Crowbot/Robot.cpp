@@ -6,7 +6,7 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
     case ALLEGRO_KEY_W:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(270), 50);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(90), 50);
         break;
     }
     case ALLEGRO_KEY_A:
@@ -16,7 +16,7 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     }
     case ALLEGRO_KEY_S:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(90), 50);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(270), 50);
         break;
     }
     case ALLEGRO_KEY_D:

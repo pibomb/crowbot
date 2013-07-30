@@ -17,7 +17,11 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
     fixtureDef.friction=0.3f;
     pro_body->CreateFixture(&fixtureDef);
     pro_body->SetBullet(true);
-    pro_body->ApplyLinearImpulse(linearVelocity_arg, pro_body->GetWorldCenter());
+    pro_body->SetGravityScale(0);
+    //pro_body->ApplyLinearImpulse(linearVelocity_arg, pro_body->GetWorldCenter());
+    b2Vec2 impulse = b2Vec2(5.0, 5.0);
+    b2Vec2 bodyCenter = pro_body->GetWorldCenter();
+    pro_body->ApplyLinearImpulse(impulse, bodyCenter);
     updateTrigger=new EventTriggerHandler(
                                         [this]()
                                         {
