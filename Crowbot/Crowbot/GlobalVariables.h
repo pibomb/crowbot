@@ -9,6 +9,7 @@ class GarbageCollection;
 extern ALLEGRO_DISPLAY *display;
 extern ALLEGRO_DISPLAY_MODE disp_data;
 extern lua_State *lua_state;
+extern b2World world;
 extern ResourceSystem resource;
 extern GarbageCollection sysGC;
 extern EventSystem sysEvents;

@@ -159,6 +159,8 @@
 		<Unit filename="Observer.h" />
 		<Unit filename="Parser.cpp" />
 		<Unit filename="Parser.h" />
+		<Unit filename="Physics.cpp" />
+		<Unit filename="Physics.h" />
 		<Unit filename="Pixel.cpp" />
 		<Unit filename="Pixel.h" />
 		<Unit filename="Projectile.cpp" />

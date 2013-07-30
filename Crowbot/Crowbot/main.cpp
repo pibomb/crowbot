@@ -2,22 +2,6 @@
 
 int main(int argc, char **argv)
 {
-	//opening lua
-	lua_state = luaL_newstate();
-	//opening libraries for lua, otherwise functions dont work
-	luaL_openlibs(lua_state);
-	/*
-	//testing lua, will fit perfectly with the system in place
-    lua_makecfunction(lua_state,
-                     [](lua_State *l) -> int
-                     {
-                         (reinterpret_cast<Frame*>(luaL_checkint(l, 1)))->delayTime();
-                         (reinterpret_cast<Frame*>(luaL_checkint(l, 1)))->update();
-                         (reinterpret_cast<Frame*>(luaL_checkint(l, 1)))->render();
-                         return 0;
-                     }
-                     , "updateloop");
-    */
 	//initializing allegro
     al_init();
     al_init_image_addon();
@@ -42,6 +26,24 @@ int main(int argc, char **argv)
     al_install_audio();
     al_init_acodec_addon();
     al_reserve_samples(5);
+    // allegro initialization
+
+	// initializing lua
+	lua_state = luaL_newstate();
+	// opening libraries for lua, otherwise functions dont work
+	luaL_openlibs(lua_state);
+	// lua initialization
+
+	// initializing box2d
+	world.SetGravity(b2Vec2(0, -0.8));
+    b2BodyDef groundBodyDef;
+    groundBodyDef.position.Set(0.0, 0.0);
+    b2Body* groundBody=world.CreateBody(&groundBodyDef);
+    b2PolygonShape groundBox;
+    groundBox.SetAsBox(PX_TO_M(disp_data.width)/2, PX_TO_M(disp_data.height)/2);
+    groundBody->CreateFixture(&groundBox, 0.0f);
+	// box2d initialization
+
     resource.initialize();
     sysGC.initialize();
 
@@ -85,7 +87,7 @@ int main(int argc, char **argv)
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
-                                                 obj->shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(luaL_checkint(l, 1)), DEG_TO_RAD(luaL_checkint(l, 2)));
+                                                 obj->shootProjectile(0, b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
@@ -110,10 +112,11 @@ int main(int argc, char **argv)
     {
         //menu flickering caused by unlimited framerate?
         sysEvents[EVENTTYPE::COLLECTGARBAGE].fire();
-        //game.delayTime();
-        //game.update();
-        //game.render();
-        lua_runlfunction(lua_state, "updatelua");
+        world.Step(1.0/60.0, 8, 3);
+        //lua_runlfunction(lua_state, "updatelua");
+        game.delayTime();
+        game.update();
+        game.render();
         //lua_runlfunction(lua_state, "userscript");
         al_flip_display();
     }

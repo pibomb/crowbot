@@ -51,7 +51,17 @@ std::string trimSpaces(std::string _str)
 
 bool is_pixel_onscreen(Pixel& px)
 {
-    return px.getX()>=0 && px.getY()>=0 && px.getX()<disp_data.width && px.getY()<disp_data.height;
+    return px.getX()>0 && px.getY()>0 && px.getX()<disp_data.width && px.getY()<disp_data.height;
+}
+
+bool is_pixel_onscreen(Vec2& px)
+{
+    return px.getX()>0 && px.getY()>0 && px.getX()<disp_data.width && px.getY()<disp_data.height;
+}
+
+bool is_pixel_onscreen(b2Vec2& px)
+{
+    return px.x>PX_TO_M(0) && px.y<PX_TO_M(0) && px.x<PX_TO_M(disp_data.width) && px.y>-PX_TO_M(disp_data.height);
 }
 
 void lua_setlfunctionarg(bool bool_arg)

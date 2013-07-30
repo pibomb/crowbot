@@ -41,9 +41,6 @@
 #include <wininet.h>
 */
 
-//lua.hpp covers the extern "C"
-#include <lua.hpp>
-
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
@@ -52,6 +49,11 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+
+//lua.hpp covers the extern "C"
+#include <lua.hpp>
+
+#include <Box2D/Box2D.h>
 
 // Frame Definitions
 enum class FRAMETYPE : int
@@ -160,7 +162,7 @@ enum class MOUSEBUTTON : int
 #define lua_makecfunction(_a, _b, _c) {lua_pushcfunction(_a,_b);lua_setglobal(_a,_c);}
 #define lua_makelfunction(_a, _b, _c) {if(luaL_loadfile(_a,_b)==LUA_OK)lua_setglobal(_a,_c);}
 #define lua_regmfunctions(_a, _b) {luaL_newmetatable(_a,_b);lua_pushvalue(_a,-1);lua_setfield(_a,-2,"__index");}
-#define lua_makememfunction(_a, _b, _c) ([](lua_State*l)->int{_a*obj=*static_cast<_a**>(luaL_testudata(l,1,_b));lua_remove(l,1);(_c);})
+#define lua_makememfunction(_a, _b, _c) ([](lua_State*l)->int{_a*obj=*static_cast<_a**>(luaL_testudata(l,1,_b));lua_remove(l,1);_c;})
 #define lua_makemfunction(_a, _b, _c, _d, _e) {lua_pushcfunction(_a,lua_makememfunction(_d,_c,_e));lua_setfield(_a,-2,_b);}
 #define lua_prepmfunctions(_a, _b, _c, _d, _e) {*static_cast<_d**>(lua_newuserdata(_a,sizeof(_d*)))=_e;luaL_setmetatable(_a,_c);lua_setglobal(_a,_b);lua_remove(_a,1);}
 #define luaE_beginmfunctions(_a, _b) {lua_State*_ls=_a;_lua_temp_char_ptr=const_cast<char*>(_b)
@@ -172,5 +174,7 @@ enum class MOUSEBUTTON : int
 
 // Other Macros
 #define internalData(_a) internal##_a##AnimatedConstructorData
+#define PX_TO_M(_a) _a/100.0
+#define M_TO_PX(_a) _a*100.0
 
 #endif // BASICRESOURCE_H_INCLUDED

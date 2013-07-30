@@ -11,14 +11,11 @@ class Projectile : public Animated
 {
 private:
     PROJECTILETYPE projectile_type;
-	Vec2 pro_vel;
-	Vec2 pro_acc;
-	Vec2 pro_pos;
+    b2Vec2 pro_pos;
+    b2Body *pro_body;
 	EventTriggerHandler *updateTrigger;
 	int reserved;
 	int fuel_left;
-	float pro_mass;
-	float max_vel;
 	bool is_valid;
 	void transformation() override;
 	void onDraw() override;
@@ -27,13 +24,10 @@ public:
     Projectile(PROJECTILETYPE projectile_type_arg=PROJECTILETYPE::BULLET):
         Animated(resource.getData(projectile_type_arg)),
         projectile_type(projectile_type_arg),
-        pro_vel(Vec2(0, 0)),
-        pro_acc(Vec2(0, 0)),
-        pro_pos(Vec2(0, 0)),
+        pro_pos(b2Vec2(0.0, 0.0)),
+        pro_body(nullptr),
         updateTrigger(nullptr),
         fuel_left(0),
-        pro_mass(0.0),
-        max_vel(0.0),
         is_valid(false)
     {
         //
@@ -46,11 +40,9 @@ public:
             delete updateTrigger;
         }
     }
-    void set(Vec2 pos_arg, Vec2 acc_arg, Vec2 vel_arg, int fuel_left_arg, float mass_arg);
+    void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg);
     void update();
     bool isActive();
-    float force();
-    float kenergy();
 };
 
 #endif // PROJECTILE_H_INCLUDED

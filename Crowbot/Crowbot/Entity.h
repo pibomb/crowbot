@@ -11,8 +11,7 @@ class Entity : public Animated
 {
 protected:
     ENTITYTYPE entity_type;
-	Vec2 ent_vel;
-	Vec2 ent_pos;
+	b2Vec2 ent_pos;
 	int ent_health;
 	unsigned int ent_id;
 	AABB ent_bb;
@@ -30,11 +29,8 @@ public:
 	AABB getRgn() const {return ent_bb;};
 	void decHp(int amt) {ent_health -= amt;};
 	void incHp(int amt) {ent_health += amt;};
-	void move(Vec2 amt) {ent_pos.add(amt);};
-	void move(float x, float y) {ent_pos.add(x, y);};
-	Vec2 getVel() const {return ent_vel;};
-	void setVel(Vec2 vel) {ent_vel = vel;};
-	void setVel(float x, float y) {ent_vel = Vec2(x, y);};
+	void move(b2Vec2 amt) {ent_pos+=amt;};
+	void move(float x, float y) {ent_pos.x+=x; ent_pos.y+=y;};
 };
 
 #endif // ENTITY_H_INCLUDED

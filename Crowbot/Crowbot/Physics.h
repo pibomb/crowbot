@@ -39,7 +39,7 @@ public:
     }
     float angle(const Vec2& other) const
     {
-        return cross(other)/magnitude()/other.magnitude();
+        return asin(cross(other)/magnitude()/other.magnitude());
     }
     float dist(const Vec2& p1, const Vec2& p2, bool isSegment=true) const
     {
@@ -103,6 +103,10 @@ public:
     operator Pixel() const
     {
         return Pixel(getX(), getY());
+    }
+    operator b2Vec2() const
+    {
+        return b2Vec2(PX_TO_M(getX()), -PX_TO_M(getY()));
     }
 };
 

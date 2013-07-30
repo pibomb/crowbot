@@ -69,6 +69,12 @@ Drawable& Drawable::preTranslate(Vec2 px)
     return *this;
 }
 
+Drawable& Drawable::preTranslate(b2Vec2 px)
+{
+    al_translate_transform(&drawable_trans, M_TO_PX(px.x), -M_TO_PX(px.y));
+    return *this;
+}
+
 Drawable& Drawable::preTranslate(float x, float y)
 {
     al_translate_transform(&drawable_trans, x, y);

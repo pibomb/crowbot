@@ -31,13 +31,16 @@ void Button::transformation()
 
 void Button::onDraw()
 {
-    if(pressed)
+    if(hover)
     {
-        al_draw_scaled_bitmap(depressed, 0, 0, al_get_bitmap_width(image), al_get_bitmap_height(image), 0, 0, bounding_box.getWidth(), bounding_box.getHeight(), 0);
-    }
-    else if(hover)
-    {
-        al_draw_scaled_bitmap(hovering, 0, 0, al_get_bitmap_width(image), al_get_bitmap_height(image), 0, 0, bounding_box.getWidth(), bounding_box.getHeight(), 0);
+        if(pressed)
+        {
+            al_draw_scaled_bitmap(depressed, 0, 0, al_get_bitmap_width(image), al_get_bitmap_height(image), 0, 0, bounding_box.getWidth(), bounding_box.getHeight(), 0);
+        }
+        else
+        {
+            al_draw_scaled_bitmap(hovering, 0, 0, al_get_bitmap_width(image), al_get_bitmap_height(image), 0, 0, bounding_box.getWidth(), bounding_box.getHeight(), 0);
+        }
     }
     else
     {

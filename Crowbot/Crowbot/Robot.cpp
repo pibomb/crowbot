@@ -6,22 +6,22 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
     case ALLEGRO_KEY_W:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(270), 5);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(270), PX_TO_M(50));
         break;
     }
     case ALLEGRO_KEY_A:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(180), 5);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(180), PX_TO_M(50));
         break;
     }
     case ALLEGRO_KEY_S:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(90), 5);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(90), PX_TO_M(50));
         break;
     }
     case ALLEGRO_KEY_D:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(0), 10);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(0), PX_TO_M(500));
         break;
     }
     default:
@@ -35,26 +35,26 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 {
     if(keystates[ALLEGRO_KEY_LEFT])
     {
-        move(-4, 0);
+        move(-0.1, 0);
     }
     if(keystates[ALLEGRO_KEY_RIGHT])
     {
-        move(4, 0);
+        move(0.1, 0);
     }
     if(keystates[ALLEGRO_KEY_UP])
     {
-        move(0, -4);
+        move(0, 0.1);
     }
     if(keystates[ALLEGRO_KEY_DOWN])
     {
-        move(0, 4);
+        move(0, -0.1);
     }
 }
 
-void Robot::shootProjectile(int id_arg, Vec2 pos_arg, float angle_arg, float speed_arg)
+void Robot::shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float angularVelocity_arg)
 {
     Projectile *proj=new Projectile;
-    proj->set(ent_pos+pos_arg, Vec2(cos(angle_arg)*speed_arg, sin(angle_arg)*speed_arg), Vec2(0, 0), 10000, 19.0);
+    proj->set(ent_pos+pos_arg, b2Vec2(cos(angle_arg)*angularVelocity_arg, sin(angle_arg)*angularVelocity_arg), 10000);
     proj->push(frame);
 }
 
