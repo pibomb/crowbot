@@ -4,24 +4,10 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
 {
     is_valid=true;
     fuel_left=fuel_left_arg;
-
-    b2BodyDef bodyDef;
-    bodyDef.type=b2_dynamicBody;
-    bodyDef.position=pos_arg;
-    pro_body=world.CreateBody(&bodyDef);
-    b2FixtureDef fixtureDef;
-    b2PolygonShape dynamicBox;
-    dynamicBox.SetAsBox(PX_TO_M(50.0), PX_TO_M(40.0));
-    fixtureDef.shape=&dynamicBox;
-    fixtureDef.density=1.0f;
-    fixtureDef.friction=0.3f;
-    pro_body->CreateFixture(&fixtureDef);
-    pro_body->SetBullet(true);
-    pro_body->SetGravityScale(0);
-    //pro_body->ApplyLinearImpulse(linearVelocity_arg, pro_body->GetWorldCenter());
-    b2Vec2 impulse = b2Vec2(5.0, 5.0);
-    b2Vec2 bodyCenter = pro_body->GetWorldCenter();
-    pro_body->ApplyLinearImpulse(impulse, bodyCenter);
+    pro_body=resource.createb2Resource();
+    pro_body->registerDynamicBox(this, pos_arg, PX_TO_M(15), PX_TO_M(5), 1.0, 0.3);
+    pro_body->getBody()->SetBullet(true);
+    pro_body->ApplyLinearImpulseAtCenter(linearVelocity_arg);
     updateTrigger=new EventTriggerHandler(
                                         [this]()
                                         {
@@ -32,24 +18,45 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
     sysGC.watchProjectile(this);
 }
 
+void Projectile::destroy()
+{
+    if(is_valid)
+    {
+        is_valid=false;
+        pull();
+        if(updateTrigger)
+        {
+            updateTrigger->destroy();
+            delete updateTrigger;
+        }
+        if(pro_body)
+        {
+            resource.destroyb2Resource(pro_body);
+        }
+    }
+}
+
 void Projectile::update()
 {
     if(isActive())
     {
-        pro_pos=pro_body->GetPosition();
-        if(!is_pixel_onscreen(pro_pos))
+        if(!is_pixel_onscreen(pro_body->getBody()->GetPosition()))
         {
-            is_valid=false;
-            pull();
+            destroy();
         }
     }
+}
+
+bool Projectile::isActive()
+{
+    return is_valid;
 }
 
 void Projectile::transformation()
 {
     if(isActive())
     {
-        preset().preTranslate(pro_pos).preRotate(pro_body->GetAngle());
+        preset().preTranslate(pro_body->getBody()->GetPosition()).preRotate(pro_body->getBody()->GetAngle());
     }
 }
 
@@ -66,7 +73,17 @@ void Projectile::postDraw()
     //
 }
 
-bool Projectile::isActive()
+DRAWABLETYPE Projectile::getDrawableType()
 {
-    return is_valid;
+    return DRAWABLETYPE::BULLET;
+}
+
+void Projectile::beginCollision(PhysicalDrawable *other)
+{
+    destroy();
+}
+
+void Projectile::endCollision(PhysicalDrawable *other)
+{
+    //
 }

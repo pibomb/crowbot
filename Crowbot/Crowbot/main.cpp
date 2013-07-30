@@ -35,13 +35,41 @@ int main(int argc, char **argv)
 	// lua initialization
 
 	// initializing box2d
-	world.SetGravity(b2Vec2(0, -0.8));
-    b2BodyDef groundBodyDef;
-    groundBodyDef.position.Set(0.0, 0.0);
-    b2Body* groundBody=world.CreateBody(&groundBodyDef);
+	world.SetGravity(b2Vec2(0, -9.8));
+	ContactListener worldContactListener;
+	Box wallBox;
+	world.SetContactListener(&worldContactListener);
+    b2BodyDef groundDef;
+    groundDef.position.Set(PX_TO_M(disp_data.width)/2, -PX_TO_M(disp_data.height)+PX_TO_M(100)/2);
+    b2Body* ground=world.CreateBody(&groundDef);
     b2PolygonShape groundBox;
-    groundBox.SetAsBox(PX_TO_M(disp_data.width)/2, PX_TO_M(disp_data.height)/2);
-    groundBody->CreateFixture(&groundBox, 0.0f);
+    groundBox.SetAsBox(PX_TO_M(disp_data.width)/2, PX_TO_M(100)/2);
+    ground->CreateFixture(&groundBox, 0.0f);
+    ground->SetUserData(static_cast<Drawable*>(&wallBox));
+
+    b2BodyDef ceilingDef;
+    ceilingDef.position.Set(PX_TO_M(disp_data.width)/2, PX_TO_M(100)/2);
+    b2Body* ceiling=world.CreateBody(&ceilingDef);
+    b2PolygonShape ceilingBox;
+    ceilingBox.SetAsBox(PX_TO_M(disp_data.width)/2, PX_TO_M(100)/2);
+    ceiling->CreateFixture(&ceilingBox, 0.0f);
+    ceiling->SetUserData(static_cast<Drawable*>(&wallBox));
+
+    b2BodyDef leftWallDef;
+    leftWallDef.position.Set(PX_TO_M(100)/2, -PX_TO_M(disp_data.height)/2);
+    b2Body* leftWall=world.CreateBody(&leftWallDef);
+    b2PolygonShape leftWallBox;
+    leftWallBox.SetAsBox(PX_TO_M(100)/2, PX_TO_M(disp_data.height)/2);
+    leftWall->CreateFixture(&leftWallBox, 0.0f);
+    leftWall->SetUserData(static_cast<Drawable*>(&wallBox));
+
+    b2BodyDef rightWallDef;
+    rightWallDef.position.Set(PX_TO_M(disp_data.width)-PX_TO_M(100)/2, -PX_TO_M(disp_data.height)/2);
+    b2Body* rightWall=world.CreateBody(&rightWallDef);
+    b2PolygonShape rightWallBox;
+    rightWallBox.SetAsBox(PX_TO_M(100)/2, PX_TO_M(disp_data.height)/2);
+    rightWall->CreateFixture(&rightWallBox, 0.0f);
+    rightWall->SetUserData(static_cast<Drawable*>(&wallBox));
 	// box2d initialization
 
     resource.initialize();

@@ -7,7 +7,9 @@
 
 class Frame;
 
-class Entity : public Animated
+// TODO use physics
+
+class Entity : public PhysicalAnimated
 {
 protected:
     ENTITYTYPE entity_type;
@@ -17,7 +19,6 @@ protected:
 	AABB ent_bb;
 	Frame *frame;
 	virtual void transformation() override;
-	virtual void onDraw() override;
 	virtual void postDraw() override;
 public:
 	explicit Entity(ENTITYTYPE entity_type_arg, const unsigned int& id, const Vec2& position, const int& startHp, Frame *frame_arg);
@@ -25,8 +26,8 @@ public:
 	unsigned int getId() {return ent_id;};
 	int getHp() const {return ent_health;};
 	const bool getLive() {return ent_health > 0;};
-	void setRgn(AABB& ent_bb_arg) {ent_bb = ent_bb_arg;};
-	AABB getRgn() const {return ent_bb;};
+	void setAABB(AABB& ent_bb_arg) {ent_bb = ent_bb_arg;};
+	AABB getAABB() const {return ent_bb;};
 	void decHp(int amt) {ent_health -= amt;};
 	void incHp(int amt) {ent_health += amt;};
 	void move(b2Vec2 amt) {ent_pos+=amt;};

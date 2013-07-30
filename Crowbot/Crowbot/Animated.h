@@ -115,9 +115,56 @@ public:
     {
         //
     }
+    void draw_current_frame(float sx, float sy, int flags);
     virtual int getCurrentSequence();
     virtual void setCurrentSequence(int current_sequence_arg);
+    virtual void onDraw() override;
+};
+
+class PhysicalAnimated : public PhysicalDrawable
+{
+private:
+    AnimatedConstructorData acd;
+    std::chrono::steady_clock::time_point current_time;
+    int current_count;
+    Rect get_current_region(int frame_arg);
+public:
+    PhysicalAnimated(ALLEGRO_BITMAP *spritesheet_arg, int ss_width_arg, int ss_height_arg, int ss_frames_arg, std::map<int, AnimationData> sequence_arg, int current_sequence_arg):
+        PhysicalDrawable(Rect(-10000, -10000, 10000, 10000)),
+        acd(AnimatedConstructorData(spritesheet_arg, ss_width_arg, ss_height_arg, ss_frames_arg, sequence_arg, current_sequence_arg)),
+        current_time(std::chrono::steady_clock::now()),
+        current_count(0)
+    {
+        //
+    }
+    PhysicalAnimated(Rect rgn_arg, ALLEGRO_BITMAP *spritesheet_arg, int ss_width_arg, int ss_height_arg, int ss_frames_arg, std::map<int, AnimationData> sequence_arg, int current_sequence_arg):
+        PhysicalDrawable(rgn_arg),
+        acd(AnimatedConstructorData(spritesheet_arg, ss_width_arg, ss_height_arg, ss_frames_arg, sequence_arg, current_sequence_arg)),
+        current_time(std::chrono::steady_clock::now()),
+        current_count(0)
+    {
+        //
+    }
+    PhysicalAnimated(AnimatedConstructorData acd_arg):
+        PhysicalDrawable(Rect(-10000, -10000, 10000, 10000)),
+        acd(acd_arg),
+        current_time(std::chrono::steady_clock::now()),
+        current_count(0)
+    {
+        //
+    }
+    PhysicalAnimated(Rect rgn_arg, AnimatedConstructorData acd_arg):
+        PhysicalDrawable(rgn_arg),
+        acd(acd_arg),
+        current_time(std::chrono::steady_clock::now()),
+        current_count(0)
+    {
+        //
+    }
     void draw_current_frame(float sx, float sy, int flags);
+    virtual int getCurrentSequence();
+    virtual void setCurrentSequence(int current_sequence_arg);
+    virtual void onDraw() override;
 };
 
 #endif // ANIMATED_H_INCLUDED

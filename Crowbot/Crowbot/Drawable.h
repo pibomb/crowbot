@@ -2,7 +2,9 @@
 #define DRAWABLE_H_INCLUDED
 
 #include "basicresource.h"
-#include "Physics.h"
+#include "Pixel.h"
+
+class Vec2;
 
 class Drawable
 {
@@ -12,6 +14,9 @@ protected:
     Rect drawable_rgn;
     Drawable *drawable_outer;
     std::list<Drawable*>::iterator drawable_this_position;
+    virtual void transformation()=0;
+    virtual void onDraw()=0;
+    virtual void postDraw()=0;
 public:
     std::list<Drawable*> inner;
     Drawable():
@@ -47,9 +52,28 @@ public:
     ALLEGRO_TRANSFORM* getTransform();
     void invalidate();
     void invalidateRegion(const Rect& _area);
-    virtual void transformation()=0;
-    virtual void onDraw()=0;
-    virtual void postDraw()=0;
+};
+
+class PhysicalDrawable : public Drawable
+{
+public:
+    PhysicalDrawable():
+        Drawable()
+    {
+        //
+    }
+    PhysicalDrawable(Rect drawable_rgn_arg):
+        Drawable(drawable_rgn_arg)
+    {
+        //
+    }
+    virtual ~PhysicalDrawable()
+    {
+        //
+    }
+    virtual DRAWABLETYPE getDrawableType()=0;
+    virtual void beginCollision(PhysicalDrawable *other)=0;
+    virtual void endCollision(PhysicalDrawable *other)=0;
 };
 
 #endif // DRAWABLE_H_INCLUDED vim: set ts=4 sw=4 et:

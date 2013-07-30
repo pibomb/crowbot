@@ -6,10 +6,11 @@
 
 class Layer : public Drawable
 {
+private:
+    void transformation() override;
+    void onDraw() override;
+    void postDraw() override;
 public:
-    void transformation();
-    void onDraw();
-    void postDraw();
     Layer():
         Drawable()
     {

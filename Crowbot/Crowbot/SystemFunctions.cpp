@@ -64,6 +64,11 @@ bool is_pixel_onscreen(b2Vec2& px)
     return px.x>PX_TO_M(0) && px.y<PX_TO_M(0) && px.x<PX_TO_M(disp_data.width) && px.y>-PX_TO_M(disp_data.height);
 }
 
+bool is_pixel_onscreen(const b2Vec2& px)
+{
+    return px.x>PX_TO_M(0) && px.y<PX_TO_M(0) && px.x<PX_TO_M(disp_data.width) && px.y>-PX_TO_M(disp_data.height);
+}
+
 void lua_setlfunctionarg(bool bool_arg)
 {
     lua_pushboolean(lua_state, bool_arg);

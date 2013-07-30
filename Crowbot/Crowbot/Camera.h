@@ -12,30 +12,13 @@ private:
     int x, y;
     int width, height;
     int lastMouseX, lastMouseY;
-    void transformation();
-    void onDraw();
-    void postDraw();
+    void transformation() override;
+    void onDraw() override;
+    void postDraw() override;
 public:
     std::shared_ptr<Layer> background;
     std::shared_ptr<Layer> foreground;
     std::shared_ptr<Layer> menus;
-    int getX();
-    void setX(int x_arg);
-    int getY();
-    void setY(int y_arg);
-    int getWidth();
-    void setWidth(int width_arg);
-    int getHeight();
-    void setHeight(int height_arg);
-    void setSize(int width_arg, int height_arg);
-    int getMouseX();
-    void setMouseX(int mouseX_arg);
-    int getMouseY();
-    void setMouseY(int mouseY_arg);
-    int getAbsX(int curX);
-    int getAbsY(int curY);
-    void moveMouse(int newX, int newY);
-    void capture(ALLEGRO_BITMAP *underlyingMap);
     Camera():
         x(0),
         y(0),
@@ -65,6 +48,23 @@ public:
     {
         //
     }
+    int getX();
+    void setX(int x_arg);
+    int getY();
+    void setY(int y_arg);
+    int getWidth();
+    void setWidth(int width_arg);
+    int getHeight();
+    void setHeight(int height_arg);
+    void setSize(int width_arg, int height_arg);
+    int getMouseX();
+    void setMouseX(int mouseX_arg);
+    int getMouseY();
+    void setMouseY(int mouseY_arg);
+    int getAbsX(int curX);
+    int getAbsY(int curY);
+    void moveMouse(int newX, int newY);
+    void capture(ALLEGRO_BITMAP *underlyingMap);
 };
 
 #endif // CAMERA_H_INCLUDED

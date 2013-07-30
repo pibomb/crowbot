@@ -54,6 +54,41 @@ void Sample::destroy()
     }
 }
 
+// b2Resource
+
+std::list<b2Resource*>::iterator b2Resource::getThisPosition()
+{
+    return this_position;
+}
+
+void b2Resource::setThisPosition(std::list<b2Resource*>::iterator this_position_arg)
+{
+    this_position=this_position_arg;
+}
+
+b2Body* b2Resource::getBody()
+{
+    return body;
+}
+
+void b2Resource::registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg, b2BodyType bodyDef_type_arg)
+{
+    bodyDef.type=bodyDef_type_arg;
+    bodyDef.position=bodyDef_position_arg;
+    body=world.CreateBody(&bodyDef);
+    dynamicBox.SetAsBox(length_arg/2, width_arg/2);
+    fixtureDef.shape=&dynamicBox;
+    fixtureDef.density=density_arg;
+    fixtureDef.friction=friction_arg;
+    body->CreateFixture(&fixtureDef);
+    body->SetUserData(userData_arg);
+}
+
+void b2Resource::ApplyLinearImpulseAtCenter(b2Vec2 impulse_arg)
+{
+    getBody()->ApplyLinearImpulse(impulse_arg, getBody()->GetWorldCenter());
+}
+
 // ResourceSystem
 
 void ResourceSystem::registerFont(FONTTYPE id, std::string directory)
@@ -96,6 +131,19 @@ void ResourceSystem::destroyAudio()
     {
         it.second.destroy();
     }
+}
+
+b2Resource* ResourceSystem::createb2Resource()
+{
+    std::list<b2Resource*>::iterator it=b2ResourceList.insert(b2ResourceList.begin(), new b2Resource());
+    (*it)->setThisPosition(it);
+    return *it;
+}
+
+void ResourceSystem::destroyb2Resource(b2Resource* b2Resource_arg)
+{
+    b2ResourceList.erase(b2Resource_arg->getThisPosition());
+    delete b2Resource_arg;
 }
 
 void ResourceSystem::registerImage(IMAGETYPE image_id, std::string directory)

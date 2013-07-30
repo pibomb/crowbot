@@ -3,6 +3,7 @@
 
 #include "basicresource.h"
 #include "Pixel.h"
+#include "Drawable.h"
 
 class Vec2 : public Pixel
 {
@@ -221,6 +222,36 @@ public:
     {
         return (getRadius()+other.getRadius())*(getRadius()+other.getRadius())>(getCenter()-other.getCenter()).magnitudeSquared();
     }
+};
+
+class Box : public PhysicalDrawable
+{
+private:
+    Rect bounding_box;
+public:
+    Box():
+        bounding_box(0, 0, 0, 0)
+    {
+        //
+    }
+    Box(Rect bounding_box_arg):
+        bounding_box(bounding_box_arg)
+    {
+        //
+    }
+    DRAWABLETYPE getDrawableType();
+    void beginCollision(PhysicalDrawable *other) override;
+    void endCollision(PhysicalDrawable *other) override;
+    void transformation() override;
+    void onDraw() override;
+    void postDraw() override;
+};
+
+class ContactListener : public b2ContactListener
+{
+private:
+    void BeginContact(b2Contact *contact);
+    void EndContact(b2Contact *contact);
 };
 
 #endif // PHYSICS_H_INCLUDED

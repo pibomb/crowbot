@@ -13,6 +13,7 @@ std::string trimSpaces(std::string _str);
 bool is_pixel_onscreen(Pixel& px);
 bool is_pixel_onscreen(Vec2& px);
 bool is_pixel_onscreen(b2Vec2& px);
+bool is_pixel_onscreen(const b2Vec2& px);
 void lua_setlfunctionarg(bool bool_arg);
 void lua_setlfunctionarg(int int_arg);
 void lua_setlfunctionarg(long long_arg);

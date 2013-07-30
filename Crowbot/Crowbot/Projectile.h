@@ -7,12 +7,11 @@
 #include "Event.h"
 #include "ResourceSystem.h"
 
-class Projectile : public Animated
+class Projectile : public PhysicalAnimated
 {
 private:
     PROJECTILETYPE projectile_type;
-    b2Vec2 pro_pos;
-    b2Body *pro_body;
+    b2Resource *pro_body;
 	EventTriggerHandler *updateTrigger;
 	int reserved;
 	int fuel_left;
@@ -22,9 +21,8 @@ private:
 	void postDraw() override;
 public:
     Projectile(PROJECTILETYPE projectile_type_arg=PROJECTILETYPE::BULLET):
-        Animated(resource.getData(projectile_type_arg)),
+        PhysicalAnimated(resource.getData(projectile_type_arg)),
         projectile_type(projectile_type_arg),
-        pro_pos(b2Vec2(0.0, 0.0)),
         pro_body(nullptr),
         updateTrigger(nullptr),
         fuel_left(0),
@@ -34,19 +32,15 @@ public:
     }
     ~Projectile()
     {
-        if(updateTrigger)
-        {
-            updateTrigger->destroy();
-            delete updateTrigger;
-        }
-        if(pro_body)
-        {
-            world.DestroyBody(pro_body);
-        }
+        //
     }
     void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg);
+    void destroy();
     void update();
     bool isActive();
+    DRAWABLETYPE getDrawableType();
+	virtual void beginCollision(PhysicalDrawable *other) override;
+	virtual void endCollision(PhysicalDrawable *other) override;
 };
 
 #endif // PROJECTILE_H_INCLUDED

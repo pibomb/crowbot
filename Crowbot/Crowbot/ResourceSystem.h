@@ -47,6 +47,35 @@ public:
     void destroy();
 };
 
+class b2Resource
+{
+private:
+    b2Vec2 pos;
+    b2Body *body;
+    b2BodyDef bodyDef;
+    b2FixtureDef fixtureDef;
+    b2PolygonShape dynamicBox;
+    std::list<b2Resource*>::iterator this_position;
+public:
+    b2Resource():
+        body(nullptr)
+    {
+        //
+    }
+    ~b2Resource()
+    {
+        if(getBody())
+        {
+            sysGC.watchb2Body(getBody());
+        }
+    }
+    std::list<b2Resource*>::iterator getThisPosition();
+    void setThisPosition(std::list<b2Resource*>::iterator this_position_arg);
+    b2Body* getBody();
+    void registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg, b2BodyType bodyDef_type_arg=b2_dynamicBody);
+    void ApplyLinearImpulseAtCenter(b2Vec2 impulse_arg);
+};
+
 // Resource System
 class ResourceSystem
 {
@@ -56,6 +85,7 @@ private:
     std::map<IMAGETYPE, ALLEGRO_BITMAP*> internalImages;
     std::map<ENTITYTYPE, AnimatedConstructorData> internalEntityAnimatedConstructorData;
     std::map<PROJECTILETYPE, AnimatedConstructorData> internalProjectileAnimatedConstructorData;
+    std::list<b2Resource*> b2ResourceList;
 public:
     void registerFont(FONTTYPE id, std::string directory);
     ALLEGRO_FONT* getFont(FONTTYPE font_id, int fontSize_id=14);
@@ -63,6 +93,8 @@ public:
     Sample& getAudio(AUDIOTYPE audio_id);
     void stopAllAudio();
     void destroyAudio();
+    b2Resource* createb2Resource();
+    void destroyb2Resource(b2Resource *b2Resource_arg);
     void registerImage(IMAGETYPE image_id, std::string directory);
     ALLEGRO_BITMAP* getImage(IMAGETYPE image_id);
     AnimatedConstructorData getData(ENTITYTYPE entity_type_id);

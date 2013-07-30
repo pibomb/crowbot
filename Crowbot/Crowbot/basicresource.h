@@ -102,6 +102,15 @@ enum class IMAGETYPE : int
     SPRITESHEET_PROJECTILE_BULLET
 };
 
+// Drawable Definitions
+enum class DRAWABLETYPE : int
+{
+    INVALID=0,
+    ROBOT,
+    BOX,
+    BULLET
+};
+
 // Entity Definitions
 enum class ENTITYTYPE : int
 {
@@ -174,7 +183,7 @@ enum class MOUSEBUTTON : int
 
 // Other Macros
 #define internalData(_a) internal##_a##AnimatedConstructorData
-#define PX_TO_M(_a) _a/100.0
-#define M_TO_PX(_a) _a*100.0
+#define PX_TO_M(_a) (_a/100.0)
+#define M_TO_PX(_a) (_a*100.0)
 
 #endif // BASICRESOURCE_H_INCLUDED

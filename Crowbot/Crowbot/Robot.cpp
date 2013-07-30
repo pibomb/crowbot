@@ -6,22 +6,22 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
     case ALLEGRO_KEY_W:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(90), 50);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(90), 0.2);
         break;
     }
     case ALLEGRO_KEY_A:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(180), 50);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(180), 0.2);
         break;
     }
     case ALLEGRO_KEY_S:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(270), 50);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(270), 0.2);
         break;
     }
     case ALLEGRO_KEY_D:
     {
-        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(0), 50);
+        shootProjectile(0, Vec2(0, 0), DEG_TO_RAD(0), 0.2);
         break;
     }
     default:
@@ -51,10 +51,10 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
     }
 }
 
-void Robot::shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float angularVelocity_arg)
+void Robot::shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
 {
     Projectile *proj=new Projectile;
-    proj->set(ent_pos+pos_arg, b2Vec2(cos(angle_arg)*angularVelocity_arg, sin(angle_arg)*angularVelocity_arg), 10000);
+    proj->set(ent_pos+pos_arg, b2Vec2(cos(angle_arg)*linearVelocity_arg, sin(angle_arg)*linearVelocity_arg), 10000);
     proj->push(frame);
 }
 
@@ -75,4 +75,19 @@ void Robot::executeFunction(std::string function_name, std::vector<int> args)
 void Robot::onDraw()
 {
     draw_current_frame(0, 0, 0);
+}
+
+DRAWABLETYPE Robot::getDrawableType()
+{
+    return DRAWABLETYPE::ROBOT;
+}
+
+void Robot::beginCollision(PhysicalDrawable *other)
+{
+    //
+}
+
+void Robot::endCollision(PhysicalDrawable *other)
+{
+    //
 }

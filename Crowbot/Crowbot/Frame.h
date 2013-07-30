@@ -4,6 +4,7 @@
 #include "basicresource.h"
 #include "Pixel.h"
 #include "Drawable.h"
+#include "Camera.h"
 #include "Counter.h"
 #include "Button.h"
 #include "GlobalVariables.h"
@@ -42,9 +43,9 @@ private:
     std::map<Observer*, std::list<Observer*>::iterator> observerIters;
     void onLeftUp();
     void onLeftClick();
-    void transformation();
-    void onDraw();
-    void postDraw();
+    void transformation() override;
+    void onDraw() override;
+    void postDraw() override;
 public:
     FRAMETYPE getID();
     void setID(FRAMETYPE id_arg);
