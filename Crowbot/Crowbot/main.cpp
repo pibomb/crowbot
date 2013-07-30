@@ -51,19 +51,53 @@ int main(int argc, char **argv)
     Lexer lex;
     Parser psr;
     auto ret=lex.generateTokens("\
-                           for(i=0; 11;)\n\
-                           {\n\
-                                if(i>6)\n\
+                                if(y>-0.2 && x<=11)\n\
                                 {\n\
-                                    the_robot.shoot((11-i)*30, 75)\n\
+                                    if(x<0.2)\n\
+                                    {\n\
+                                        activeBullet.move(0.01, 0.01)\n\
+                                    }\n\
+                                    else\n\
+                                    {\n\
+                                        activeBullet.move(0.01, 0)\n\
+                                    }\n\
                                 }\n\
-                                else\n\
+                                else if(x>11 && y>=-8.2)\n\
                                 {\n\
-                                    the_robot.shoot(i*30, 75)\n\
+                                    if(y>-0.2)\n\
+                                    {\n\
+                                        activeBullet.move(0.01, -0.01)\n\
+                                    }\n\
+                                    else\n\
+                                    {\n\
+                                        activeBullet.move(0, -0.01)\n\
+                                    }\n\
                                 }\n\
-                           }\n");
+                                else if(y<-8.2 && x>=0.2)\n\
+                                {\n\
+                                    if(x>11)\n\
+                                    {\n\
+                                        activeBullet.move(-0.01, -0.01)\n\
+                                    }\n\
+                                    else\n\
+                                    {\n\
+                                        activeBullet.move(-0.01, 0)\n\
+                                    }\n\
+                                }\n\
+                                else if(x<0.2 && y<=-0.2)\n\
+                                {\n\
+                                    if(y<-8.2)\n\
+                                    {\n\
+                                        activeBullet.move(-0.01, 0.01)\n\
+                                    }\n\
+                                    else\n\
+                                    {\n\
+                                        activeBullet.move(0, 0.01)\n\
+                                    }\n\
+                                }\n\
+                              ");
     std::cout<<"Errors: "<<ret<<std::endl;
-    psr.parse(lex, "userscript", "", "luascripts/");
+    psr.parse(lex, "updatebullet", "x, y", "luascripts/");
 
     activeBullet=new Projectile*;
 
@@ -105,7 +139,7 @@ int main(int argc, char **argv)
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
     lua_makelfunction(lua_state, "luascripts/userscript.lua", "robotscript");
     lua_runlfunction(lua_state, "robotscript");
-    lua_makelfunction(lua_state, "luascripts/bulletscript.lua", "bulletscript");
+    lua_makelfunction(lua_state, "luascripts/updatebullet.lua", "bulletscript");
     lua_runlfunction(lua_state, "bulletscript");
     /*
     luaE_beginmfunctions(lua_state, "RobotMT");

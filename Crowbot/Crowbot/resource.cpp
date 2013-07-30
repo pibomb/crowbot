@@ -84,7 +84,6 @@ void b2Resource::registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_a
     bodyDef.position=bodyDef_position_arg;
     body=world.CreateBody(&bodyDef);
     polyShape.SetAsBox(length_arg/2, width_arg/2);
-    printf("%f %f %f %f\n", bodyDef_position_arg.x, bodyDef_position_arg.y, length_arg, width_arg);
     body->CreateFixture(&polyShape, density_arg);
     body->SetUserData(userData_arg);
 }

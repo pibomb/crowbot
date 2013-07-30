@@ -84,6 +84,7 @@ std::string Lexer::generateTokens(std::string raw)
         tokens.clear();
         tokens.push_back("__BEGIN");
         std::stack<std::string> braces;
+        std::stack<int> previousIf;
         std::string tempString;
         std::string curExpr;
         std::string lastExpr;
@@ -95,7 +96,7 @@ std::string Lexer::generateTokens(std::string raw)
         {
             if(curExpr=="else")
             {
-                if(!ifBlock)
+                if(ifBlock==0 || ifBlock==3)
                 {
                     throw "else without a previous if";
                 }
@@ -117,6 +118,7 @@ std::string Lexer::generateTokens(std::string raw)
             {
                 if(epos==2 && curExpr.substr(0, 2)=="if")
                 {
+                    previousIf.push(ifBlock);
                     lastExpr="__S/IF"; // If Statement
                     ifBlock=1;
                     tokens.push_back("__IF");
@@ -311,7 +313,8 @@ std::string Lexer::generateTokens(std::string raw)
                 {
                     if((ifBlock==3 && braces.top()=="__S/IF") || (ifBlock==2 && !(peekNextValidExpression()=="else" || peekNextValidExpression().substr(0, 7)=="elseif(")))
                     {
-                        ifBlock=0;
+                        ifBlock=previousIf.top();
+                        previousIf.pop();
                     }
                     else
                     {

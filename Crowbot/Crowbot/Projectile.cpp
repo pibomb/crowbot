@@ -6,7 +6,7 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
     fuel_left=fuel_left_arg;
     pro_body=resource.createb2Resource();
     pro_body->registerDynamicBox(this, pos_arg, PX_TO_M(15), PX_TO_M(5), 1.0, 0.3);
-    pro_body->getBody()->SetGravityScale(0);
+    //pro_body->getBody()->SetGravityScale(0);
     pro_body->getBody()->SetBullet(true);
     pro_body->ApplyLinearImpulseAtCenter(linearVelocity_arg);
     updateTrigger=new EventTriggerHandler(
