@@ -56,6 +56,14 @@ void Sample::destroy()
 
 // b2Resource
 
+b2Resource::~b2Resource()
+{
+    if(getBody())
+    {
+        sysGC.watchb2Body(getBody());
+    }
+}
+
 std::list<b2Resource*>::iterator b2Resource::getThisPosition()
 {
     return this_position;
@@ -71,13 +79,23 @@ b2Body* b2Resource::getBody()
     return body;
 }
 
-void b2Resource::registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg, b2BodyType bodyDef_type_arg)
+void b2Resource::registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg)
 {
-    bodyDef.type=bodyDef_type_arg;
     bodyDef.position=bodyDef_position_arg;
     body=world.CreateBody(&bodyDef);
-    dynamicBox.SetAsBox(length_arg/2, width_arg/2);
-    fixtureDef.shape=&dynamicBox;
+    polyShape.SetAsBox(length_arg/2, width_arg/2);
+    printf("%f %f %f %f\n", bodyDef_position_arg.x, bodyDef_position_arg.y, length_arg, width_arg);
+    body->CreateFixture(&polyShape, density_arg);
+    body->SetUserData(userData_arg);
+}
+
+void b2Resource::registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg)
+{
+    bodyDef.type=b2_dynamicBody;
+    bodyDef.position=bodyDef_position_arg;
+    body=world.CreateBody(&bodyDef);
+    polyShape.SetAsBox(length_arg/2, width_arg/2);
+    fixtureDef.shape=&polyShape;
     fixtureDef.density=density_arg;
     fixtureDef.friction=friction_arg;
     body->CreateFixture(&fixtureDef);

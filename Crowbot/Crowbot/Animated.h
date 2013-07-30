@@ -116,6 +116,7 @@ public:
         //
     }
     void draw_current_frame(float sx, float sy, int flags);
+    void draw_current_frame_centered(float sx, float sy, int flags);
     virtual int getCurrentSequence();
     virtual void setCurrentSequence(int current_sequence_arg);
     virtual void onDraw() override;
@@ -162,6 +163,7 @@ public:
         //
     }
     void draw_current_frame(float sx, float sy, int flags);
+    void draw_current_frame_centered(float sx, float sy, int flags);
     virtual int getCurrentSequence();
     virtual void setCurrentSequence(int current_sequence_arg);
     virtual void onDraw() override;

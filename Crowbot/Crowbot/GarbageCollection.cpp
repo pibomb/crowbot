@@ -13,6 +13,10 @@ void GarbageCollection::initialize()
 
 void GarbageCollection::cleanup()
 {
+    for(auto &it : eventHandlerGC)
+    {
+        delete it;
+    }
     for(auto &it : b2BodyGC)
     {
         world.DestroyBody(it);
@@ -21,6 +25,11 @@ void GarbageCollection::cleanup()
     {
         delete it;
     }
+}
+
+void GarbageCollection::watchEventHandler(EventHandler *handler_arg)
+{
+    eventHandlerGC.push_front(handler_arg);
 }
 
 void GarbageCollection::watchb2Body(b2Body *body_arg)
@@ -35,6 +44,12 @@ void GarbageCollection::watchProjectile(Projectile *projectile_arg)
 
 void GarbageCollection::collectGarbage()
 {
+    for(auto &it : eventHandlerGC)
+    {
+        it->destroy();
+        delete it;
+    }
+    eventHandlerGC.clear();
     for(auto &it : b2BodyGC)
     {
         world.DestroyBody(it);

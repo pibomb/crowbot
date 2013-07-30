@@ -2,6 +2,7 @@
 #define RESOURCESYSTEM_H_INCLUDED
 
 #include "basicresource.h"
+#include "GlobalVariables.h"
 
 struct AnimatedConstructorData;
 
@@ -50,11 +51,10 @@ public:
 class b2Resource
 {
 private:
-    b2Vec2 pos;
     b2Body *body;
     b2BodyDef bodyDef;
     b2FixtureDef fixtureDef;
-    b2PolygonShape dynamicBox;
+    b2PolygonShape polyShape;
     std::list<b2Resource*>::iterator this_position;
 public:
     b2Resource():
@@ -62,17 +62,12 @@ public:
     {
         //
     }
-    ~b2Resource()
-    {
-        if(getBody())
-        {
-            sysGC.watchb2Body(getBody());
-        }
-    }
+    ~b2Resource();
     std::list<b2Resource*>::iterator getThisPosition();
     void setThisPosition(std::list<b2Resource*>::iterator this_position_arg);
     b2Body* getBody();
-    void registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg, b2BodyType bodyDef_type_arg=b2_dynamicBody);
+    void registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg);
+    void registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg);
     void ApplyLinearImpulseAtCenter(b2Vec2 impulse_arg);
 };
 

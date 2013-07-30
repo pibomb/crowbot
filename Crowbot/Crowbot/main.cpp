@@ -37,39 +37,12 @@ int main(int argc, char **argv)
 	// initializing box2d
 	world.SetGravity(b2Vec2(0, -9.8));
 	ContactListener worldContactListener;
-	Box wallBox;
 	world.SetContactListener(&worldContactListener);
-    b2BodyDef groundDef;
-    groundDef.position.Set(PX_TO_M(disp_data.width)/2, -PX_TO_M(disp_data.height)+PX_TO_M(100)/2);
-    b2Body* ground=world.CreateBody(&groundDef);
-    b2PolygonShape groundBox;
-    groundBox.SetAsBox(PX_TO_M(disp_data.width)/2, PX_TO_M(100)/2);
-    ground->CreateFixture(&groundBox, 0.0f);
-    ground->SetUserData(static_cast<Drawable*>(&wallBox));
 
-    b2BodyDef ceilingDef;
-    ceilingDef.position.Set(PX_TO_M(disp_data.width)/2, PX_TO_M(100)/2);
-    b2Body* ceiling=world.CreateBody(&ceilingDef);
-    b2PolygonShape ceilingBox;
-    ceilingBox.SetAsBox(PX_TO_M(disp_data.width)/2, PX_TO_M(100)/2);
-    ceiling->CreateFixture(&ceilingBox, 0.0f);
-    ceiling->SetUserData(static_cast<Drawable*>(&wallBox));
-
-    b2BodyDef leftWallDef;
-    leftWallDef.position.Set(PX_TO_M(100)/2, -PX_TO_M(disp_data.height)/2);
-    b2Body* leftWall=world.CreateBody(&leftWallDef);
-    b2PolygonShape leftWallBox;
-    leftWallBox.SetAsBox(PX_TO_M(100)/2, PX_TO_M(disp_data.height)/2);
-    leftWall->CreateFixture(&leftWallBox, 0.0f);
-    leftWall->SetUserData(static_cast<Drawable*>(&wallBox));
-
-    b2BodyDef rightWallDef;
-    rightWallDef.position.Set(PX_TO_M(disp_data.width)-PX_TO_M(100)/2, -PX_TO_M(disp_data.height)/2);
-    b2Body* rightWall=world.CreateBody(&rightWallDef);
-    b2PolygonShape rightWallBox;
-    rightWallBox.SetAsBox(PX_TO_M(100)/2, PX_TO_M(disp_data.height)/2);
-    rightWall->CreateFixture(&rightWallBox, 0.0f);
-    rightWall->SetUserData(static_cast<Drawable*>(&wallBox));
+    Box ground(0, disp_data.height-10, disp_data.width, disp_data.height);
+    Box ceiling(0, 0, disp_data.width, 10);
+    Box leftWall(0, 0, 10, disp_data.height);
+    Box rightWall(disp_data.width-10, 0, disp_data.width, disp_data.height);
 	// box2d initialization
 
     resource.initialize();
@@ -134,6 +107,10 @@ int main(int argc, char **argv)
     luaE_prepmfunctions("the_robot", Robot, &rob);
     luaE_endmfunctions();
     */
+    ground.push(&game);
+    ceiling.push(&game);
+    leftWall.push(&game);
+    rightWall.push(&game);
     game.addObserver(&rob);
     game.start(FRAMETYPE::STARTSCREEN);
     while(game)

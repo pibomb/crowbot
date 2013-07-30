@@ -9,6 +9,7 @@ class Projectile;
 class GarbageCollection
 {
 private:
+    std::list<EventHandler*> eventHandlerGC;
     std::list<b2Body*> b2BodyGC;
     std::list<Projectile*> projectileGC;
 public:
@@ -22,6 +23,7 @@ public:
     }
     void initialize();
     void cleanup();
+    void watchEventHandler(EventHandler *handler_arg);
     void watchb2Body(b2Body *body_arg);
     void watchProjectile(Projectile *projectile_arg);
     void collectGarbage();

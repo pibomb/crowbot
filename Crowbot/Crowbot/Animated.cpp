@@ -17,6 +17,17 @@ void Animated::draw_current_frame(float sx, float sy, int flags)
     al_draw_bitmap_region(acd.spritesheet, region.getTL().getX(), region.getTL().getY(), region.getWidth(), region.getHeight(), sx, sy, flags);
 }
 
+void Animated::draw_current_frame_centered(float sx, float sy, int flags)
+{
+    if(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count()*1000>=acd.sequence[acd.current_sequence].time)
+    {
+        current_time=std::chrono::steady_clock::now();
+        current_count=(current_count+1)%acd.sequence[acd.current_sequence].count;
+    }
+    Rect region=get_current_region(acd.sequence[acd.current_sequence].start+current_count);
+    al_draw_bitmap_region(acd.spritesheet, region.getTL().getX(), region.getTL().getY(), region.getWidth(), region.getHeight(), sx-region.getWidth()/2, sy-region.getHeight()/2, flags);
+}
+
 int Animated::getCurrentSequence()
 {
     return acd.current_sequence;
@@ -49,6 +60,17 @@ void PhysicalAnimated::draw_current_frame(float sx, float sy, int flags)
     }
     Rect region=get_current_region(acd.sequence[acd.current_sequence].start+current_count);
     al_draw_bitmap_region(acd.spritesheet, region.getTL().getX(), region.getTL().getY(), region.getWidth(), region.getHeight(), sx, sy, flags);
+}
+
+void PhysicalAnimated::draw_current_frame_centered(float sx, float sy, int flags)
+{
+    if(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count()*1000>=acd.sequence[acd.current_sequence].time)
+    {
+        current_time=std::chrono::steady_clock::now();
+        current_count=(current_count+1)%acd.sequence[acd.current_sequence].count;
+    }
+    Rect region=get_current_region(acd.sequence[acd.current_sequence].start+current_count);
+    al_draw_bitmap_region(acd.spritesheet, region.getTL().getX(), region.getTL().getY(), region.getWidth(), region.getHeight(), sx-region.getWidth()/2, sy-region.getHeight()/2, flags);
 }
 
 int PhysicalAnimated::getCurrentSequence()

@@ -112,7 +112,7 @@ public:
     {
         //
     }
-    void accept(EventData& event);
+    void accept(EventData& event) override;
 };
 
 class EventSource

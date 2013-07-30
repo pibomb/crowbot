@@ -20,14 +20,13 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
 
 void Projectile::destroy()
 {
-    if(is_valid)
+    if(isActive())
     {
         is_valid=false;
         pull();
         if(updateTrigger)
         {
-            updateTrigger->destroy();
-            delete updateTrigger;
+            sysGC.watchEventHandler(updateTrigger);
         }
         if(pro_body)
         {
@@ -64,7 +63,7 @@ void Projectile::onDraw()
 {
     if(isActive())
     {
-        draw_current_frame(0, 0, 0);
+        draw_current_frame_centered(0, 0, 0);
     }
 }
 
@@ -80,7 +79,10 @@ DRAWABLETYPE Projectile::getDrawableType()
 
 void Projectile::beginCollision(PhysicalDrawable *other)
 {
-    destroy();
+    if(other->getDrawableType()==DRAWABLETYPE::BULLET)
+    {
+        destroy();
+    }
 }
 
 void Projectile::endCollision(PhysicalDrawable *other)

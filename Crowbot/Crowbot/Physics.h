@@ -4,6 +4,7 @@
 #include "basicresource.h"
 #include "Pixel.h"
 #include "Drawable.h"
+#include "ResourceSystem.h"
 
 class Vec2 : public Pixel
 {
@@ -228,16 +229,42 @@ class Box : public PhysicalDrawable
 {
 private:
     Rect bounding_box;
+    b2Resource *box_body;
 public:
     Box():
-        bounding_box(0, 0, 0, 0)
+        bounding_box(0, 0, 0, 0),
+        box_body(nullptr)
     {
         //
     }
-    Box(Rect bounding_box_arg):
-        bounding_box(bounding_box_arg)
+    Box(float tlx_arg, float tly_arg, float brx_arg, float bry_arg):
+        bounding_box(tlx_arg, tly_arg, brx_arg, bry_arg),
+        box_body(resource.createb2Resource())
     {
-        //
+        box_body->registerStaticBox(this,
+                                    b2Vec2(PX_TO_M(bounding_box.getTL().getX()+bounding_box.getBR().getX())/2,
+                                           -PX_TO_M(bounding_box.getTL().getY()+bounding_box.getBR().getY())/2),
+                                    PX_TO_M(bounding_box.getWidth()),
+                                    PX_TO_M(bounding_box.getHeight()),
+                                    0.0);
+    }
+    Box(Rect bounding_box_arg):
+        bounding_box(bounding_box_arg),
+        box_body(resource.createb2Resource())
+    {
+        box_body->registerStaticBox(this,
+                                    b2Vec2(PX_TO_M(bounding_box.getTL().getX()+bounding_box.getBR().getX())/2,
+                                           -PX_TO_M(bounding_box.getTL().getY()+bounding_box.getBR().getY())/2),
+                                    PX_TO_M(bounding_box.getWidth()),
+                                    PX_TO_M(bounding_box.getHeight()),
+                                    0.0);
+    }
+    ~Box()
+    {
+        if(box_body)
+        {
+            resource.destroyb2Resource(box_body);
+        }
     }
     DRAWABLETYPE getDrawableType();
     void beginCollision(PhysicalDrawable *other) override;
