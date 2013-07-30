@@ -65,6 +65,8 @@ int main(int argc, char **argv)
     std::cout<<"Errors: "<<ret<<std::endl;
     psr.parse(lex, "userscript", "", "luascripts/");
 
+    activeBullet=new Projectile*;
+
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     lua_regmfunctions(lua_state, "FrameMT");
     lua_makemfunction(lua_state, "delay", "FrameMT", Frame,
@@ -92,10 +94,19 @@ int main(int argc, char **argv)
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
+    lua_regmfunctions(lua_state, "BulletMT");
+    lua_makemfunction(lua_state, "move", "BulletMT", Projectile*,
+                                             {
+                                                 (*obj)->move(b2Vec2(luaL_checknumber(l, 1), luaL_checknumber(l, 2)));
+                                                 return 0;
+                                             });
+    lua_prepmfunctions(lua_state, "activeBullet", "BulletMT", Projectile*, activeBullet);
     al_set_target_bitmap(al_get_backbuffer(display));
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
     lua_makelfunction(lua_state, "luascripts/userscript.lua", "robotscript");
     lua_runlfunction(lua_state, "robotscript");
+    lua_makelfunction(lua_state, "luascripts/bulletscript.lua", "bulletscript");
+    lua_runlfunction(lua_state, "bulletscript");
     /*
     luaE_beginmfunctions(lua_state, "RobotMT");
     luaE_regmfunctions();
@@ -122,12 +133,13 @@ int main(int argc, char **argv)
         game.delayTime();
         game.update();
         game.render();
-        //lua_runlfunction(lua_state, "userscript");
+        //lua_runlfunction(lua_state, "userscript", &rob);
         al_flip_display();
     }
     game.end();
     game.destroy();
     rob.pull();
+    delete activeBullet;
     /*
     // Events example
     EventHandler *evHandler=new EventHandler([]()

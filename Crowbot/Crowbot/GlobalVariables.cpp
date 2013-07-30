@@ -7,4 +7,5 @@ b2World world(b2Vec2(0, 0));
 ResourceSystem resource;
 GarbageCollection sysGC;
 EventSystem sysEvents;
+Projectile **activeBullet;
 char *_lua_temp_char_ptr=nullptr;

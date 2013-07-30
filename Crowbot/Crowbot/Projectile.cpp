@@ -6,6 +6,7 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
     fuel_left=fuel_left_arg;
     pro_body=resource.createb2Resource();
     pro_body->registerDynamicBox(this, pos_arg, PX_TO_M(15), PX_TO_M(5), 1.0, 0.3);
+    pro_body->getBody()->SetGravityScale(0);
     pro_body->getBody()->SetBullet(true);
     pro_body->ApplyLinearImpulseAtCenter(linearVelocity_arg);
     updateTrigger=new EventTriggerHandler(
@@ -16,6 +17,24 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
     updateTrigger->push(sysEvents[EVENTTYPE::TIMER]);
     updateTrigger->add(EVENTTYPE::TIMER);
     sysGC.watchProjectile(this);
+}
+
+void Projectile::move(b2Vec2 linearVelocity_arg)
+{
+    pro_body->ApplyLinearImpulseAtCenter(linearVelocity_arg);
+}
+
+void Projectile::update()
+{
+    if(isActive())
+    {
+        *activeBullet=this;
+        lua_runlfunction(lua_state, "updatebullet", pro_body->getBody()->GetPosition().x, pro_body->getBody()->GetPosition().y);
+        if(!is_pixel_onscreen(pro_body->getBody()->GetPosition()))
+        {
+            destroy();
+        }
+    }
 }
 
 void Projectile::destroy()
@@ -31,17 +50,6 @@ void Projectile::destroy()
         if(pro_body)
         {
             resource.destroyb2Resource(pro_body);
-        }
-    }
-}
-
-void Projectile::update()
-{
-    if(isActive())
-    {
-        if(!is_pixel_onscreen(pro_body->getBody()->GetPosition()))
-        {
-            destroy();
         }
     }
 }

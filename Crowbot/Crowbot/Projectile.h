@@ -35,8 +35,9 @@ public:
         //
     }
     void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg);
-    void destroy();
+    void move(b2Vec2 linearVelocity_arg);
     void update();
+    void destroy();
     bool isActive();
     DRAWABLETYPE getDrawableType();
 	virtual void beginCollision(PhysicalDrawable *other) override;

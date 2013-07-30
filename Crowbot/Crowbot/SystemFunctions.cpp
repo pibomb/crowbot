@@ -79,6 +79,11 @@ void lua_setlfunctionarg(int int_arg)
     lua_pushinteger(lua_state, int_arg);
 }
 
+void lua_setlfunctionarg(float float_arg)
+{
+    lua_pushnumber(lua_state, float_arg);
+}
+
 void lua_setlfunctionarg(long long_arg)
 {
     lua_pushinteger(lua_state, long_arg);
