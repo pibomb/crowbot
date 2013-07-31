@@ -228,7 +228,7 @@ void ResourceSystem::initialize()
     registerImage(IMAGETYPE::DEFAULT_BUTTON_H, "images/btn_background_h.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_D, "images/btn_background_d.png");
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, "images/player.png");
-    registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, "images/slime_soldier_final.png");
+    registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, "images/bullet.png");
     // Entity Animation Data
     internalData(Entity)[ENTITYTYPE::CROWBOT]=AnimatedConstructorData
     (
@@ -260,17 +260,17 @@ void ResourceSystem::initialize()
         // Spritesheet
         getImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET),
         // Width
-        100,
+        16,
         // Height
-        80,
+        6,
         // Frames
-        15,
+        1,
         // Sequence (optional)
         // Current Sequence
         0
     );
     internalData(Projectile)[PROJECTILETYPE::BULLET].sequence
-        [0]=AnimationData(4, 11, 150);
+        [0]=AnimationData(0, 1, -1);
 }
 
 void ResourceSystem::cleanup()

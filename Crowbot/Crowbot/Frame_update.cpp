@@ -2000,6 +2000,10 @@ void Frame::update()
                     break;
                 }
                 }
+                for(auto &it : observers)
+                {
+                    it->onKeyPress(ev.keyboard.unichar, ev.keyboard.keycode, ev.keyboard.modifiers);
+                }
                 break;
             }
             case ALLEGRO_EVENT_KEY_UP:
@@ -2597,6 +2601,10 @@ void Frame::update()
                     break;
                 }
                 }
+                for(auto &it : observers)
+                {
+                    it->onKeyRelease(ev.keyboard.unichar, ev.keyboard.keycode, ev.keyboard.modifiers);
+                }
                 break;
             }
             case ALLEGRO_EVENT_KEY_CHAR:
@@ -2605,10 +2613,6 @@ void Frame::update()
                 {
                     valid=false;
                     break;
-                }
-                for(auto &it : observers)
-                {
-                    it->onKeyPress(ev.keyboard.unichar, ev.keyboard.keycode, ev.keyboard.modifiers);
                 }
                 /*
                 int unichar=ev.keyboard.unichar;

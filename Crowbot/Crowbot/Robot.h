@@ -8,6 +8,8 @@
 class Robot : public Entity, public Observer
 {
 private:
+    int touchingGround;
+    bool facingRight;
     std::map<std::string, std::function<void(Robot*, std::vector<int>)>> robotFunctions;
 	virtual void transformation() override;
 	virtual void onDraw() override;
@@ -20,8 +22,9 @@ public:
             resource.destroyb2Resource(ent_body);
         }
     }
-    void onKeyPress(int unichar, int keycode, unsigned int modifiers);
-    void onTimerKeyState(const std::vector<bool> &keystates);
+    void onKeyPress(int unichar, int keycode, unsigned int modifiers) override;
+    void onKeyRelease(int unichar, int keycode, unsigned int modifiers) override;
+    void onTimerKeyState(const std::vector<bool> &keystates) override;
     void shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg);
     void addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg);
     void executeFunction(std::string function_name, std::vector<int> args=std::vector<int>());

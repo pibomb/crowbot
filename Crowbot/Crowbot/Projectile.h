@@ -34,7 +34,7 @@ public:
     {
         //
     }
-    void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg);
+    void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg);
     void move(b2Vec2 linearVelocity_arg);
     void update();
     void destroy();

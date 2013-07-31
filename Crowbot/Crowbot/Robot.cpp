@@ -1,9 +1,12 @@
 #include "resource.h"
 
 Robot::Robot(ENTITYTYPE entity_type_arg, const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg):
-    Entity(entity_type_arg, id_arg, startHp, frame_arg)
+    Entity(entity_type_arg, id_arg, startHp, frame_arg),
+    touchingGround(0),
+    facingRight(true)
 {
-    ent_body->registerDynamicBox(this, pos_arg, PX_TO_M(120), PX_TO_M(160), 5.0, 0.5);
+    ent_body->registerDynamicBox(this, pos_arg, PX_TO_M(120), PX_TO_M(160), 7.85, 0.7);
+    ent_body->getBody()->SetFixedRotation(true);
 }
 
 void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
@@ -17,6 +20,7 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     }
     case ALLEGRO_KEY_A:
     {
+        facingRight=false;
         shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(180), 5);
         break;
     }
@@ -27,9 +31,33 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     }
     case ALLEGRO_KEY_D:
     {
+        facingRight=true;
         shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), 5);
         break;
     }
+    case ALLEGRO_KEY_SPACE:
+    {
+        if(facingRight)
+        {
+            shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), 2000);
+        }
+        else
+        {
+            shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), -2000);
+        }
+        break;
+    }
+    default:
+    {
+        break;
+    }
+    }
+}
+
+void Robot::onKeyRelease(int unichar, int keycode, unsigned int modifiers)
+{
+    switch(keycode)
+    {
     default:
     {
         break;
@@ -41,26 +69,56 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 {
     if(keystates[ALLEGRO_KEY_LEFT])
     {
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-100, 0));
+        facingRight=false;
+        if(touchingGround)
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-50, 0));
+        }
+        else
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-20, 0));
+        }
     }
     if(keystates[ALLEGRO_KEY_RIGHT])
     {
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(100, 0));
+        facingRight=true;
+        if(touchingGround)
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(50, 0));
+        }
+        else
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(20, 0));
+        }
     }
     if(keystates[ALLEGRO_KEY_UP])
     {
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, 100));
+        if(touchingGround)
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*5));
+        }
     }
+    /*
     if(keystates[ALLEGRO_KEY_DOWN])
     {
         ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -100));
     }
+    */
 }
 
 void Robot::shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
 {
     Projectile *proj=new Projectile;
-    proj->set(getPosition()+pos_arg, b2Vec2(cos(angle_arg)*linearVelocity_arg, sin(angle_arg)*linearVelocity_arg), 10000);
+    b2Vec2 linearVelocity(cos(angle_arg)*linearVelocity_arg, sin(angle_arg)*linearVelocity_arg);
+    ent_body->ApplyLinearImpulseAtCenter(-linearVelocity);
+    if(facingRight)
+    {
+        proj->set(b2Vec2(getPosition().x+PX_TO_M(140)/2, getPosition().y)+pos_arg, linearVelocity, 10000, DEG_TO_RAD(0));
+    }
+    else
+    {
+        proj->set(b2Vec2(getPosition().x-PX_TO_M(140)/2, getPosition().y)+pos_arg, linearVelocity, 10000, DEG_TO_RAD(180));
+    }
     proj->push(frame);
 }
 
@@ -85,7 +143,14 @@ void Robot::transformation()
 
 void Robot::onDraw()
 {
-    draw_current_frame_centered(0, 0, 0);
+    if(facingRight)
+    {
+        draw_current_frame_centered(0, 0, 0);
+    }
+    else
+    {
+        draw_current_frame_centered(0, 0, ALLEGRO_FLIP_HORIZONTAL);
+    }
 }
 
 DRAWABLETYPE Robot::getDrawableType()
@@ -95,10 +160,30 @@ DRAWABLETYPE Robot::getDrawableType()
 
 void Robot::beginCollision(PhysicalDrawable *other)
 {
-    //
+    switch(other->getDrawableType())
+    {
+    case DRAWABLETYPE::CHAIN:
+    {
+        touchingGround++;
+    }
+    default:
+    {
+        break;
+    }
+    }
 }
 
 void Robot::endCollision(PhysicalDrawable *other)
 {
-    //
+    switch(other->getDrawableType())
+    {
+    case DRAWABLETYPE::CHAIN:
+    {
+        touchingGround--;
+    }
+    default:
+    {
+        break;
+    }
+    }
 }
