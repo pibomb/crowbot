@@ -39,7 +39,7 @@ public:
     void update();
     void destroy();
     bool isActive();
-    DRAWABLETYPE getDrawableType();
+    DRAWABLETYPE getDrawableType() override;
 	virtual void beginCollision(PhysicalDrawable *other) override;
 	virtual void endCollision(PhysicalDrawable *other) override;
 };

@@ -79,22 +79,45 @@ b2Body* b2Resource::getBody()
     return body;
 }
 
-void b2Resource::registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg)
+b2ChainShape* b2Resource::getChain()
 {
+    return static_cast<b2ChainShape*>(getBody()->GetFixtureList()->GetShape());
+}
+
+void b2Resource::registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, std::vector<b2Vec2> chainPoints)
+{
+    b2BodyDef bodyDef;
     bodyDef.position=bodyDef_position_arg;
     body=world.CreateBody(&bodyDef);
-    polyShape.SetAsBox(length_arg/2, width_arg/2);
-    body->CreateFixture(&polyShape, density_arg);
+    b2ChainShape shape;
+    shape.CreateChain(&chainPoints[0], chainPoints.size());
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape=&shape;
+    body->CreateFixture(&fixtureDef);
+    body->SetUserData(userData_arg);
+}
+
+void b2Resource::registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg)
+{
+    b2BodyDef bodyDef;
+    bodyDef.position=bodyDef_position_arg;
+    body=world.CreateBody(&bodyDef);
+    b2PolygonShape shape;
+    shape.SetAsBox(length_arg/2, width_arg/2);
+    body->CreateFixture(&shape, density_arg);
     body->SetUserData(userData_arg);
 }
 
 void b2Resource::registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg)
 {
+    b2BodyDef bodyDef;
     bodyDef.type=b2_dynamicBody;
     bodyDef.position=bodyDef_position_arg;
     body=world.CreateBody(&bodyDef);
-    polyShape.SetAsBox(length_arg/2, width_arg/2);
-    fixtureDef.shape=&polyShape;
+    b2PolygonShape shape;
+    shape.SetAsBox(length_arg/2, width_arg/2);
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape=&shape;
     fixtureDef.density=density_arg;
     fixtureDef.friction=friction_arg;
     body->CreateFixture(&fixtureDef);

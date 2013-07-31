@@ -29,7 +29,7 @@ void Projectile::update()
     if(isActive())
     {
         *activeBullet=this;
-        lua_runlfunction(lua_state, "updatebullet", pro_body->getBody()->GetPosition().x, pro_body->getBody()->GetPosition().y);
+        //lua_runlfunction(lua_state, "updatebullet", pro_body->getBody()->GetPosition().x, pro_body->getBody()->GetPosition().y);
         if(!is_pixel_onscreen(pro_body->getBody()->GetPosition()))
         {
             destroy();

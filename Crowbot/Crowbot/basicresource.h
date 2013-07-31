@@ -107,6 +107,7 @@ enum class DRAWABLETYPE : int
 {
     INVALID=0,
     ROBOT,
+    CHAIN,
     BOX,
     BULLET
 };
@@ -183,7 +184,7 @@ enum class MOUSEBUTTON : int
 
 // Other Macros
 #define internalData(_a) internal##_a##AnimatedConstructorData
-#define PX_TO_M(_a) ((_a)/100.0)
-#define M_TO_PX(_a) ((_a)*100.0)
+#define PX_TO_M(_a) ((_a)/32.0)
+#define M_TO_PX(_a) ((_a)*32.0)
 
 #endif // BASICRESOURCE_H_INCLUDED

@@ -52,9 +52,6 @@ class b2Resource
 {
 private:
     b2Body *body;
-    b2BodyDef bodyDef;
-    b2FixtureDef fixtureDef;
-    b2PolygonShape polyShape;
     std::list<b2Resource*>::iterator this_position;
 public:
     b2Resource():
@@ -62,10 +59,52 @@ public:
     {
         //
     }
-    ~b2Resource();
+    virtual ~b2Resource();
     std::list<b2Resource*>::iterator getThisPosition();
     void setThisPosition(std::list<b2Resource*>::iterator this_position_arg);
     b2Body* getBody();
+    b2ChainShape* getChain();
+    void* addb2Vec2ToArray()
+    {
+        return nullptr;
+    }
+    template<class... Args>
+    std::pair<b2Vec2, void*>* addb2Vec2ToArray(float x_arg, float y_arg, Args... args)
+    {
+        b2Vec2 chainPoint(x_arg, y_arg);
+        if(sizeof...(args)==0)
+        {
+            return new std::pair<b2Vec2, void*>(chainPoint, nullptr);
+        }
+        return new std::pair<b2Vec2, void*>(chainPoint, static_cast<void*>(addb2Vec2ToArray(args...)));
+    }
+    template<class... Args>
+    void registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, Args... args)
+    {
+        const int elements=sizeof...(args)/2;
+        b2Vec2 chainPoints[elements];
+        std::pair<b2Vec2, void*> *hold, *chainPoint=addb2Vec2ToArray(args...);
+        chainPoints[0]=chainPoint->first;
+        hold=chainPoint;
+        for(int i=1; chainPoint->second; i++)
+        {
+            chainPoint=static_cast<std::pair<b2Vec2, void*>*>(chainPoint->second);
+            delete hold;
+            chainPoints[i]=chainPoint->first;
+            hold=chainPoint;
+        }
+        delete hold;
+        b2BodyDef bodyDef;
+        bodyDef.position=bodyDef_position_arg;
+        body=world.CreateBody(&bodyDef);
+        b2ChainShape shape;
+        shape.CreateChain(chainPoints, elements);
+        b2FixtureDef fixtureDef;
+        fixtureDef.shape=&shape;
+        body->CreateFixture(&fixtureDef);
+        body->SetUserData(userData_arg);
+    }
+    void registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, std::vector<b2Vec2> chainPoints);
     void registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg);
     void registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg);
     void ApplyLinearImpulseAtCenter(b2Vec2 impulse_arg);

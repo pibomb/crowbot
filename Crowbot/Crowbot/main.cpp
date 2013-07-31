@@ -43,6 +43,8 @@ int main(int argc, char **argv)
     Box ceiling(0, 0, disp_data.width, 10);
     Box leftWall(0, 0, 10, disp_data.height);
     Box rightWall(disp_data.width-10, 0, disp_data.width, disp_data.height);
+    Chain chn;
+    chn.getResource()->registerChainShape(&chn, b2Vec2(0, 0), PX_TO_M(disp_data.width/2), 0, PX_TO_M(disp_data.width), -PX_TO_M(disp_data.height)/2, PX_TO_M(disp_data.width)/2, -PX_TO_M(disp_data.height), 0, -PX_TO_M(disp_data.height)/2, PX_TO_M(disp_data.width/2), 0);
 	// box2d initialization
 
     resource.initialize();
@@ -55,44 +57,44 @@ int main(int argc, char **argv)
                                 {\n\
                                     if(x<0.2)\n\
                                     {\n\
-                                        activeBullet.move(0.01, 0.01)\n\
+                                        activeBullet.move(0.4, 0.4)\n\
                                     }\n\
                                     else\n\
                                     {\n\
-                                        activeBullet.move(0.01, 0)\n\
+                                        activeBullet.move(0.4, 0)\n\
                                     }\n\
                                 }\n\
                                 else if(x>11 && y>=-8.2)\n\
                                 {\n\
                                     if(y>-0.2)\n\
                                     {\n\
-                                        activeBullet.move(0.01, -0.01)\n\
+                                        activeBullet.move(0.4, -0.4)\n\
                                     }\n\
                                     else\n\
                                     {\n\
-                                        activeBullet.move(0, -0.01)\n\
+                                        activeBullet.move(0, -0.4)\n\
                                     }\n\
                                 }\n\
                                 else if(y<-8.2 && x>=0.2)\n\
                                 {\n\
                                     if(x>11)\n\
                                     {\n\
-                                        activeBullet.move(-0.01, -0.01)\n\
+                                        activeBullet.move(-0.4, -0.4)\n\
                                     }\n\
                                     else\n\
                                     {\n\
-                                        activeBullet.move(-0.01, 0)\n\
+                                        activeBullet.move(-0.4, 0)\n\
                                     }\n\
                                 }\n\
                                 else if(x<0.2 && y<=-0.2)\n\
                                 {\n\
                                     if(y<-8.2)\n\
                                     {\n\
-                                        activeBullet.move(-0.01, 0.01)\n\
+                                        activeBullet.move(-0.4, 0.4)\n\
                                     }\n\
                                     else\n\
                                     {\n\
-                                        activeBullet.move(0, 0.01)\n\
+                                        activeBullet.move(0, 0.4)\n\
                                     }\n\
                                 }\n\
                               ");
@@ -156,6 +158,7 @@ int main(int argc, char **argv)
     ceiling.push(&game);
     leftWall.push(&game);
     rightWall.push(&game);
+    chn.push(&game);
     game.addObserver(&rob);
     game.start(FRAMETYPE::STARTSCREEN);
     while(game)

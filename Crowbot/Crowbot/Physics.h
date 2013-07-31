@@ -225,21 +225,57 @@ public:
     }
 };
 
+class Chain : public PhysicalDrawable
+{
+private:
+    b2Resource *chn_body;
+    int collisions;
+    void transformation() override;
+    void onDraw() override;
+    void postDraw() override;
+public:
+    Chain():
+        chn_body(resource.createb2Resource()),
+        collisions(0)
+    {
+        //
+    }
+    ~Chain()
+    {
+        if(chn_body)
+        {
+            resource.destroyb2Resource(chn_body);
+        }
+    }
+    b2Resource* getResource();
+    DRAWABLETYPE getDrawableType() override;
+    void beginCollision(PhysicalDrawable *other) override;
+    void endCollision(PhysicalDrawable *other) override;
+};
+
 class Box : public PhysicalDrawable
 {
 private:
     Rect bounding_box;
     b2Resource *box_body;
+    int collisions;
+    void transformation() override;
+    void onDraw() override;
+    void postDraw() override;
 public:
     Box():
+        PhysicalDrawable(),
         bounding_box(0, 0, 0, 0),
-        box_body(nullptr)
+        box_body(nullptr),
+        collisions(0)
     {
         //
     }
     Box(float tlx_arg, float tly_arg, float brx_arg, float bry_arg):
+        PhysicalDrawable(),
         bounding_box(tlx_arg, tly_arg, brx_arg, bry_arg),
-        box_body(resource.createb2Resource())
+        box_body(resource.createb2Resource()),
+        collisions(0)
     {
         box_body->registerStaticBox(this,
                                     b2Vec2(PX_TO_M(bounding_box.getTL().getX()+bounding_box.getBR().getX())/2,
@@ -249,8 +285,10 @@ public:
                                     0.0);
     }
     Box(Rect bounding_box_arg):
+        PhysicalDrawable(),
         bounding_box(bounding_box_arg),
-        box_body(resource.createb2Resource())
+        box_body(resource.createb2Resource()),
+        collisions(0)
     {
         box_body->registerStaticBox(this,
                                     b2Vec2(PX_TO_M(bounding_box.getTL().getX()+bounding_box.getBR().getX())/2,
@@ -266,12 +304,10 @@ public:
             resource.destroyb2Resource(box_body);
         }
     }
-    DRAWABLETYPE getDrawableType();
+    b2Resource* getResource();
+    DRAWABLETYPE getDrawableType() override;
     void beginCollision(PhysicalDrawable *other) override;
     void endCollision(PhysicalDrawable *other) override;
-    void transformation() override;
-    void onDraw() override;
-    void postDraw() override;
 };
 
 class ContactListener : public b2ContactListener
