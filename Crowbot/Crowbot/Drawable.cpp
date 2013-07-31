@@ -16,6 +16,16 @@ void Drawable::pull()
     }
 }
 
+void Drawable::decompose()
+{
+    for(auto &it : inner)
+    {
+        it->drawable_outer=nullptr;
+        it->decompose();
+    }
+    inner.clear();
+}
+
 void Drawable::render()
 {
     ALLEGRO_TRANSFORM old=*al_get_current_transform();

@@ -55,6 +55,15 @@
 
 #include <Box2D/Box2D.h>
 
+// Return Definitions
+enum class RETURNTYPE : int
+{
+    INVALID=0,
+    SHUTDOWN,
+    NORMAL,
+    COMPLETE
+};
+
 // Frame Definitions
 enum class FRAMETYPE : int
 {

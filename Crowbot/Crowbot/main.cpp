@@ -48,7 +48,7 @@ int main(int argc, char **argv)
                                           0, -PX_TO_M(disp_data.height)/3,
                                           PX_TO_M(disp_data.width)/4, -PX_TO_M(disp_data.height)*13/18,
                                           PX_TO_M(disp_data.width)/2, -PX_TO_M(disp_data.height)*5/6,
-                                          PX_TO_M(disp_data.width)*3/4, -PX_TO_M(disp_data.height)*13/18,
+                                          PX_TO_M(disp_data.width)*3/4, -PX_TO_M(disp_data.height)*5/6,
                                           PX_TO_M(disp_data.width), -PX_TO_M(disp_data.height)*2/3);
 	// box2d initialization
 
@@ -127,7 +127,6 @@ int main(int argc, char **argv)
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
     Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
-    rob.push(&game);
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
@@ -159,18 +158,25 @@ int main(int argc, char **argv)
     luaE_prepmfunctions("the_robot", Robot, &rob);
     luaE_endmfunctions();
     */
-    ground.push(&game);
-    ceiling.push(&game);
-    leftWall.push(&game);
-    rightWall.push(&game);
-    chn.push(&game);
+    rob.push(game.getCamera()->midground);
+    chn.push(game.getCamera()->background);
+    ground.push(game.getCamera()->background);
+    ceiling.push(game.getCamera()->background);
+    leftWall.push(game.getCamera()->background);
+    rightWall.push(game.getCamera()->background);
+    game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){rob.push(game.getCamera()->midground);});
+    game.addOnRestart([](FRAMETYPE){return true;}, [&chn, &game](){chn.push(game.getCamera()->background);});
+    game.addOnRestart([](FRAMETYPE){return true;}, [&ground, &game](){ground.push(game.getCamera()->background);});
+    game.addOnRestart([](FRAMETYPE){return true;}, [&ceiling, &game](){ceiling.push(game.getCamera()->background);});
+    game.addOnRestart([](FRAMETYPE){return true;}, [&leftWall, &game](){leftWall.push(game.getCamera()->background);});
+    game.addOnRestart([](FRAMETYPE){return true;}, [&rightWall, &game](){rightWall.push(game.getCamera()->background);});
+    game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){game.addObserver(&rob);});
     game.addObserver(&rob);
     game.start(FRAMETYPE::STARTSCREEN);
     while(game)
     {
         //menu flickering caused by unlimited framerate?
         sysEvents[EVENTTYPE::COLLECTGARBAGE].fire();
-        world.Step(1.0/60.0, 8, 3);
         //lua_runlfunction(lua_state, "updatelua");
         game.delayTime();
         game.update();
@@ -193,9 +199,9 @@ int main(int argc, char **argv)
     evHandler->add(EVENTTYPE::INVALID);
     sysEvents[EVENTTYPE::INVALID].fire();
     */
-    sysGC.cleanup();
-    resource.cleanup();
     lua_close(lua_state);
+    resource.cleanup();
+    sysGC.cleanup();
     al_destroy_display(display);
 
     return 0;

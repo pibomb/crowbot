@@ -41,6 +41,11 @@ void Frame::addButton(Button *button_arg)
     (*buttons.begin())->push(this);
 }
 
+void Frame::addOnRestart(std::function<bool(FRAMETYPE)> ifThis, std::function<void()> thenThis)
+{
+    onRestart.push_front(std::make_pair(ifThis, thenThis));
+}
+
 void Frame::addObserver(Observer *observer_arg)
 {
     observerIters[observer_arg]=observers.insert(observers.begin(), observer_arg);
@@ -391,6 +396,17 @@ void Frame::start(FRAMETYPE id_arg)
                              disp_data.width/2+200,
                              disp_data.height/2,
                              std::bind(&Frame::restart, this, getRegion(), mapID, FRAMETYPE::STAGE),
+                             /*
+                             [this]()
+                             {
+                                 this->setID(FRAMETYPE::STAGE);
+                                 for(auto &it : this->buttons)
+                                 {
+                                     sysGC.watchButton(it);
+                                 }
+                                 this->buttons.clear();
+                             },
+                             */
                              "Start Game",
                              BUTTONTYPE::INVALID,
                              resource.getFont(FONT_DEFAULT_GAME, FONT_SIZE_LARGE_GAME),
@@ -412,6 +428,27 @@ void Frame::start(FRAMETYPE id_arg)
         al_register_event_source(event_queue, al_get_keyboard_event_source());
         al_register_event_source(event_queue, al_get_mouse_event_source());
         //resource.stopAllAudio();
+        Dialogue dl(Rect(0, disp_data.height/2, disp_data.width, disp_data.height),
+                    []()
+                    {
+                        return;
+                    },
+                    std::bind(&Frame::end, this),
+                    resource.getImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET),
+                    resource.getImage(IMAGETYPE::INVALID),
+                    resource.getImage(IMAGETYPE::DEFAULT_BUTTON),
+                    resource.getImage(IMAGETYPE::DEFAULT_BUTTON_H),
+                    event_queue,
+                    FONTTYPE::ORBITRON_LT,
+                    48,
+                    30.0,
+                    0.0,
+                    "[[]]Decimus and company arrive at Tarrius. As they set up camp, Musia walks up to Decimus.\n[[Decimus]]What is it, Musia?\n[[Musia]]It's just that... I don't actually have any dialogue, and this is all filler text! I mean seriously, whoever came up with the dumb idea of testing whether long text really gets separated into two pages or not? Who cares? Not me, that's for sure. So what are you up to, Decimus? Want to talk to me more?\n[[Decimus]]That's alright, I really have nothing to say either.\n[[Musia]]Oh...\n[[]]And with that, the fight continues..."
+                    );
+        if(dl.run()==RETURNTYPE::SHUTDOWN)
+        {
+            return;
+        }
         al_start_timer(timer);
         break;
     }
@@ -520,25 +557,45 @@ void Frame::start(FRAMETYPE id_arg)
 
 void Frame::end()
 {
-#ifdef ENET_ENABLED
-    if(enet)
-    {
-        endLANConnection();
-    }
-#endif
-    setID(FRAMETYPE::INVALID);
-    al_clear_to_color(AL_COL_BLACK);
-    al_flip_display();
     if(valid)
     {
+#ifdef ENET_ENABLED
+        if(enet)
+        {
+            endLANConnection();
+        }
+#endif
+        setID(FRAMETYPE::INVALID);
+        al_clear_to_color(AL_COL_BLACK);
+        al_flip_display();
         al_destroy_timer(timer);
         al_destroy_event_queue(event_queue);
 #ifdef AUDIO
         al_destroy_sample(sample);
 #endif
-        camera->background->inner.clear();
-        camera->foreground->inner.clear();
-        camera->menus->inner.clear();
+        for(auto &it : buttons)
+        {
+            it->pull();
+            delete it;
+        }
+        buttons.clear();
+        observers.clear();
+        observerIters.clear();
+        if(getCamera())
+        {
+            if(getCamera()->background)
+            {
+                getCamera()->background->decompose();
+            }
+            if(getCamera()->midground)
+            {
+                getCamera()->midground->decompose();
+            }
+            if(getCamera()->foreground)
+            {
+                getCamera()->foreground->decompose();
+            }
+        }
         valid=false;
     }
 }
@@ -558,12 +615,13 @@ void Frame::restart(Rect region_arg, int mapid_arg, FRAMETYPE id_arg)
     frames_per_second=60;
     valid=true;
     region=region_arg;
-    for(auto &it : buttons)
+    for(auto &it : onRestart)
     {
-        it->pull();
-        delete it;
+        if(it.first(id_arg))
+        {
+            it.second();
+        }
     }
-    buttons.clear();
     if(id_arg!=FRAMETYPE::INVALID)
     {
         start(id_arg);

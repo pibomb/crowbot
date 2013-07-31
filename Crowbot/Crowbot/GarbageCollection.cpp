@@ -13,6 +13,10 @@ void GarbageCollection::initialize()
 
 void GarbageCollection::cleanup()
 {
+    for(auto &it : buttonGC)
+    {
+        delete it;
+    }
     for(auto &it : eventHandlerGC)
     {
         delete it;
@@ -25,6 +29,11 @@ void GarbageCollection::cleanup()
     {
         delete it;
     }
+}
+
+void GarbageCollection::watchButton(Button *button_arg)
+{
+    buttonGC.push_front(button_arg);
 }
 
 void GarbageCollection::watchEventHandler(EventHandler *handler_arg)
@@ -44,6 +53,12 @@ void GarbageCollection::watchProjectile(Projectile *projectile_arg)
 
 void GarbageCollection::collectGarbage()
 {
+    for(auto &it : buttonGC)
+    {
+        it->pull();
+        delete it;
+    }
+    buttonGC.clear();
     for(auto &it : eventHandlerGC)
     {
         it->destroy();

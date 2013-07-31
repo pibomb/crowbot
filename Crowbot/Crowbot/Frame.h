@@ -39,6 +39,7 @@ private:
     std::list<Button*> buttons;
     std::vector<bool> key;
     std::map<MOUSEBUTTON, bool> mouse;
+    std::list<std::pair<std::function<bool(FRAMETYPE)>, std::function<void()>>> onRestart;
     std::list<Observer*> observers;
     std::map<Observer*, std::list<Observer*>::iterator> observerIters;
     void onLeftUp();
@@ -56,6 +57,7 @@ public:
     int getY(int y_arg);
     Rect getRegion();
     void addButton(Button *button_arg);
+    void addOnRestart(std::function<bool(FRAMETYPE)> ifThis, std::function<void()> thenThis);
     void addObserver(Observer *observer_arg);
     void removeObserver(Observer *observer_arg);
 #ifdef ENET_ENABLED

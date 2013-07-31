@@ -91,11 +91,8 @@ void Projectile::beginCollision(PhysicalDrawable *other)
     switch(other->getDrawableType())
     {
     case DRAWABLETYPE::ROBOT:
-    {
-        destroy();
-        break;
-    }
-    case DRAWABLETYPE::BULLET:
+    case DRAWABLETYPE::CHAIN:
+    case DRAWABLETYPE::BOX:
     {
         destroy();
         break;

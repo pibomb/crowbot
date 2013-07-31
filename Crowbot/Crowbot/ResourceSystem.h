@@ -131,6 +131,7 @@ public:
     void destroyb2Resource(b2Resource *b2Resource_arg);
     void registerImage(IMAGETYPE image_id, std::string directory);
     ALLEGRO_BITMAP* getImage(IMAGETYPE image_id);
+    void destroyImages();
     AnimatedConstructorData getData(ENTITYTYPE entity_type_id);
     AnimatedConstructorData getData(PROJECTILETYPE projectile_type_id);
     void initialize();

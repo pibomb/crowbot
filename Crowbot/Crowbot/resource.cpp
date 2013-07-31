@@ -21,12 +21,15 @@ void Font::setDir(std::string directory_arg)
 
 ALLEGRO_FONT* Font::getFont(int id)
 {
-    if(!fonts[id])
+    auto it=fonts.find(id);
+    if(it==fonts.end())
     {
-        fonts[id]=al_load_font(directory.c_str(), id, 0);
-        al_draw_text(fonts[id], al_map_rgba(0, 0, 0, 0), 0, 0, 0, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+        auto newFont=al_load_font(directory.c_str(), id, 0);
+        al_draw_text(newFont, al_map_rgba(0, 0, 0, 0), 0, 0, 0, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+        fonts[id]=newFont;
+        return newFont;
     }
-    return fonts[id];
+    return it->second;
 }
 
 // Sample
@@ -196,6 +199,15 @@ ALLEGRO_BITMAP* ResourceSystem::getImage(IMAGETYPE image_id)
     return internalImages[image_id];
 }
 
+void ResourceSystem::destroyImages()
+{
+    for(auto &it : internalImages)
+    {
+        al_destroy_bitmap(it.second);
+    }
+    internalImages.clear();
+}
+
 AnimatedConstructorData ResourceSystem::getData(ENTITYTYPE entity_type_id)
 {
     return internalEntityAnimatedConstructorData[entity_type_id];
@@ -277,4 +289,5 @@ void ResourceSystem::cleanup()
 {
     destroyFonts();
     destroyAudio();
+    destroyImages();
 }

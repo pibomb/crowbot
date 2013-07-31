@@ -35,6 +35,32 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
         shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), 5);
         break;
     }
+    case ALLEGRO_KEY_LEFT:
+    {
+        facingRight=false;
+        if(touchingGround)
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-150, 0));
+        }
+        else
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-60, 0));
+        }
+        break;
+    }
+    case ALLEGRO_KEY_RIGHT:
+    {
+        facingRight=true;
+        if(touchingGround)
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(150, 0));
+        }
+        else
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(60, 0));
+        }
+        break;
+    }
     case ALLEGRO_KEY_SPACE:
     {
         if(facingRight)
@@ -95,7 +121,7 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
     {
         if(touchingGround)
         {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*5));
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*4));
         }
     }
     /*
@@ -119,7 +145,7 @@ void Robot::shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float l
     {
         proj->set(b2Vec2(getPosition().x-PX_TO_M(140)/2, getPosition().y)+pos_arg, linearVelocity, 10000, DEG_TO_RAD(180));
     }
-    proj->push(frame);
+    proj->push(frame->getCamera()->foreground);
 }
 
 void Robot::addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg)

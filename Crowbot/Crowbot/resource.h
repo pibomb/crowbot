@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include "Compiler.h"
 #include "Counter.h"
+#include "Dialogue.h"
 #include "Drawable.h"
 #include "Entity.h"
 #include "Event.h"

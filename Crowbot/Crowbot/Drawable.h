@@ -39,6 +39,7 @@ public:
     }
     void push(Drawable *other);
     void pull();
+    void decompose();
     void render();
     Drawable& preset();
     Drawable& preScale(float sx, float sy);

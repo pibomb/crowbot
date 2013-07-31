@@ -16,16 +16,19 @@ private:
     void onDraw() override;
     void postDraw() override;
 public:
-    std::shared_ptr<Layer> background;
-    std::shared_ptr<Layer> foreground;
-    std::shared_ptr<Layer> menus;
+    Layer *background;
+    Layer *midground;
+    Layer *foreground;
     Camera():
         x(0),
         y(0),
         width(0),
         height(0),
         lastMouseX(0),
-        lastMouseY(0)
+        lastMouseY(0),
+        background(nullptr),
+        midground(nullptr),
+        foreground(nullptr)
     {
         //
     }
@@ -36,17 +39,28 @@ public:
         height(height_arg),
         lastMouseX(mouseX_arg),
         lastMouseY(mouseY_arg),
-        background(std::make_shared<Layer>()),
-        foreground(std::make_shared<Layer>()),
-        menus(std::make_shared<Layer>())
+        background(new Layer),
+        midground(new Layer),
+        foreground(new Layer)
     {
         background->push(this);
+        midground->push(this);
         foreground->push(this);
-        menus->push(this);
     }
     virtual ~Camera()
     {
-        //
+        if(background)
+        {
+            delete background;
+        }
+        if(midground)
+        {
+            delete midground;
+        }
+        if(foreground)
+        {
+            delete foreground;
+        }
     }
     int getX();
     void setX(int x_arg);

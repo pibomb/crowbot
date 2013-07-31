@@ -1365,6 +1365,7 @@ void Frame::update()
     }
     case FRAMETYPE::STAGE:
     {
+        world.Step(1.0/60.0, 8, 3);
         for(ALLEGRO_EVENT ev; valid && al_get_next_event(event_queue, &ev);)
         {
             switch(ev.type)
@@ -1376,6 +1377,7 @@ void Frame::update()
                 {
                     it->onTimerKeyState(key);
                 }
+                /*
                 if(key[ALLEGRO_KEY_UP])
                 {
                     camera->setY(camera->getY()+8);
@@ -1392,6 +1394,7 @@ void Frame::update()
                 {
                     camera->setX(camera->getX()-8);
                 }
+                */
                 if(mouse[MOUSEBUTTON::RIGHT])
                 {
                     al_get_mouse_state(&cursorState);
