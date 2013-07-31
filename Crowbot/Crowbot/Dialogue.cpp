@@ -122,8 +122,11 @@ void Dialogue::onDraw()
     al_draw_scaled_bitmap(background, 0, 0, al_get_bitmap_width(background), al_get_bitmap_height(background), 0, 0, bounding_box.getWidth(), bounding_box.getHeight(), 0);
     al_draw_bitmap(left, 0, -al_get_bitmap_height(left), 0);
     al_draw_bitmap(right, bounding_box.getWidth()-al_get_bitmap_width(right), -al_get_bitmap_height(right), ALLEGRO_FLIP_HORIZONTAL);
-    al_draw_bitmap(name_background, x_offset+25, y_offset-10, 0);
-    al_draw_text(resource.getFont(fontID, fontSize), AL_COL_WHITE, x_offset+25, y_offset-10, 0, owners[currentPage].c_str());
+    if(!owners[currentPage].empty())
+    {
+        al_draw_bitmap(name_background, x_offset+25, y_offset-10, 0);
+        al_draw_text(resource.getFont(fontID, fontSize), AL_COL_WHITE, x_offset+25, y_offset-10, 0, owners[currentPage].c_str());
+    }
 }
 
 void Dialogue::postDraw()

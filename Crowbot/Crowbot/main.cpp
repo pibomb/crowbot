@@ -38,18 +38,25 @@ int main(int argc, char **argv)
 	world.SetGravity(b2Vec2(0, -9.8));
 	ContactListener worldContactListener;
 	world.SetContactListener(&worldContactListener);
-
-    Box ground(0, disp_data.height-10, disp_data.width, disp_data.height);
-    Box ceiling(0, 0, disp_data.width, 10);
-    Box leftWall(0, 0, 10, disp_data.height);
-    Box rightWall(disp_data.width-10, 0, disp_data.width, disp_data.height);
+	const int tlx=0, tly=0, brx=10000, bry=disp_data.height;
+    Box ground(tlx, bry-10, brx, bry);
+    Box ceiling(tlx, tly, brx, 10);
+    Box leftWall(tlx, tly, 10, bry);
+    Box rightWall(brx-10, 0, brx, bry);
     Chain chn;
     chn.getResource()->registerChainShape(&chn, b2Vec2(0, 0),
-                                          0, -PX_TO_M(disp_data.height)/3,
-                                          PX_TO_M(disp_data.width)/4, -PX_TO_M(disp_data.height)*13/18,
-                                          PX_TO_M(disp_data.width)/2, -PX_TO_M(disp_data.height)*5/6,
-                                          PX_TO_M(disp_data.width)*3/4, -PX_TO_M(disp_data.height)*5/6,
-                                          PX_TO_M(disp_data.width), -PX_TO_M(disp_data.height)*2/3);
+                                          0, -PX_TO_M(bry)/3,
+                                          PX_TO_M(brx)*1/10, -PX_TO_M(bry)*4/9,
+                                          PX_TO_M(brx)*2/10, -PX_TO_M(bry)*5/9,
+                                          PX_TO_M(brx)*3/10, -PX_TO_M(bry)*9/9,
+                                          PX_TO_M(brx)*4/10, -PX_TO_M(bry)*6/9,
+                                          PX_TO_M(brx)*5/10, -PX_TO_M(bry)*5/9,
+                                          PX_TO_M(brx)*6/10, -PX_TO_M(bry)*3/9,
+                                          PX_TO_M(brx)*7/10, -PX_TO_M(bry)*5/9,
+                                          PX_TO_M(brx)*8/10, -PX_TO_M(bry)*8/9,
+                                          PX_TO_M(brx)*9/10, -PX_TO_M(bry)*9/9,
+                                          PX_TO_M(brx)*10/10, -PX_TO_M(bry)*7/9
+                                          );
 	// box2d initialization
 
     resource.initialize();
@@ -171,6 +178,11 @@ int main(int argc, char **argv)
     game.addOnRestart([](FRAMETYPE){return true;}, [&leftWall, &game](){leftWall.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&rightWall, &game](){rightWall.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){game.addObserver(&rob);});
+    game.getCamera()->setCustomTranslate([&rob](Camera *camera_arg)
+                                         {
+                                             camera_arg->preset().preTranslate(b2Vec2(-rob.getPosition().x+PX_TO_M(disp_data.width)/2, 0/*-rob.getPosition().y-PX_TO_M(disp_data.height)*2/3*/));
+                                         }
+                                         );
     game.addObserver(&rob);
     game.start(FRAMETYPE::STARTSCREEN);
     while(game)

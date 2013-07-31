@@ -84,9 +84,28 @@ void Camera::moveMouse(int newX, int newY)
     lastMouseY=newY;
 }
 
+void Camera::setCustomTranslate(std::function<void(Camera*)> customTranslate_arg)
+{
+    customTranslate=customTranslate_arg;
+    custom_translate=true;
+}
+
+void Camera::setNormalTranslate()
+{
+    customTranslate=[](Camera*){};
+    custom_translate=false;
+}
+
 void Camera::transformation()
 {
-    preset().preTranslate(x, y);
+    if(custom_translate)
+    {
+        customTranslate(this);
+    }
+    else
+    {
+        preset().preTranslate(x, y);
+    }
 }
 
 void Camera::onDraw()
@@ -97,9 +116,4 @@ void Camera::onDraw()
 void Camera::postDraw()
 {
     //
-}
-
-void Camera::capture(ALLEGRO_BITMAP *underlyingMap)
-{
-    al_draw_scaled_bitmap(underlyingMap, -x, -y, width, height, 0, 0, width, height, 0);
 }

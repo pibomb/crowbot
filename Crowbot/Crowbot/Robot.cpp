@@ -35,30 +35,24 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
         shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), 5);
         break;
     }
+    case ALLEGRO_KEY_UP:
+    {
+        if(touchingGround)
+        {
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*27));
+        }
+        break;
+    }
     case ALLEGRO_KEY_LEFT:
     {
         facingRight=false;
-        if(touchingGround)
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-150, 0));
-        }
-        else
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-60, 0));
-        }
+        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()*2, 0));
         break;
     }
     case ALLEGRO_KEY_RIGHT:
     {
         facingRight=true;
-        if(touchingGround)
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(150, 0));
-        }
-        else
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(60, 0));
-        }
+        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(ent_body->getBody()->GetMass()*2, 0));
         break;
     }
     case ALLEGRO_KEY_SPACE:
@@ -93,36 +87,19 @@ void Robot::onKeyRelease(int unichar, int keycode, unsigned int modifiers)
 
 void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 {
+    if(!touchingGround)
+    {
+        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -ent_body->getBody()->GetMass()*3));
+    }
     if(keystates[ALLEGRO_KEY_LEFT])
     {
         facingRight=false;
-        if(touchingGround)
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-50, 0));
-        }
-        else
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-20, 0));
-        }
+        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()*2/5, 0));
     }
     if(keystates[ALLEGRO_KEY_RIGHT])
     {
         facingRight=true;
-        if(touchingGround)
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(50, 0));
-        }
-        else
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(20, 0));
-        }
-    }
-    if(keystates[ALLEGRO_KEY_UP])
-    {
-        if(touchingGround)
-        {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*4));
-        }
+        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(ent_body->getBody()->GetMass()*2/5, 0));
     }
     /*
     if(keystates[ALLEGRO_KEY_DOWN])

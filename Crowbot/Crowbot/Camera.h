@@ -12,6 +12,8 @@ private:
     int x, y;
     int width, height;
     int lastMouseX, lastMouseY;
+    bool custom_translate;
+    std::function<void(Camera*)> customTranslate;
     void transformation() override;
     void onDraw() override;
     void postDraw() override;
@@ -26,6 +28,8 @@ public:
         height(0),
         lastMouseX(0),
         lastMouseY(0),
+        custom_translate(false),
+        customTranslate([](Camera*){}),
         background(nullptr),
         midground(nullptr),
         foreground(nullptr)
@@ -39,6 +43,8 @@ public:
         height(height_arg),
         lastMouseX(mouseX_arg),
         lastMouseY(mouseY_arg),
+        custom_translate(false),
+        customTranslate([](Camera*){}),
         background(new Layer),
         midground(new Layer),
         foreground(new Layer)
@@ -78,7 +84,8 @@ public:
     int getAbsX(int curX);
     int getAbsY(int curY);
     void moveMouse(int newX, int newY);
-    void capture(ALLEGRO_BITMAP *underlyingMap);
+    void setCustomTranslate(std::function<void(Camera*)> customTranslate_arg);
+    void setNormalTranslate();
 };
 
 #endif // CAMERA_H_INCLUDED

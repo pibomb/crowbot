@@ -35,8 +35,10 @@ void Drawable::render()
         ALLEGRO_TRANSFORM cur;
         al_copy_transform(&cur, &old);
         transformation();
-        al_compose_transform(&cur, &drawable_trans);
-        al_use_transform(&cur);
+        //al_compose_transform(&cur, &drawable_trans);
+        al_compose_transform(&drawable_trans, &cur);
+        //al_use_transform(&cur);
+        al_use_transform(&drawable_trans);
         onDraw();
         for(auto &it : inner)
         {
