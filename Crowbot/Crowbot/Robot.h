@@ -9,16 +9,16 @@ class Robot : public Entity, public Observer
 {
 private:
     std::map<std::string, std::function<void(Robot*, std::vector<int>)>> robotFunctions;
+	virtual void transformation() override;
 	virtual void onDraw() override;
 public:
-    Robot(ENTITYTYPE entity_type_arg, const unsigned int& id, const Vec2& position, const int& startHp, Frame *frame_arg):
-        Entity(entity_type_arg, id, position, startHp, frame_arg)
-    {
-        //
-    }
+    Robot(ENTITYTYPE entity_type_arg, const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg);
     ~Robot()
     {
-        //
+        if(ent_body)
+        {
+            resource.destroyb2Resource(ent_body);
+        }
     }
     void onKeyPress(int unichar, int keycode, unsigned int modifiers);
     void onTimerKeyState(const std::vector<bool> &keystates);

@@ -44,7 +44,12 @@ int main(int argc, char **argv)
     Box leftWall(0, 0, 10, disp_data.height);
     Box rightWall(disp_data.width-10, 0, disp_data.width, disp_data.height);
     Chain chn;
-    chn.getResource()->registerChainShape(&chn, b2Vec2(0, 0), PX_TO_M(disp_data.width/2), 0, PX_TO_M(disp_data.width), -PX_TO_M(disp_data.height)/2, PX_TO_M(disp_data.width)/2, -PX_TO_M(disp_data.height), 0, -PX_TO_M(disp_data.height)/2, PX_TO_M(disp_data.width/2), 0);
+    chn.getResource()->registerChainShape(&chn, b2Vec2(0, 0),
+                                          0, -PX_TO_M(disp_data.height)/3,
+                                          PX_TO_M(disp_data.width)/4, -PX_TO_M(disp_data.height)*13/18,
+                                          PX_TO_M(disp_data.width)/2, -PX_TO_M(disp_data.height)*5/6,
+                                          PX_TO_M(disp_data.width)*3/4, -PX_TO_M(disp_data.height)*13/18,
+                                          PX_TO_M(disp_data.width), -PX_TO_M(disp_data.height)*2/3);
 	// box2d initialization
 
     resource.initialize();
@@ -121,7 +126,7 @@ int main(int argc, char **argv)
                                                 return 0;
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
-    Robot rob(ENTITYTYPE::CROWBOT, 0, Vec2(0.0, 0.0), 0, &game);
+    Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
     rob.push(&game);
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,

@@ -155,6 +155,13 @@ enum class MOUSEBUTTON : int
     RIGHT
 };
 
+// Physical Type Bit Definitions
+#define PHYSICAL_ALL 0xFFFF
+#define PHYSICAL_ENVIRONMENT 0x0001
+#define PHYSICAL_PLAYER 0x0002
+#define PHYSICAL_ENEMY 0x0004
+#define PHYSICAL_PROJECTILE 0x0008
+
 // Color Definitions
 #define AL_COL_BLACK (al_map_rgb(0, 0, 0))
 #define AL_COL_WHITE (al_map_rgb(255, 255, 255))

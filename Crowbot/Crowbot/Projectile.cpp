@@ -63,7 +63,7 @@ void Projectile::transformation()
 {
     if(isActive())
     {
-        preset().preTranslate(pro_body->getBody()->GetPosition()).preRotate(pro_body->getBody()->GetAngle());
+        preset().preRotate(pro_body->getBody()->GetAngle()).preTranslate(pro_body->getBody()->GetPosition());
     }
 }
 
