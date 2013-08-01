@@ -86,26 +86,17 @@ void Camera::moveMouse(int newX, int newY)
 
 void Camera::setCustomTranslate(std::function<void(Camera*)> customTranslate_arg)
 {
-    customTranslate=customTranslate_arg;
-    custom_translate=true;
+    translateFunction=customTranslate_arg;
 }
 
 void Camera::setNormalTranslate()
 {
-    customTranslate=[](Camera*){};
-    custom_translate=false;
+    translateFunction=[](Camera* camera_arg){camera_arg->preset().preTranslate(camera_arg->getX(), camera_arg->getY());};
 }
 
 void Camera::transformation()
 {
-    if(custom_translate)
-    {
-        customTranslate(this);
-    }
-    else
-    {
-        preset().preTranslate(x, y);
-    }
+    translateFunction(this);
 }
 
 void Camera::onDraw()

@@ -10,7 +10,8 @@ class Drawable
 {
 protected:
     bool drawable_is_dirty;
-    ALLEGRO_TRANSFORM drawable_trans;
+    ALLEGRO_TRANSFORM drawable_pre_trans;
+    ALLEGRO_TRANSFORM drawable_post_trans;
     Rect drawable_rgn;
     Drawable *drawable_outer;
     std::list<Drawable*>::iterator drawable_this_position;
@@ -25,6 +26,7 @@ public:
         drawable_outer(nullptr)
     {
         preset();
+        postset();
     }
     Drawable(Rect drawable_rgn_arg):
         drawable_is_dirty(true),
@@ -32,6 +34,7 @@ public:
         drawable_outer(nullptr)
     {
         preset();
+        postset();
     }
     virtual ~Drawable()
     {
@@ -42,15 +45,19 @@ public:
     void decompose();
     void render();
     Drawable& preset();
+    Drawable& postset();
     Drawable& preScale(float sx, float sy);
     Drawable& preTranslate(Pixel px);
     Drawable& preTranslate(Vec2 px);
     Drawable& preTranslate(b2Vec2 px);
+    Drawable& postTranslate(b2Vec2 px);
     Drawable& preTranslate(float x, float y);
     Drawable& preRotate(float theta);
+    Drawable& postRotate(float theta);
     Drawable& preAll(float x, float y, float sx, float sy, float theta);
     Pixel getTransformedTL();
-    ALLEGRO_TRANSFORM* getTransform();
+    ALLEGRO_TRANSFORM* getPreTransform();
+    ALLEGRO_TRANSFORM* getPostTransform();
     void invalidate();
     void invalidateRegion(const Rect& _area);
 };

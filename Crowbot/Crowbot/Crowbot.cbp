@@ -19,6 +19,8 @@
 					<Add directory="..\..\tools\enet\include" />
 					<Add directory="..\..\tools\lua\include" />
 					<Add directory="..\..\tools" />
+					<Add directory="Entities" />
+					<Add directory="Projectiles" />
 				</Compiler>
 				<Linker>
 					<Add option="-lgcc_eh" />
@@ -141,10 +143,14 @@
 		<Unit filename="Compiler.h" />
 		<Unit filename="Counter.cpp" />
 		<Unit filename="Counter.h" />
+		<Unit filename="Dialogue.cpp" />
+		<Unit filename="Dialogue.h" />
 		<Unit filename="Drawable.cpp" />
 		<Unit filename="Drawable.h" />
-		<Unit filename="Entity.cpp" />
-		<Unit filename="Entity.h" />
+		<Unit filename="Entities\Entity.cpp" />
+		<Unit filename="Entities\Entity.h" />
+		<Unit filename="Entities\Robot.cpp" />
+		<Unit filename="Entities\Robot.h" />
 		<Unit filename="Event.cpp" />
 		<Unit filename="Event.h" />
 		<Unit filename="Frame.cpp" />
@@ -165,11 +171,9 @@
 		<Unit filename="Physics.h" />
 		<Unit filename="Pixel.cpp" />
 		<Unit filename="Pixel.h" />
-		<Unit filename="Projectile.cpp" />
-		<Unit filename="Projectile.h" />
+		<Unit filename="Projectiles\Projectile.cpp" />
+		<Unit filename="Projectiles\Projectile.h" />
 		<Unit filename="ResourceSystem.h" />
-		<Unit filename="Robot.cpp" />
-		<Unit filename="Robot.h" />
 		<Unit filename="SystemFunctions.cpp" />
 		<Unit filename="SystemFunctions.h" />
 		<Unit filename="basicresource.h" />

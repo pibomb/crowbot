@@ -39,7 +39,7 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
         if(touchingGround)
         {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*27));
+            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*30));
         }
         break;
     }
@@ -111,7 +111,7 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 
 void Robot::shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
 {
-    Projectile *proj=new Projectile;
+    Bullet *proj=new Bullet;
     b2Vec2 linearVelocity(cos(angle_arg)*linearVelocity_arg, sin(angle_arg)*linearVelocity_arg);
     ent_body->ApplyLinearImpulseAtCenter(-linearVelocity);
     if(facingRight)

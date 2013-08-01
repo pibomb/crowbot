@@ -12,8 +12,7 @@ private:
     int x, y;
     int width, height;
     int lastMouseX, lastMouseY;
-    bool custom_translate;
-    std::function<void(Camera*)> customTranslate;
+    std::function<void(Camera*)> translateFunction;
     void transformation() override;
     void onDraw() override;
     void postDraw() override;
@@ -28,8 +27,7 @@ public:
         height(0),
         lastMouseX(0),
         lastMouseY(0),
-        custom_translate(false),
-        customTranslate([](Camera*){}),
+        translateFunction([](Camera*){}),
         background(nullptr),
         midground(nullptr),
         foreground(nullptr)
@@ -43,8 +41,7 @@ public:
         height(height_arg),
         lastMouseX(mouseX_arg),
         lastMouseY(mouseY_arg),
-        custom_translate(false),
-        customTranslate([](Camera*){}),
+        translateFunction([](Camera* camera_arg){camera_arg->preset().preTranslate(camera_arg->getX(), camera_arg->getY());}),
         background(new Layer),
         midground(new Layer),
         foreground(new Layer)

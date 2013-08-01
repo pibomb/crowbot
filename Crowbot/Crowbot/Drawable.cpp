@@ -33,12 +33,11 @@ void Drawable::render()
     {
         drawable_is_dirty=false;
         ALLEGRO_TRANSFORM cur;
-        al_copy_transform(&cur, &old);
         transformation();
-        //al_compose_transform(&cur, &drawable_trans);
-        al_compose_transform(&drawable_trans, &cur);
-        //al_use_transform(&cur);
-        al_use_transform(&drawable_trans);
+        al_compose_transform(&drawable_pre_trans, &old);
+        al_copy_transform(&cur, &drawable_pre_trans);
+        al_compose_transform(&cur, &drawable_post_trans);
+        al_use_transform(&cur);
         onDraw();
         for(auto &it : inner)
         {
@@ -59,62 +58,85 @@ void Drawable::render()
 
 Drawable& Drawable::preset()
 {
-    al_identity_transform(&drawable_trans);
+    al_identity_transform(&drawable_pre_trans);
+    return *this;
+}
+
+Drawable& Drawable::postset()
+{
+    al_identity_transform(&drawable_post_trans);
     return *this;
 }
 
 Drawable& Drawable::preScale(float sx, float sy)
 {
-    al_scale_transform(&drawable_trans, sx, sy);
+    al_scale_transform(&drawable_pre_trans, sx, sy);
     return *this;
 }
 
 Drawable& Drawable::preTranslate(Pixel px)
 {
-    al_translate_transform(&drawable_trans, px.getX(), px.getY());
+    al_translate_transform(&drawable_pre_trans, px.getX(), px.getY());
     return *this;
 }
 
 Drawable& Drawable::preTranslate(Vec2 px)
 {
-    al_translate_transform(&drawable_trans, px.getX(), px.getY());
+    al_translate_transform(&drawable_pre_trans, px.getX(), px.getY());
     return *this;
 }
 
 Drawable& Drawable::preTranslate(b2Vec2 px)
 {
-    al_translate_transform(&drawable_trans, M_TO_PX(px.x), -M_TO_PX(px.y));
+    al_translate_transform(&drawable_pre_trans, M_TO_PX(px.x), -M_TO_PX(px.y));
+    return *this;
+}
+
+Drawable& Drawable::postTranslate(b2Vec2 px)
+{
+    al_translate_transform(&drawable_post_trans, M_TO_PX(px.x), -M_TO_PX(px.y));
     return *this;
 }
 
 Drawable& Drawable::preTranslate(float x, float y)
 {
-    al_translate_transform(&drawable_trans, x, y);
+    al_translate_transform(&drawable_pre_trans, x, y);
     return *this;
 }
 
 Drawable& Drawable::preRotate(float theta)
 {
-    al_rotate_transform(&drawable_trans, theta);
+    al_rotate_transform(&drawable_pre_trans, theta);
+    return *this;
+}
+
+Drawable& Drawable::postRotate(float theta)
+{
+    al_rotate_transform(&drawable_post_trans, theta);
     return *this;
 }
 
 Drawable& Drawable::preAll(float x, float y, float sx, float sy, float theta)
 {
-    al_build_transform(&drawable_trans, x, y, sx, sy, theta);
+    al_build_transform(&drawable_pre_trans, x, y, sx, sy, theta);
     return *this;
 }
 
 Pixel Drawable::getTransformedTL()
 {
     float x=0, y=0;
-    al_transform_coordinates(&drawable_trans, &x, &y);
+    al_transform_coordinates(&drawable_pre_trans, &x, &y);
     return Pixel(x, y);
 }
 
-ALLEGRO_TRANSFORM* Drawable::getTransform()
+ALLEGRO_TRANSFORM* Drawable::getPreTransform()
 {
-    return &drawable_trans;
+    return &drawable_pre_trans;
+}
+
+ALLEGRO_TRANSFORM* Drawable::getPostTransform()
+{
+    return &drawable_post_trans;
 }
 
 void Drawable::invalidate()
@@ -124,7 +146,7 @@ void Drawable::invalidate()
 
 void Drawable::invalidateRegion(const Rect& _area)
 {
-    const Rect area=_area.transformBy(&drawable_trans);
+    const Rect area=_area.transformBy(&drawable_pre_trans);
     if(area&drawable_rgn)
     {
         drawable_is_dirty=true;
