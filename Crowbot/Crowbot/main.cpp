@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     Chain chn;
     chn.getResource()->registerChainShape(&chn, b2Vec2(0, 0),
                                           0, -PX_TO_M(bry)/3,
-                                          PX_TO_M(brx)*1/10, -PX_TO_M(bry)*4/9,
+                                          PX_TO_M(brx)*1/10, -PX_TO_M(bry)*3/9,
                                           PX_TO_M(brx)*2/10, -PX_TO_M(bry)*5/9,
                                           PX_TO_M(brx)*3/10, -PX_TO_M(bry)*9/9,
                                           PX_TO_M(brx)*4/10, -PX_TO_M(bry)*6/9,
@@ -62,6 +62,7 @@ int main(int argc, char **argv)
     resource.initialize();
     sysGC.initialize();
 
+    /*
     Lexer lex;
     Parser psr;
     auto ret=lex.generateTokens("\
@@ -112,10 +113,12 @@ int main(int argc, char **argv)
                               ");
     std::cout<<"Errors: "<<ret<<std::endl;
     psr.parse(lex, "updatebullet", "x, y", "luascripts/");
+    */
 
     activeBullet=new Projectile*;
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
+    /*
     lua_regmfunctions(lua_state, "FrameMT");
     lua_makemfunction(lua_state, "delay", "FrameMT", Frame,
                                              {
@@ -133,8 +136,9 @@ int main(int argc, char **argv)
                                                 return 0;
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
+    */
     Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
-    Batbot *bat=new Batbot(ENTITYTYPE::BATBOT, 0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, &game);
+    Batbot *bat=make_batbot(0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, &game);
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
@@ -188,12 +192,15 @@ int main(int argc, char **argv)
                                          );
     game.addObserver(&rob);
     game.start(FRAMETYPE::STARTSCREEN);
+    std::chrono::steady_clock::time_point current_time;
+    current_time=std::chrono::steady_clock::now();
     while(game)
     {
         //menu flickering caused by unlimited framerate?
         sysEvents[EVENTTYPE::COLLECTGARBAGE].fire();
         //lua_runlfunction(lua_state, "updatelua");
-        game.delayTime();
+        game.delayTime(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count());
+        current_time=std::chrono::steady_clock::now();
         game.update();
         game.render();
         //lua_runlfunction(lua_state, "userscript", &rob);

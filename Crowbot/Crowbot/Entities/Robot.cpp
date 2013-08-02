@@ -2,10 +2,30 @@
 
 Robot::Robot(ENTITYTYPE entity_type_arg, const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg):
     Entity(entity_type_arg, id_arg, startHp, frame_arg),
-    touchingGround(0),
-    facingRight(true)
+    facingRight(true),
+    touchingGround(0)
 {
     ent_body->registerDynamicBox(this, pos_arg, PX_TO_M(120), PX_TO_M(160), 7.85, 0.7);
+    ent_body->addGroundSensor(((void*)(static_cast<void(*)(PhysicalDrawable*, PhysicalDrawable*, COLLISIONTYPE)>([](PhysicalDrawable* self, PhysicalDrawable* other, COLLISIONTYPE col_type)
+                                                                                                                   {
+    switch(col_type)
+    {
+    case COLLISIONTYPE::BEGIN:
+    {
+       static_cast<Robot*>(self)->touchingGround++;
+       break;
+    }
+    case COLLISIONTYPE::END:
+    {
+       static_cast<Robot*>(self)->touchingGround--;
+       break;
+    }
+    default:
+    {
+       break;
+    }
+    }
+                                                                                                                   }))));
     ent_body->getBody()->SetFixedRotation(true);
 }
 
@@ -87,6 +107,7 @@ void Robot::onKeyRelease(int unichar, int keycode, unsigned int modifiers)
 
 void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 {
+    printf("%d\n", touchingGround);
     if(!touchingGround)
     {
         ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -ent_body->getBody()->GetMass()*3));
@@ -165,10 +186,6 @@ void Robot::beginCollision(PhysicalDrawable *other)
 {
     switch(other->getDrawableType())
     {
-    case DRAWABLETYPE::CHAIN:
-    {
-        touchingGround++;
-    }
     default:
     {
         break;
@@ -180,10 +197,6 @@ void Robot::endCollision(PhysicalDrawable *other)
 {
     switch(other->getDrawableType())
     {
-    case DRAWABLETYPE::CHAIN:
-    {
-        touchingGround--;
-    }
     default:
     {
         break;

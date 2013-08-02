@@ -98,9 +98,18 @@ void Box::endCollision(PhysicalDrawable *other)
 
 void ContactListener::BeginContact(b2Contact* contact)
 {
-    void *objectA=contact->GetFixtureA()->GetBody()->GetUserData(), *objectB=contact->GetFixtureB()->GetBody()->GetUserData();
+    b2Fixture *fixtureA=contact->GetFixtureA(), *fixtureB=contact->GetFixtureB();
+    void *objectA=fixtureA->GetBody()->GetUserData(), *objectB=fixtureB->GetBody()->GetUserData();
     if(objectA && objectB)
     {
+        if(fixtureA->GetUserData())
+        {
+            ((void(*)(PhysicalDrawable*, PhysicalDrawable*, COLLISIONTYPE))(fixtureA->GetUserData()))(static_cast<PhysicalDrawable*>(objectA), static_cast<PhysicalDrawable*>(objectB), COLLISIONTYPE::BEGIN);
+        }
+        if(fixtureB->GetUserData())
+        {
+            ((void(*)(PhysicalDrawable*, PhysicalDrawable*, COLLISIONTYPE))(fixtureB->GetUserData()))(static_cast<PhysicalDrawable*>(objectB), static_cast<PhysicalDrawable*>(objectA), COLLISIONTYPE::BEGIN);
+        }
         static_cast<PhysicalDrawable*>(objectA)->beginCollision(static_cast<PhysicalDrawable*>(objectB));
         static_cast<PhysicalDrawable*>(objectA)->collisions++;
         static_cast<PhysicalDrawable*>(objectB)->beginCollision(static_cast<PhysicalDrawable*>(objectA));
@@ -110,9 +119,18 @@ void ContactListener::BeginContact(b2Contact* contact)
 
 void ContactListener::EndContact(b2Contact* contact)
 {
-    void *objectA=contact->GetFixtureA()->GetBody()->GetUserData(), *objectB=contact->GetFixtureB()->GetBody()->GetUserData();
+    b2Fixture *fixtureA=contact->GetFixtureA(), *fixtureB=contact->GetFixtureB();
+    void *objectA=fixtureA->GetBody()->GetUserData(), *objectB=fixtureB->GetBody()->GetUserData();
     if(objectA && objectB)
     {
+        if(fixtureA->GetUserData())
+        {
+            ((void(*)(PhysicalDrawable*, PhysicalDrawable*, COLLISIONTYPE))(fixtureA->GetUserData()))(static_cast<PhysicalDrawable*>(objectA), static_cast<PhysicalDrawable*>(objectB), COLLISIONTYPE::END);
+        }
+        if(fixtureB->GetUserData())
+        {
+            ((void(*)(PhysicalDrawable*, PhysicalDrawable*, COLLISIONTYPE))(fixtureB->GetUserData()))(static_cast<PhysicalDrawable*>(objectB), static_cast<PhysicalDrawable*>(objectA), COLLISIONTYPE::END);
+        }
         static_cast<PhysicalDrawable*>(objectA)->endCollision(static_cast<PhysicalDrawable*>(objectB));
         static_cast<PhysicalDrawable*>(objectA)->collisions--;
         static_cast<PhysicalDrawable*>(objectB)->endCollision(static_cast<PhysicalDrawable*>(objectA));

@@ -8,11 +8,11 @@
 class Robot : public Entity, public Observer
 {
 private:
-    int touchingGround;
     bool facingRight;
     std::map<std::string, std::function<void(Robot*, std::vector<int>)>> robotFunctions;
 	void onDraw() override;
 public:
+    int touchingGround;
     Robot(ENTITYTYPE entity_type_arg, const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg);
     ~Robot()
     {

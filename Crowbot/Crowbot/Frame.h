@@ -68,7 +68,7 @@ public:
     void recvInfo(ENetPacket *packet);
     bool isConnectedOverLAN();
 #endif
-    void delayTime();
+    void delayTime(float delay_arg);
     void start(FRAMETYPE id_arg);
     void end();
     void destroy();

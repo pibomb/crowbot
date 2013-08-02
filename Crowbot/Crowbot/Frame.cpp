@@ -353,19 +353,19 @@ bool Frame::isConnectedOverLAN()
     return peer && peer_valid;
 }
 #endif
-void Frame::delayTime()
+void Frame::delayTime(float delay_arg)
 {
 #ifdef ENET_ENABLED
     if(enet)
     {
-        enet_host_service(host, &enet_event, 1000/frames_per_second);
+        enet_host_service(host, &enet_event, 1000.0/frames_per_second);
     }
     else
     {
-        al_rest(1.0/frames_per_second);
+        al_rest(1.0/frames_per_second-delay_arg);
     }
 #else
-    al_rest(1.0/frames_per_second);
+    al_rest(1.0/frames_per_second-delay_arg);
 #endif
 }
 

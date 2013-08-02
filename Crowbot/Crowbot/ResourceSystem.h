@@ -104,6 +104,7 @@ public:
         body->CreateFixture(&fixtureDef);
         body->SetUserData(userData_arg);
     }
+    void addGroundSensor(void *userData_arg);
     void registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, std::vector<b2Vec2> chainPoints);
     void registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg);
     void registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg);

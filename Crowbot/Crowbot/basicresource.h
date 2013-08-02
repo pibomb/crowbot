@@ -123,6 +123,14 @@ enum class DRAWABLETYPE : int
     BULLET
 };
 
+// Collision Definitions
+enum class COLLISIONTYPE : int
+{
+    INVALID=0,
+    BEGIN,
+    END
+};
+
 // Entity Definitions
 enum class ENTITYTYPE : int
 {

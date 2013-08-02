@@ -87,6 +87,20 @@ b2ChainShape* b2Resource::getChain()
     return static_cast<b2ChainShape*>(getBody()->GetFixtureList()->GetShape());
 }
 
+void b2Resource::addGroundSensor(void *userData_arg)
+{
+    b2PolygonShape shape;
+    b2AABB aabb=body->GetFixtureList()->GetAABB(0);
+    shape.SetAsBox((aabb.upperBound.x-aabb.lowerBound.x)/2+0.2, 0.05, b2Vec2((aabb.upperBound.x-aabb.lowerBound.x)/2, aabb.lowerBound.y-0.05), 0);
+    b2FixtureDef fixtureDef;
+    fixtureDef.shape=&shape;
+    fixtureDef.density=0;
+    fixtureDef.friction=0;
+    fixtureDef.isSensor=true;
+    fixtureDef.userData=userData_arg;
+    body->CreateFixture(&fixtureDef);
+}
+
 void b2Resource::registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, std::vector<b2Vec2> chainPoints)
 {
     b2BodyDef bodyDef;
