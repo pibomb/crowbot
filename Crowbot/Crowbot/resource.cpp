@@ -240,6 +240,7 @@ void ResourceSystem::initialize()
     registerImage(IMAGETYPE::DEFAULT_BUTTON_H, "images/btn_background_h.png");
     registerImage(IMAGETYPE::DEFAULT_BUTTON_D, "images/btn_background_d.png");
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, "images/player.png");
+    registerImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT, "images/batbot.png");
     registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, "images/bullet.png");
     // Entity Animation Data
     internalData(Entity)[ENTITYTYPE::CROWBOT]=AnimatedConstructorData
@@ -266,6 +267,22 @@ void ResourceSystem::initialize()
         [3]=AnimationData(18, 3, 150);
     internalData(Entity)[ENTITYTYPE::CROWBOT].sequence
         [4]=AnimationData(24, 2, 150);
+    internalData(Entity)[ENTITYTYPE::BATBOT]=AnimatedConstructorData
+    (
+        // Spritesheet
+        getImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT),
+        // Width
+        100,
+        // Height
+        34,
+        // Frames
+        1,
+        // Sequence (optional)
+        // Current Sequence
+        0
+    );
+    internalData(Entity)[ENTITYTYPE::BATBOT].sequence
+        [0]=AnimationData(0, 1, -1);
     // Projectile Animation Data
     internalData(Projectile)[PROJECTILETYPE::BULLET]=AnimatedConstructorData
     (

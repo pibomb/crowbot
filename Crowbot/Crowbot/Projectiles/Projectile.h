@@ -38,6 +38,7 @@ public:
     void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg);
     bool isActive();
     DRAWABLETYPE getDrawableType() override;
+    virtual void beginDestroy();
     virtual void move(b2Vec2 linearVelocity_arg)=0;
     virtual void update()=0;
     virtual void destroy()=0;

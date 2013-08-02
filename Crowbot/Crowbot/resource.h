@@ -4,6 +4,7 @@
 #include "basicresource.h"
 
 #include "Animated.h"
+#include "Batbot.h"
 #include "Bullet.h"
 #include "Button.h"
 #include "Camera.h"

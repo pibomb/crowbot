@@ -13,6 +13,10 @@ void GarbageCollection::initialize()
 
 void GarbageCollection::cleanup()
 {
+    for(auto &it : entityGC)
+    {
+        delete it;
+    }
     for(auto &it : buttonGC)
     {
         delete it;
@@ -29,6 +33,11 @@ void GarbageCollection::cleanup()
     {
         delete it;
     }
+}
+
+void GarbageCollection::watchEntity(Entity *entity_arg)
+{
+    entityGC.push_front(entity_arg);
 }
 
 void GarbageCollection::watchButton(Button *button_arg)
@@ -53,6 +62,18 @@ void GarbageCollection::watchProjectile(Projectile *projectile_arg)
 
 void GarbageCollection::collectGarbage()
 {
+    for(auto it=entityGC.begin(); it!=entityGC.end();)
+    {
+        if(((*it)->isDeletable()))
+        {
+            delete *it;
+            it=entityGC.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
     for(auto &it : buttonGC)
     {
         it->pull();

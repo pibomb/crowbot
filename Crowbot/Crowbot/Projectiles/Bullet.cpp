@@ -14,7 +14,7 @@ void Bullet::update()
         /*
         if(!is_pixel_onscreen(pro_body->getBody()->GetPosition()))
         {
-            destroy();
+            beginDestroy();
         }
         */
     }
@@ -22,19 +22,7 @@ void Bullet::update()
 
 void Bullet::destroy()
 {
-    if(isActive())
-    {
-        is_valid=false;
-        pull();
-        if(updateTrigger)
-        {
-            sysGC.watchEventHandler(updateTrigger);
-        }
-        if(pro_body)
-        {
-            resource.destroyb2Resource(pro_body);
-        }
-    }
+    //
 }
 
 void Bullet::setAttributes(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)
@@ -51,10 +39,11 @@ void Bullet::beginCollision(PhysicalDrawable *other)
     switch(other->getDrawableType())
     {
     case DRAWABLETYPE::ROBOT:
+    case DRAWABLETYPE::BATBOT:
     case DRAWABLETYPE::CHAIN:
     case DRAWABLETYPE::BOX:
     {
-        destroy();
+        beginDestroy();
         break;
     }
     default:

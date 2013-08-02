@@ -134,6 +134,7 @@ int main(int argc, char **argv)
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
     Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
+    Batbot *bat=new Batbot(ENTITYTYPE::BATBOT, 0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, &game);
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
@@ -166,12 +167,14 @@ int main(int argc, char **argv)
     luaE_endmfunctions();
     */
     rob.push(game.getCamera()->midground);
+    bat->push(game.getCamera()->midground);
     chn.push(game.getCamera()->background);
     ground.push(game.getCamera()->background);
     ceiling.push(game.getCamera()->background);
     leftWall.push(game.getCamera()->background);
     rightWall.push(game.getCamera()->background);
     game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){rob.push(game.getCamera()->midground);});
+    game.addOnRestart([](FRAMETYPE){return true;}, [&bat, &game](){bat->push(game.getCamera()->midground);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&chn, &game](){chn.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&ground, &game](){ground.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&ceiling, &game](){ceiling.push(game.getCamera()->background);});
@@ -196,8 +199,6 @@ int main(int argc, char **argv)
         //lua_runlfunction(lua_state, "userscript", &rob);
         al_flip_display();
     }
-    game.end();
-    game.destroy();
     rob.pull();
     delete activeBullet;
     /*
@@ -214,7 +215,10 @@ int main(int argc, char **argv)
     lua_close(lua_state);
     resource.cleanup();
     sysGC.cleanup();
+    game.end();
+    game.destroy();
     al_destroy_display(display);
+    printf("End\n");
 
     return 0;
 }

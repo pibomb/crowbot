@@ -15,9 +15,30 @@ Entity::~Entity()
     //
 }
 
+void Entity::beginDestroy()
+{
+    pull();
+    if(ent_body)
+    {
+        resource.destroyb2Resource(ent_body);
+    }
+    destroy();
+    sysGC.watchEntity(this);
+}
+
+bool Entity::isDeletable()
+{
+    return collisions==0;
+}
+
 void Entity::transformation()
 {
-	preset();
+    preset().preTranslate(getPosition());
+}
+
+void Entity::onDraw()
+{
+    draw_current_frame_centered(0, 0, 0);
 }
 
 void Entity::postDraw()

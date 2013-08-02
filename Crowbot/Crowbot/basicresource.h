@@ -108,6 +108,7 @@ enum class IMAGETYPE : int
     DEFAULT_BUTTON_H,
     DEFAULT_BUTTON_D,
     SPRITESHEET_ENTITY_CROWBOT,
+    SPRITESHEET_ENTITY_BATBOT,
     SPRITESHEET_PROJECTILE_BULLET
 };
 
@@ -116,6 +117,7 @@ enum class DRAWABLETYPE : int
 {
     INVALID=0,
     ROBOT,
+    BATBOT,
     CHAIN,
     BOX,
     BULLET
@@ -125,7 +127,8 @@ enum class DRAWABLETYPE : int
 enum class ENTITYTYPE : int
 {
     INVALID=0,
-    CROWBOT
+    CROWBOT,
+    BATBOT
 };
 
 // Projectile Definitions

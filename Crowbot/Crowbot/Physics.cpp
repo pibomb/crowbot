@@ -102,7 +102,9 @@ void ContactListener::BeginContact(b2Contact* contact)
     if(objectA && objectB)
     {
         static_cast<PhysicalDrawable*>(objectA)->beginCollision(static_cast<PhysicalDrawable*>(objectB));
+        static_cast<PhysicalDrawable*>(objectA)->collisions++;
         static_cast<PhysicalDrawable*>(objectB)->beginCollision(static_cast<PhysicalDrawable*>(objectA));
+        static_cast<PhysicalDrawable*>(objectB)->collisions++;
     }
 }
 
@@ -112,6 +114,8 @@ void ContactListener::EndContact(b2Contact* contact)
     if(objectA && objectB)
     {
         static_cast<PhysicalDrawable*>(objectA)->endCollision(static_cast<PhysicalDrawable*>(objectB));
+        static_cast<PhysicalDrawable*>(objectA)->collisions--;
         static_cast<PhysicalDrawable*>(objectB)->endCollision(static_cast<PhysicalDrawable*>(objectA));
+        static_cast<PhysicalDrawable*>(objectB)->collisions--;
     }
 }

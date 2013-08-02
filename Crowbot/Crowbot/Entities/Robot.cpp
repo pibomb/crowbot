@@ -139,11 +139,6 @@ void Robot::executeFunction(std::string function_name, std::vector<int> args)
     }
 }
 
-void Robot::transformation()
-{
-    preset().preTranslate(getPosition());
-}
-
 void Robot::onDraw()
 {
     if(facingRight)
@@ -154,6 +149,11 @@ void Robot::onDraw()
     {
         draw_current_frame_centered(0, 0, ALLEGRO_FLIP_HORIZONTAL);
     }
+}
+
+void Robot::destroy()
+{
+    //
 }
 
 DRAWABLETYPE Robot::getDrawableType()

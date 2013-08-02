@@ -17,6 +17,7 @@ protected:
 	AABB ent_bb;
 	Frame *frame;
 	virtual void transformation() override;
+	virtual void onDraw() override;
 	virtual void postDraw() override;
 public:
 	explicit Entity(ENTITYTYPE entity_type_arg, const unsigned int& id, const int& startHp, Frame *frame_arg);
@@ -29,6 +30,9 @@ public:
 	void decHp(int amt) {ent_health -= amt;};
 	void incHp(int amt) {ent_health += amt;};
 	b2Vec2 getPosition() {return ent_body->getBody()->GetPosition();};
+    virtual void beginDestroy();
+    virtual bool isDeletable();
+    virtual void destroy()=0;
 	/*
 	void move(b2Vec2 amt) {ent_pos+=amt;};
 	void move(float x, float y) {ent_pos.x+=x; ent_pos.y+=y;};

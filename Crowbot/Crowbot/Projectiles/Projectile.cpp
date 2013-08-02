@@ -47,3 +47,21 @@ DRAWABLETYPE Projectile::getDrawableType()
 {
     return DRAWABLETYPE::BULLET;
 }
+
+void Projectile::beginDestroy()
+{
+    if(isActive())
+    {
+        is_valid=false;
+        pull();
+        if(updateTrigger)
+        {
+            sysGC.watchEventHandler(updateTrigger);
+        }
+        if(pro_body)
+        {
+            resource.destroyb2Resource(pro_body);
+        }
+        destroy();
+    }
+}

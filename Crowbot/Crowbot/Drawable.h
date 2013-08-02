@@ -65,13 +65,16 @@ public:
 class PhysicalDrawable : public Drawable
 {
 public:
+    int collisions;
     PhysicalDrawable():
-        Drawable()
+        Drawable(),
+        collisions(0)
     {
         //
     }
-    PhysicalDrawable(Rect drawable_rgn_arg):
-        Drawable(drawable_rgn_arg)
+    PhysicalDrawable(Rect drawable_rgn_arg, int collisions_arg=0):
+        Drawable(drawable_rgn_arg),
+        collisions(collisions_arg)
     {
         //
     }
