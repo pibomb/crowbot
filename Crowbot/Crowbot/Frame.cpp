@@ -434,8 +434,8 @@ void Frame::start(FRAMETYPE id_arg)
                         return;
                     },
                     std::bind(&Frame::end, this),
-                    resource.getImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET),
-                    resource.getImage(IMAGETYPE::INVALID),
+                    resource.getImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT),
+                    resource.getImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT),
                     resource.getImage(IMAGETYPE::DEFAULT_BUTTON),
                     resource.getImage(IMAGETYPE::DEFAULT_BUTTON_H),
                     event_queue,

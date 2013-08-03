@@ -1,5 +1,5 @@
 #include "resource.h"
-
+#include "batbot_spritesheet.cpp"
 // Font
 
 void Font::destroy()
@@ -203,11 +203,6 @@ void ResourceSystem::destroyb2Resource(b2Resource* b2Resource_arg)
     delete b2Resource_arg;
 }
 
-void ResourceSystem::registerImage(IMAGETYPE image_id, std::string directory)
-{
-    internalImages[image_id]=al_load_bitmap(directory.c_str());
-}
-
 ALLEGRO_BITMAP* ResourceSystem::getImage(IMAGETYPE image_id)
 {
     return internalImages[image_id];
@@ -248,14 +243,20 @@ void ResourceSystem::initialize()
     registerFont(FONTTYPE::ORBITRON_LT, "fonts/Orbitron/Orbitron Light.otf");
     registerFont(FONTTYPE::ORBITRON_B, "fonts/Orbitron/Orbitron Bold.otf");
     // Images
-    registerImage(IMAGETYPE::INVALID, "images/robot.png");
-    registerImage(IMAGETYPE::RECTANGLE, "images/rectangle.png");
-    registerImage(IMAGETYPE::DEFAULT_BUTTON, "images/btn_background.png");
-    registerImage(IMAGETYPE::DEFAULT_BUTTON_H, "images/btn_background_h.png");
-    registerImage(IMAGETYPE::DEFAULT_BUTTON_D, "images/btn_background_d.png");
-    registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, "images/player.png");
-    registerImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT, "images/batbot.png");
-    registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, "images/bullet.png");
+    #include "images/rectangle_spritesheet.cpp"
+    registerImage(IMAGETYPE::RECTANGLE, rectangle_spritesheet);
+    #include "images/default_button_spritesheet.cpp"
+    registerImage(IMAGETYPE::DEFAULT_BUTTON, default_button_spritesheet);
+    #include "images/default_button_h_spritesheet.cpp"
+    registerImage(IMAGETYPE::DEFAULT_BUTTON_H, default_button_h_spritesheet);
+    #include "images/default_button_d_spritesheet.cpp"
+    registerImage(IMAGETYPE::DEFAULT_BUTTON_D, default_button_d_spritesheet);
+    #include "images/player_spritesheet.cpp"
+    registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, player_spritesheet);
+    #include "images/batbot_spritesheet.cpp"
+    registerImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT, batbot_spritesheet);
+    #include "images/bullet_spritesheet.cpp"
+    registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, bullet_spritesheet);
     // Entity Animation Data
     internalData(Entity)[ENTITYTYPE::CROWBOT]=AnimatedConstructorData
     (

@@ -49,6 +49,7 @@
 #include <allegro5/allegro_native_dialog.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_memfile.h>
 
 //lua.hpp covers the extern "C"
 #include <lua.hpp>
@@ -210,6 +211,7 @@ enum class MOUSEBUTTON : int
 #define luaE_endmfunctions() _lua_temp_char_ptr=nullptr;}
 
 // Other Macros
+#define registerImage(_a, _b) {ALLEGRO_FILE*_mf=al_open_memfile(__##_b##_data,__##_b##_size,"r");ALLEGRO_BITMAP*_mb=al_load_bitmap_f(_mf,".png");internalImages[_a]=_mb;al_fclose(_mf);}
 #define internalData(_a) internal##_a##AnimatedConstructorData
 #define PX_TO_M(_a) ((_a)/32.0)
 #define M_TO_PX(_a) ((_a)*32.0)
