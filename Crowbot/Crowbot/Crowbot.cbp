@@ -19,6 +19,7 @@
 					<Add directory="..\..\tools\enet\include" />
 					<Add directory="..\..\tools\lua\include" />
 					<Add directory="..\..\tools" />
+					<Add directory="..\Crowbot" />
 					<Add directory="Entities" />
 					<Add directory="Projectiles" />
 				</Compiler>
@@ -79,6 +80,9 @@
 					<Add directory="..\..\tools\enet\include" />
 					<Add directory="..\..\tools\lua\include" />
 					<Add directory="..\..\tools" />
+					<Add directory="..\Crowbot" />
+					<Add directory="Entities" />
+					<Add directory="Projectiles" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -147,6 +151,8 @@
 		<Unit filename="Dialogue.h" />
 		<Unit filename="Drawable.cpp" />
 		<Unit filename="Drawable.h" />
+		<Unit filename="Entities\Batbot.cpp" />
+		<Unit filename="Entities\Batbot.h" />
 		<Unit filename="Entities\Entity.cpp" />
 		<Unit filename="Entities\Entity.h" />
 		<Unit filename="Entities\Robot.cpp" />
@@ -171,6 +177,8 @@
 		<Unit filename="Physics.h" />
 		<Unit filename="Pixel.cpp" />
 		<Unit filename="Pixel.h" />
+		<Unit filename="Projectiles\Bullet.cpp" />
+		<Unit filename="Projectiles\Bullet.h" />
 		<Unit filename="Projectiles\Projectile.cpp" />
 		<Unit filename="Projectiles\Projectile.h" />
 		<Unit filename="ResourceSystem.h" />

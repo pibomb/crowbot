@@ -91,7 +91,7 @@ void b2Resource::addGroundSensor(void *userData_arg)
 {
     b2PolygonShape shape;
     b2AABB aabb=body->GetFixtureList()->GetAABB(0);
-    shape.SetAsBox((aabb.upperBound.x-aabb.lowerBound.x)/2+0.2, 0.05, b2Vec2((aabb.upperBound.x-aabb.lowerBound.x)/2, aabb.lowerBound.y-0.05), 0);
+    shape.SetAsBox((aabb.upperBound.x-aabb.lowerBound.x)/2-0.05, (aabb.upperBound.y-aabb.lowerBound.y)/2, b2Vec2(0, -0.02), 0);
     b2FixtureDef fixtureDef;
     fixtureDef.shape=&shape;
     fixtureDef.density=0;

@@ -26,6 +26,7 @@ int main(int argc, char **argv)
     al_install_audio();
     al_init_acodec_addon();
     al_reserve_samples(5);
+    al_set_target_bitmap(al_get_backbuffer(display));
     // allegro initialization
 
 	// initializing lua
@@ -115,9 +116,12 @@ int main(int argc, char **argv)
     psr.parse(lex, "updatebullet", "x, y", "luascripts/");
     */
 
+    activeEntity=new Entity*;
     activeBullet=new Projectile*;
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
+    Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
+    Batbot *bat=make_batbot(0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, &game);
     /*
     lua_regmfunctions(lua_state, "FrameMT");
     lua_makemfunction(lua_state, "delay", "FrameMT", Frame,
@@ -137,8 +141,6 @@ int main(int argc, char **argv)
                                             });
     lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
     */
-    Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
-    Batbot *bat=make_batbot(0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, &game);
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
@@ -146,6 +148,7 @@ int main(int argc, char **argv)
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
+
     lua_regmfunctions(lua_state, "BulletMT");
     lua_makemfunction(lua_state, "move", "BulletMT", Projectile*,
                                              {
@@ -153,12 +156,35 @@ int main(int argc, char **argv)
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "activeBullet", "BulletMT", Projectile*, activeBullet);
-    al_set_target_bitmap(al_get_backbuffer(display));
+
+
+    lua_regmfunctions(lua_state, "BatbotMT");
+    lua_makemfunction(lua_state, "x", "BatbotMT", Entity*,
+                                             {
+                                                 lua_pushnumber(l, (*obj)->getX());
+                                                 return 1;
+                                             });
+    lua_makemfunction(lua_state, "y", "BatbotMT", Entity*,
+                                             {
+                                                 lua_pushnumber(l, (*obj)->getY());
+                                                 return 1;
+                                             });
+    lua_makemfunction(lua_state, "mass", "BatbotMT", Entity*,
+                                             {
+                                                 lua_pushnumber(l, (*obj)->getMass());
+                                                 return 1;
+                                             });
+    lua_makemfunction(lua_state, "move", "BatbotMT", Entity*,
+                                             {
+                                                 (*obj)->move(luaL_checknumber(l, 1), luaL_checknumber(l, 2));
+                                                 return 0;
+                                             });
+    lua_prepmfunctions(lua_state, "batbot", "BatbotMT", Entity*, activeEntity);
+
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
-    lua_makelfunction(lua_state, "luascripts/userscript.lua", "robotscript");
-    lua_runlfunction(lua_state, "robotscript");
-    lua_makelfunction(lua_state, "luascripts/updatebullet.lua", "bulletscript");
-    lua_runlfunction(lua_state, "bulletscript");
+    lua_reglfunction(lua_state, "luascripts/userscript.lua");
+    lua_reglfunction(lua_state, "luascripts/updatebullet.lua");
+    lua_reglfunction(lua_state, "luascripts/updatebatbot.lua");
     /*
     luaE_beginmfunctions(lua_state, "RobotMT");
     luaE_regmfunctions();
@@ -207,6 +233,7 @@ int main(int argc, char **argv)
         al_flip_display();
     }
     rob.pull();
+    delete activeEntity;
     delete activeBullet;
     /*
     // Events example

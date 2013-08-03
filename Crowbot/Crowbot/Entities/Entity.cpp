@@ -15,6 +15,36 @@ Entity::~Entity()
     //
 }
 
+b2Vec2 Entity::getPosition()
+{
+    return ent_body->getBody()->GetPosition();
+}
+
+float Entity::getMass()
+{
+    return ent_body->getBody()->GetMass();
+}
+
+float Entity::getX()
+{
+    return ent_body->getBody()->GetPosition().x;
+}
+
+float Entity::getY()
+{
+    return ent_body->getBody()->GetPosition().y;
+}
+
+void Entity::move(float x, float y)
+{
+    ent_body->ApplyLinearImpulseAtCenter(b2Vec2(x, y));
+}
+
+void Entity::move(b2Vec2 amt)
+{
+    ent_body->ApplyLinearImpulseAtCenter(amt);
+}
+
 void Entity::beginDestroy()
 {
     pull();

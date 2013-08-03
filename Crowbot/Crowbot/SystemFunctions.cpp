@@ -74,6 +74,12 @@ Batbot* make_batbot(const unsigned int& id_arg, const b2Vec2& pos_arg, const int
     return new Batbot(ENTITYTYPE::BATBOT, id_arg, pos_arg, startHp, frame_arg);
 }
 
+void lua_reglfunction(lua_State *l, const char *directory_arg)
+{
+    lua_makelfunction(l, directory_arg, directory_arg);
+    lua_runlfunction(l, directory_arg);
+}
+
 void lua_setlfunctionarg(bool bool_arg)
 {
     lua_pushboolean(lua_state, bool_arg);

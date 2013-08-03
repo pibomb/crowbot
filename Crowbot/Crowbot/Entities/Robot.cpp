@@ -107,7 +107,6 @@ void Robot::onKeyRelease(int unichar, int keycode, unsigned int modifiers)
 
 void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 {
-    printf("%d\n", touchingGround);
     if(!touchingGround)
     {
         ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -ent_body->getBody()->GetMass()*3));
