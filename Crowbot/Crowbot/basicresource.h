@@ -13,6 +13,7 @@
 */
 
 #include <cstdarg>
+#include <cstddef>
 #include <cstdio>
 #include <cstring>
 #include <ctime>
@@ -79,8 +80,8 @@ enum class FONTTYPE : int
     ARIAL=0,
     FFF_TUSJ,
     FREEDOM,
-    MONTESERRAT,
-    MONTESERRAT_B,
+    MONTSERRAT,
+    MONTSERRAT_B,
     AMBLE,
     AMBLE_B,
     AMBLE_I,
@@ -90,7 +91,7 @@ enum class FONTTYPE : int
     ORBITRON_B
 };
 
-#define FONT_DEFAULT_GAME FONTTYPE::MONTESERRAT
+#define FONT_DEFAULT_GAME FONTTYPE::MONTSERRAT
 #define FONT_SIZE_DEFAULT_GAME 15
 #define FONT_SIZE_LARGE_GAME 48
 
@@ -211,6 +212,7 @@ enum class MOUSEBUTTON : int
 #define luaE_endmfunctions() _lua_temp_char_ptr=nullptr;}
 
 // Other Macros
+#define registerFont(_a, _b) {initializeFont(_a, [](){return al_open_memfile(__##_b##_data,__##_b##_size,"r");});}
 #define registerImage(_a, _b) {ALLEGRO_FILE*_mf=al_open_memfile(__##_b##_data,__##_b##_size,"r");ALLEGRO_BITMAP*_mb=al_load_bitmap_f(_mf,".png");internalImages[_a]=_mb;al_fclose(_mf);}
 #define internalData(_a) internal##_a##AnimatedConstructorData
 #define PX_TO_M(_a) ((_a)/32.0)

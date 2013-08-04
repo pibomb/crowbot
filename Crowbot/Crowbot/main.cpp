@@ -116,7 +116,7 @@ int main(int argc, char **argv)
     psr.parse(lex, "updatebullet", "x, y", "luascripts/");
     */
 
-    activeEntity=new Entity*;
+    activeBatbot=new Batbot*;
     activeBullet=new Projectile*;
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
@@ -159,27 +159,27 @@ int main(int argc, char **argv)
 
 
     lua_regmfunctions(lua_state, "BatbotMT");
-    lua_makemfunction(lua_state, "x", "BatbotMT", Entity*,
+    lua_makemfunction(lua_state, "x", "BatbotMT", Batbot*,
                                              {
                                                  lua_pushnumber(l, (*obj)->getX());
                                                  return 1;
                                              });
-    lua_makemfunction(lua_state, "y", "BatbotMT", Entity*,
+    lua_makemfunction(lua_state, "y", "BatbotMT", Batbot*,
                                              {
                                                  lua_pushnumber(l, (*obj)->getY());
                                                  return 1;
                                              });
-    lua_makemfunction(lua_state, "mass", "BatbotMT", Entity*,
+    lua_makemfunction(lua_state, "mass", "BatbotMT", Batbot*,
                                              {
                                                  lua_pushnumber(l, (*obj)->getMass());
                                                  return 1;
                                              });
-    lua_makemfunction(lua_state, "move", "BatbotMT", Entity*,
+    lua_makemfunction(lua_state, "move", "BatbotMT", Batbot*,
                                              {
                                                  (*obj)->move(luaL_checknumber(l, 1), luaL_checknumber(l, 2));
                                                  return 0;
                                              });
-    lua_prepmfunctions(lua_state, "batbot", "BatbotMT", Entity*, activeEntity);
+    lua_prepmfunctions(lua_state, "batbot", "BatbotMT", Batbot*, activeBatbot);
 
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
     lua_reglfunction(lua_state, "luascripts/userscript.lua");
@@ -220,6 +220,7 @@ int main(int argc, char **argv)
     game.start(FRAMETYPE::STARTSCREEN);
     std::chrono::steady_clock::time_point current_time;
     current_time=std::chrono::steady_clock::now();
+    resource.getFont(FONT_DEFAULT_GAME, 32);
     while(game)
     {
         //menu flickering caused by unlimited framerate?
@@ -233,7 +234,7 @@ int main(int argc, char **argv)
         al_flip_display();
     }
     rob.pull();
-    delete activeEntity;
+    delete activeBatbot;
     delete activeBullet;
     /*
     // Events example

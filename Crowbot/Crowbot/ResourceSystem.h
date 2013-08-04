@@ -9,16 +9,14 @@ struct AnimatedConstructorData;
 class Font
 {
 private:
-    std::string directory;
+    std::function<ALLEGRO_FILE*()> memfileFunc;
     std::map<int, ALLEGRO_FONT*> fonts;
 public:
-    Font():
-        directory("fonts/arial.ttf")
+    Font()
     {
         //
     }
-    Font(std::string directory_arg):
-        directory(directory_arg)
+    Font(ALLEGRO_FILE *memfile_arg)
     {
         //
     }
@@ -26,9 +24,9 @@ public:
     {
         //
     }
+    ALLEGRO_FONT* getFont(int fontSize_arg);
+    void setMemfileFunc(std::function<ALLEGRO_FILE*()> memfileFunc_arg);
     void destroy();
-    void setDir(std::string directory_arg);
-    ALLEGRO_FONT* getFont(int id);
 };
 
 class Sample
@@ -122,8 +120,8 @@ private:
     std::map<PROJECTILETYPE, AnimatedConstructorData> internalProjectileAnimatedConstructorData;
     std::list<b2Resource*> b2ResourceList;
 public:
-    void registerFont(FONTTYPE id, std::string directory);
-    ALLEGRO_FONT* getFont(FONTTYPE font_id, int fontSize_id=14);
+    void initializeFont(FONTTYPE fontName_arg, std::function<ALLEGRO_FILE*()> memfileFunc_arg);
+    ALLEGRO_FONT* getFont(FONTTYPE fontName_arg, int fontSize_arg=14);
     void destroyFonts();
     Sample& getAudio(AUDIOTYPE audio_id);
     void stopAllAudio();

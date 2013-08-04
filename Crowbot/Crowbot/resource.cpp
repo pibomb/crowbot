@@ -1,6 +1,46 @@
 #include "resource.h"
-#include "batbot_spritesheet.cpp"
+
+#include "fonts/arial_font.h"
+#include "fonts/FFF_Tusj/FFF_Tusj_font.h"
+#include "fonts/FREEDOM/FREEDOM_font.h"
+#include "fonts/Montserrat/Montserrat_font.h"
+#include "fonts/Montserrat/Montserrat_B_font.h"
+#include "fonts/Amble/Amble_font.h"
+#include "fonts/Amble/Amble_B_font.h"
+#include "fonts/Amble/Amble_I_font.h"
+#include "fonts/Amble/Amble_BI_font.h"
+#include "fonts/Orbitron/Orbitron_font.h"
+#include "fonts/Orbitron/Orbitron_LT_font.h"
+#include "fonts/Orbitron/Orbitron_B_font.h"
+
+#include "images/rectangle_spritesheet.h"
+#include "images/default_button_spritesheet.h"
+#include "images/default_button_h_spritesheet.h"
+#include "images/default_button_d_spritesheet.h"
+#include "images/player_spritesheet.h"
+#include "images/batbot_spritesheet.h"
+#include "images/bullet_spritesheet.h"
+
 // Font
+
+ALLEGRO_FONT* Font::getFont(int fontSize_arg)
+{
+    auto it=fonts.find(fontSize_arg);
+    if(it==fonts.end())
+    {
+        ALLEGRO_FILE *memfile=memfileFunc();
+        auto newFont=al_load_ttf_font_f(memfile, NULL, fontSize_arg, 0);
+        al_draw_text(newFont, al_map_rgba(0, 0, 0, 0), 0, 0, 0, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
+        fonts[fontSize_arg]=newFont;
+        return newFont;
+    }
+    return it->second;
+}
+
+void Font::setMemfileFunc(std::function<ALLEGRO_FILE*()> memfileFunc_arg)
+{
+    memfileFunc=memfileFunc_arg;
+}
 
 void Font::destroy()
 {
@@ -12,24 +52,6 @@ void Font::destroy()
         }
     }
     fonts.clear();
-}
-
-void Font::setDir(std::string directory_arg)
-{
-    directory=directory_arg;
-}
-
-ALLEGRO_FONT* Font::getFont(int id)
-{
-    auto it=fonts.find(id);
-    if(it==fonts.end())
-    {
-        auto newFont=al_load_font(directory.c_str(), id, 0);
-        al_draw_text(newFont, al_map_rgba(0, 0, 0, 0), 0, 0, 0, "!\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~");
-        fonts[id]=newFont;
-        return newFont;
-    }
-    return it->second;
 }
 
 // Sample
@@ -148,17 +170,17 @@ void b2Resource::ApplyLinearImpulseAtCenter(b2Vec2 impulse_arg)
 
 // ResourceSystem
 
-void ResourceSystem::registerFont(FONTTYPE id, std::string directory)
+void ResourceSystem::initializeFont(FONTTYPE fontName_arg, std::function<ALLEGRO_FILE*()> memfileFunc_arg)
 {
-    internalFonts[id].setDir(directory);
+    internalFonts[fontName_arg].setMemfileFunc(memfileFunc_arg);
 }
 
-ALLEGRO_FONT* ResourceSystem::getFont(FONTTYPE font_id_arg, int size_arg)
+ALLEGRO_FONT* ResourceSystem::getFont(FONTTYPE fontName_arg, int fontSize_arg)
 {
-    auto it=internalFonts.find(font_id_arg);
+    auto it=internalFonts.find(fontName_arg);
     if(it!=internalFonts.end())
     {
-        return it->second.getFont(size_arg);
+        return it->second.getFont(fontSize_arg);
     }
     return nullptr;
 }
@@ -230,32 +252,25 @@ AnimatedConstructorData ResourceSystem::getData(PROJECTILETYPE projectile_type_i
 void ResourceSystem::initialize()
 {
     // Fonts
-    registerFont(FONTTYPE::ARIAL, "fonts/arial.ttf");
-    registerFont(FONTTYPE::FFF_TUSJ, "fonts/FFF_Tusj/FFF_Tusj.ttf");
-    registerFont(FONTTYPE::FREEDOM, "fonts/FREEDOM/FREEDOM.otf");
-    registerFont(FONTTYPE::MONTESERRAT, "fonts/Monteserrat/Montserrat-Regular.ttf");
-    registerFont(FONTTYPE::MONTESERRAT_B, "fonts/Monteserrat/Montserrat-Bold.ttf");
-    registerFont(FONTTYPE::AMBLE, "fonts/Amble/Amble-Regular.ttf");
-    registerFont(FONTTYPE::AMBLE_B, "fonts/Amble/Amble-Bold.ttf");
-    registerFont(FONTTYPE::AMBLE_I, "fonts/Amble/Amble-Italic.ttf");
-    registerFont(FONTTYPE::AMBLE_BI, "fonts/Amble/Amble-BoldItalic.ttf");
-    registerFont(FONTTYPE::ORBITRON, "fonts/Orbitron/Orbitron Black.otf");
-    registerFont(FONTTYPE::ORBITRON_LT, "fonts/Orbitron/Orbitron Light.otf");
-    registerFont(FONTTYPE::ORBITRON_B, "fonts/Orbitron/Orbitron Bold.otf");
+    registerFont(FONTTYPE::ARIAL, arial_font);
+    registerFont(FONTTYPE::FFF_TUSJ, FFF_Tusj_font);
+    registerFont(FONTTYPE::FREEDOM, FREEDOM_font);
+    registerFont(FONTTYPE::MONTSERRAT, Montserrat_font);
+    registerFont(FONTTYPE::MONTSERRAT_B, Montserrat_B_font);
+    registerFont(FONTTYPE::AMBLE, Amble_font);
+    registerFont(FONTTYPE::AMBLE_B, Amble_B_font);
+    registerFont(FONTTYPE::AMBLE_I, Amble_I_font);
+    registerFont(FONTTYPE::AMBLE_BI, Amble_BI_font);
+    registerFont(FONTTYPE::ORBITRON, Orbitron_font);
+    registerFont(FONTTYPE::ORBITRON_LT, Orbitron_LT_font);
+    registerFont(FONTTYPE::ORBITRON_B, Orbitron_B_font);
     // Images
-    #include "images/rectangle_spritesheet.cpp"
     registerImage(IMAGETYPE::RECTANGLE, rectangle_spritesheet);
-    #include "images/default_button_spritesheet.cpp"
     registerImage(IMAGETYPE::DEFAULT_BUTTON, default_button_spritesheet);
-    #include "images/default_button_h_spritesheet.cpp"
     registerImage(IMAGETYPE::DEFAULT_BUTTON_H, default_button_h_spritesheet);
-    #include "images/default_button_d_spritesheet.cpp"
     registerImage(IMAGETYPE::DEFAULT_BUTTON_D, default_button_d_spritesheet);
-    #include "images/player_spritesheet.cpp"
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, player_spritesheet);
-    #include "images/batbot_spritesheet.cpp"
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT, batbot_spritesheet);
-    #include "images/bullet_spritesheet.cpp"
     registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, bullet_spritesheet);
     // Entity Animation Data
     internalData(Entity)[ENTITYTYPE::CROWBOT]=AnimatedConstructorData

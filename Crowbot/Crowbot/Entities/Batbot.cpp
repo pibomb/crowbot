@@ -31,7 +31,7 @@ void Batbot::update()
         totaltotal++;
         printf("%d\n", totaltotal);
     }
-    *activeEntity=this;
+    *activeBatbot=this;
     //ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()/15, -ent_body->getBody()->GetMass()/15));
     lua_runlfunction(lua_state, "updatebatbot");
 }
