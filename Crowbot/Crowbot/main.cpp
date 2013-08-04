@@ -121,26 +121,16 @@ int main(int argc, char **argv)
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
-    Batbot *bat=make_batbot(0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, &game);
-    /*
+    //Batbot *bat=make_batbot(0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, &game);
+
     lua_regmfunctions(lua_state, "FrameMT");
-    lua_makemfunction(lua_state, "delay", "FrameMT", Frame,
+    lua_makemfunction(lua_state, "spawn_batbot", "FrameMT", Frame,
                                              {
-                                                 obj->delayTime();
+                                                 make_batbot(luaL_checkinteger(l, 1), b2Vec2(luaL_checknumber(l, 2), luaL_checknumber(l, 3)), luaL_checkinteger(l, 4), obj)->push(obj->getCamera()->midground);
                                                  return 0;
                                              });
-    lua_makemfunction(lua_state, "update", "FrameMT", Frame,
-                                            {
-                                                obj->update();
-                                                return 0;
-                                            });
-    lua_makemfunction(lua_state, "render", "FrameMT", Frame,
-                                            {
-                                                obj->render();
-                                                return 0;
-                                            });
-    lua_prepmfunctions(lua_state, "the_frame", "FrameMT", Frame, &game);
-    */
+    lua_prepmfunctions(lua_state, "__game", "FrameMT", Frame, &game);
+
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
@@ -197,14 +187,14 @@ int main(int argc, char **argv)
     luaE_endmfunctions();
     */
     rob.push(game.getCamera()->midground);
-    bat->push(game.getCamera()->midground);
+    //bat->push(game.getCamera()->midground);
     chn.push(game.getCamera()->background);
     ground.push(game.getCamera()->background);
     ceiling.push(game.getCamera()->background);
     leftWall.push(game.getCamera()->background);
     rightWall.push(game.getCamera()->background);
     game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){rob.push(game.getCamera()->midground);});
-    game.addOnRestart([](FRAMETYPE){return true;}, [&bat, &game](){bat->push(game.getCamera()->midground);});
+    //game.addOnRestart([](FRAMETYPE){return true;}, [&bat, &game](){bat->push(game.getCamera()->midground);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&chn, &game](){chn.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&ground, &game](){ground.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&ceiling, &game](){ceiling.push(game.getCamera()->background);});
@@ -229,7 +219,7 @@ int main(int argc, char **argv)
         current_time=std::chrono::steady_clock::now();
         game.update();
         game.render();
-        //lua_runlfunction(lua_state, "userscript", &rob);
+        lua_runlfunction(lua_state, "userscript");
         al_flip_display();
     }
     rob.pull();

@@ -1,9 +1,8 @@
+__totalcount=0
 function userscript()
-    for i=0, 11, 1 do
-        if i > 6 then
-            the_robot:shoot((11-i)*30, 75)
-        else
-            the_robot:shoot(i*30, 75)
-        end
+    __totalcount=__totalcount+1
+    if __totalcount>=60 then
+        __game:spawn_batbot(0, 62.5, -6.25, 10)
+        __totalcount=0
     end
 end

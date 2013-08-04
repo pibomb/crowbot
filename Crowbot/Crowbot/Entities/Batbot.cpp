@@ -22,15 +22,6 @@ Batbot::~Batbot()
 
 void Batbot::update()
 {
-    static int totalcount=0;
-    static int totaltotal=0;
-    if(totaltotal<300 && ++totalcount>300)
-    {
-        make_batbot(0, b2Vec2(PX_TO_M(2000), -PX_TO_M(200)), 0, frame)->push(frame->getCamera()->midground);
-        totalcount=0;
-        totaltotal++;
-        printf("%d\n", totaltotal);
-    }
     *activeBatbot=this;
     //ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()/15, -ent_body->getBody()->GetMass()/15));
     lua_runlfunction(lua_state, "updatebatbot");

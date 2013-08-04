@@ -362,10 +362,10 @@ void Frame::delayTime(float delay_arg)
     }
     else
     {
-        al_rest(1.0/frames_per_second-delay_arg);
+        al_rest((1.0/frames_per_second)-delay_arg);
     }
 #else
-    al_rest(1.0/frames_per_second-delay_arg);
+    al_rest((1.0/frames_per_second)-delay_arg);
 #endif
 }
 
@@ -396,17 +396,6 @@ void Frame::start(FRAMETYPE id_arg)
                              disp_data.width/2+200,
                              disp_data.height/2,
                              std::bind(&Frame::restart, this, getRegion(), mapID, FRAMETYPE::STAGE),
-                             /*
-                             [this]()
-                             {
-                                 this->setID(FRAMETYPE::STAGE);
-                                 for(auto &it : this->buttons)
-                                 {
-                                     sysGC.watchButton(it);
-                                 }
-                                 this->buttons.clear();
-                             },
-                             */
                              "Start Game",
                              BUTTONTYPE::INVALID,
                              resource.getFont(FONT_DEFAULT_GAME, FONT_SIZE_LARGE_GAME),
@@ -445,9 +434,16 @@ void Frame::start(FRAMETYPE id_arg)
                     0.0,
                     "[[]]Decimus and company arrive at Tarrius. As they set up camp, Musia walks up to Decimus.\n[[Decimus]]What is it, Musia?\n[[Musia]]It's just that... I don't actually have any dialogue, and this is all filler text! I mean seriously, whoever came up with the dumb idea of testing whether long text really gets separated into two pages or not? Who cares? Not me, that's for sure. So what are you up to, Decimus? Want to talk to me more?\n[[Decimus]]That's alright, I really have nothing to say either.\n[[Musia]]Oh...\n[[]]And with that, the fight continues..."
                     );
-        if(dl.run()==RETURNTYPE::SHUTDOWN)
+        switch(dl.run())
+        {
+        case RETURNTYPE::SHUTDOWN:
         {
             return;
+        }
+        default:
+        {
+            break;
+        }
         }
         al_start_timer(timer);
         break;
