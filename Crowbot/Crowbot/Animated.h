@@ -77,7 +77,7 @@ struct AnimatedConstructorData
 
 class Animated : public Drawable
 {
-private:
+protected:
     AnimatedConstructorData acd;
     std::chrono::steady_clock::time_point current_time;
     int current_count;
@@ -124,7 +124,7 @@ public:
 
 class PhysicalAnimated : public PhysicalDrawable
 {
-private:
+protected:
     AnimatedConstructorData acd;
     std::chrono::steady_clock::time_point current_time;
     int current_count;

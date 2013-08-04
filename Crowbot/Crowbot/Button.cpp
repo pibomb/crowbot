@@ -26,7 +26,7 @@ bool Button::contains(int x_arg, int y_arg)
 
 void Button::transformation()
 {
-    preset().preTranslate(bounding_box.getTL());
+    postset().postTranslate(bounding_box.getTL());
 }
 
 void Button::onDraw()

@@ -221,6 +221,8 @@
 		<Unit filename="images\default_button_h_spritesheet.h" />
 		<Unit filename="images\default_button_spritesheet.cpp" />
 		<Unit filename="images\default_button_spritesheet.h" />
+		<Unit filename="images\hp_bar_spritesheet.cpp" />
+		<Unit filename="images\hp_bar_spritesheet.h" />
 		<Unit filename="images\player_spritesheet.cpp" />
 		<Unit filename="images\player_spritesheet.h" />
 		<Unit filename="images\rectangle_spritesheet.cpp" />

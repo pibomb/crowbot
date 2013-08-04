@@ -69,6 +69,16 @@ bool is_pixel_onscreen(const b2Vec2& px)
     return px.x>PX_TO_M(0) && px.y<PX_TO_M(0) && px.x<PX_TO_M(disp_data.width) && px.y>-PX_TO_M(disp_data.height);
 }
 
+Bullet* make_bullet(Entity *parent_arg, b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
+{
+    Bullet *bullet=new Bullet;
+    b2Vec2 linearVelocity(cos(angle_arg)*linearVelocity_arg, sin(angle_arg)*linearVelocity_arg);
+    parent_arg->move(-linearVelocity);
+    bullet->set(parent_arg, pos_arg, linearVelocity, 0, angle_arg);
+    bullet->push(parent_arg->getFrame()->getCamera()->foreground);
+    return bullet;
+}
+
 Batbot* make_batbot(const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg)
 {
     return new Batbot(ENTITYTYPE::BATBOT, id_arg, pos_arg, startHp, frame_arg);

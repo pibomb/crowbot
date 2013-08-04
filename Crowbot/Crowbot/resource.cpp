@@ -17,6 +17,7 @@
 #include "images/default_button_spritesheet.h"
 #include "images/default_button_h_spritesheet.h"
 #include "images/default_button_d_spritesheet.h"
+#include "images/hp_bar_spritesheet.h"
 #include "images/player_spritesheet.h"
 #include "images/batbot_spritesheet.h"
 #include "images/bullet_spritesheet.h"
@@ -269,6 +270,7 @@ void ResourceSystem::initialize()
     registerImage(IMAGETYPE::DEFAULT_BUTTON, default_button_spritesheet);
     registerImage(IMAGETYPE::DEFAULT_BUTTON_H, default_button_h_spritesheet);
     registerImage(IMAGETYPE::DEFAULT_BUTTON_D, default_button_d_spritesheet);
+    registerImage(IMAGETYPE::HP_BAR, hp_bar_spritesheet);
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, player_spritesheet);
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT, batbot_spritesheet);
     registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, bullet_spritesheet);

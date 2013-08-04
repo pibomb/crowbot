@@ -34,8 +34,8 @@ void Drawable::render()
         drawable_is_dirty=false;
         ALLEGRO_TRANSFORM cur;
         transformation();
-        al_compose_transform(&drawable_pre_trans, &old);
         al_copy_transform(&cur, &drawable_pre_trans);
+        al_compose_transform(&cur, &old);
         al_compose_transform(&cur, &drawable_post_trans);
         al_use_transform(&cur);
         onDraw();
@@ -74,15 +74,33 @@ Drawable& Drawable::preScale(float sx, float sy)
     return *this;
 }
 
+Drawable& Drawable::postScale(float sx, float sy)
+{
+    al_scale_transform(&drawable_post_trans, sx, sy);
+    return *this;
+}
+
 Drawable& Drawable::preTranslate(Pixel px)
 {
     al_translate_transform(&drawable_pre_trans, px.getX(), px.getY());
     return *this;
 }
 
+Drawable& Drawable::postTranslate(Pixel px)
+{
+    al_translate_transform(&drawable_post_trans, px.getX(), px.getY());
+    return *this;
+}
+
 Drawable& Drawable::preTranslate(Vec2 px)
 {
     al_translate_transform(&drawable_pre_trans, px.getX(), px.getY());
+    return *this;
+}
+
+Drawable& Drawable::postTranslate(Vec2 px)
+{
+    al_translate_transform(&drawable_post_trans, px.getX(), px.getY());
     return *this;
 }
 
@@ -104,6 +122,12 @@ Drawable& Drawable::preTranslate(float x, float y)
     return *this;
 }
 
+Drawable& Drawable::postTranslate(float x, float y)
+{
+    al_translate_transform(&drawable_post_trans, x, y);
+    return *this;
+}
+
 Drawable& Drawable::preRotate(float theta)
 {
     al_rotate_transform(&drawable_pre_trans, theta);
@@ -119,6 +143,12 @@ Drawable& Drawable::postRotate(float theta)
 Drawable& Drawable::preAll(float x, float y, float sx, float sy, float theta)
 {
     al_build_transform(&drawable_pre_trans, x, y, sx, sy, theta);
+    return *this;
+}
+
+Drawable& Drawable::postAll(float x, float y, float sx, float sy, float theta)
+{
+    al_build_transform(&drawable_post_trans, x, y, sx, sy, theta);
     return *this;
 }
 
@@ -146,11 +176,11 @@ void Drawable::invalidate()
 
 void Drawable::invalidateRegion(const Rect& _area)
 {
-    const Rect area=_area.transformBy(&drawable_pre_trans);
+    const Rect area=_area.transformBy(&drawable_pre_trans).transformBy(&drawable_post_trans);
     if(area&drawable_rgn)
     {
         drawable_is_dirty=true;
-        for(auto it : inner)
+        for(auto &it : inner)
         {
             it->invalidateRegion(area);
         }

@@ -30,8 +30,9 @@ void Bullet::setAttributes(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_l
     pro_body->registerDynamicBox(this, pos_arg, PX_TO_M(16), PX_TO_M(6), 1.0, 0.3);
     //pro_body->getBody()->SetGravityScale(0);
     pro_body->getBody()->SetBullet(true);
-    pro_body->getBody()->SetTransform(pro_body->getBody()->GetPosition(), angle_arg);
+    pro_body->getBody()->SetTransform(pro_body->getBody()->GetPosition(), DEG_TO_RAD(360)-angle_arg);
     pro_body->ApplyLinearImpulseAtCenter(linearVelocity_arg);
+    hits_left=1;
 }
 
 void Bullet::beginCollision(PhysicalDrawable *other)

@@ -1,10 +1,11 @@
 #include "resource.h"
 
-void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)
+void Projectile::set(Entity *parent_arg, b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)
 {
     is_valid=true;
     fuel_left=fuel_left_arg;
     pro_body=resource.createb2Resource();
+    parent=parent_arg;
     setAttributes(pos_arg, linearVelocity_arg, fuel_left_arg, angle_arg);
     updateTrigger=new EventTriggerHandler(
                                         [this]()
@@ -19,6 +20,16 @@ void Projectile::set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_ar
 bool Projectile::isActive()
 {
     return is_valid;
+}
+
+bool Projectile::canHit()
+{
+    if(hits_left>0)
+    {
+        hits_left--;
+        return true;
+    }
+    return false;
 }
 
 void Projectile::transformation()

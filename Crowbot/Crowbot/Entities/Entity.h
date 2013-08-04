@@ -13,6 +13,7 @@ protected:
     ENTITYTYPE entity_type;
 	b2Resource *ent_body;
 	int ent_health;
+	int ent_max_health;
 	unsigned int ent_id;
 	AABB ent_bb;
 	Frame *frame;
@@ -20,7 +21,7 @@ protected:
 	virtual void onDraw() override;
 	virtual void postDraw() override;
 public:
-	explicit Entity(ENTITYTYPE entity_type_arg, const unsigned int& id, const int& startHp, Frame *frame_arg);
+	explicit Entity(ENTITYTYPE entity_type_arg, const unsigned int& id, const int& max_health_arg, Frame *frame_arg);
 	virtual ~Entity();
 	unsigned int getId() {return ent_id;};
 	int getHp() const {return ent_health;};
@@ -28,6 +29,7 @@ public:
 	bool isAlive() const {return ent_health > 0;};
 	void setAABB(AABB& ent_bb_arg) {ent_bb = ent_bb_arg;};
 	AABB getAABB() const {return ent_bb;};
+	Frame* getFrame();
 	b2Vec2 getPosition();
 	float getMass();
 	float getX();

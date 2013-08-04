@@ -113,7 +113,7 @@ RETURNTYPE Dialogue::advanceText()
 
 void Dialogue::transformation()
 {
-    preset().preTranslate(bounding_box.getTL());
+    postset().postTranslate(bounding_box.getTL());
 }
 
 void Dialogue::onDraw()

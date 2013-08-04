@@ -47,14 +47,19 @@ public:
     Drawable& preset();
     Drawable& postset();
     Drawable& preScale(float sx, float sy);
+    Drawable& postScale(float sx, float sy);
     Drawable& preTranslate(Pixel px);
+    Drawable& postTranslate(Pixel px);
     Drawable& preTranslate(Vec2 px);
+    Drawable& postTranslate(Vec2 px);
     Drawable& preTranslate(b2Vec2 px);
     Drawable& postTranslate(b2Vec2 px);
     Drawable& preTranslate(float x, float y);
+    Drawable& postTranslate(float x, float y);
     Drawable& preRotate(float theta);
     Drawable& postRotate(float theta);
     Drawable& preAll(float x, float y, float sx, float sy, float theta);
+    Drawable& postAll(float x, float y, float sx, float sy, float theta);
     Pixel getTransformedTL();
     ALLEGRO_TRANSFORM* getPreTransform();
     ALLEGRO_TRANSFORM* getPostTransform();
@@ -66,9 +71,9 @@ class PhysicalDrawable : public Drawable
 {
 public:
     int collisions;
-    PhysicalDrawable():
+    PhysicalDrawable(int collisions_arg=0):
         Drawable(),
-        collisions(0)
+        collisions(collisions_arg)
     {
         //
     }

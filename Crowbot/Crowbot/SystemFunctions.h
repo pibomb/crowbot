@@ -14,6 +14,7 @@ bool is_pixel_onscreen(Pixel& px);
 bool is_pixel_onscreen(Vec2& px);
 bool is_pixel_onscreen(b2Vec2& px);
 bool is_pixel_onscreen(const b2Vec2& px);
+Bullet* make_bullet(Entity *parent_arg, b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg);
 Batbot* make_batbot(const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg);
 void lua_reglfunction(lua_State *l, const char *directory_arg);
 void lua_setlfunctionarg(bool bool_arg);

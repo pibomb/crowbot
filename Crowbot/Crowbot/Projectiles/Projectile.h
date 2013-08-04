@@ -13,12 +13,13 @@ protected:
     PROJECTILETYPE projectile_type;
     b2Resource *pro_body;
 	EventTriggerHandler *updateTrigger;
-	int reserved;
+    Entity *parent;
+	int hits_left;
 	int fuel_left;
 	bool is_valid;
-	void transformation() override;
-	void onDraw() override;
-	void postDraw() override;
+	virtual void transformation() override;
+	virtual void onDraw() override;
+	virtual void postDraw() override;
     virtual void setAttributes(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)=0;
 public:
     Projectile(PROJECTILETYPE projectile_type_arg):
@@ -26,6 +27,8 @@ public:
         projectile_type(projectile_type_arg),
         pro_body(nullptr),
         updateTrigger(nullptr),
+        parent(nullptr),
+        hits_left(0),
         fuel_left(0),
         is_valid(false)
     {
@@ -35,8 +38,9 @@ public:
     {
         //
     }
-    void set(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg);
+    void set(Entity *parent_arg, b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg);
     bool isActive();
+    bool canHit();
     DRAWABLETYPE getDrawableType() override;
     virtual void beginDestroy();
     virtual void move(b2Vec2 linearVelocity_arg)=0;

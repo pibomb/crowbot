@@ -41,7 +41,7 @@ public:
         height(height_arg),
         lastMouseX(mouseX_arg),
         lastMouseY(mouseY_arg),
-        translateFunction([](Camera* camera_arg){camera_arg->preset().preTranslate(camera_arg->getX(), camera_arg->getY());}),
+        translateFunction([](Camera* camera_arg){camera_arg->postset().postTranslate(camera_arg->getX(), camera_arg->getY());}),
         background(new Layer),
         midground(new Layer),
         foreground(new Layer)

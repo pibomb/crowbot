@@ -22,9 +22,16 @@ Batbot::~Batbot()
 
 void Batbot::update()
 {
-    *activeBatbot=this;
-    //ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()/15, -ent_body->getBody()->GetMass()/15));
-    lua_runlfunction(lua_state, "updatebatbot");
+    if(isAlive())
+    {
+        *activeBatbot=this;
+        //ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()/15, -ent_body->getBody()->GetMass()/15));
+        lua_runlfunction(lua_state, "updatebatbot");
+    }
+    else
+    {
+        beginDestroy();
+    }
 }
 
 void Batbot::destroy()
@@ -46,7 +53,10 @@ void Batbot::beginCollision(PhysicalDrawable *other)
     {
     case DRAWABLETYPE::BULLET:
     {
-        beginDestroy();
+        if(static_cast<Bullet*>(other)->canHit())
+        {
+            setHp(-5);
+        }
         break;
     }
     default:

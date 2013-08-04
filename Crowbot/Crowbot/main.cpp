@@ -134,7 +134,7 @@ int main(int argc, char **argv)
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
                                              {
-                                                 obj->shootProjectile(0, b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
+                                                 obj->shootProjectile(b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
                                                  return 0;
                                              });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
@@ -203,7 +203,7 @@ int main(int argc, char **argv)
     game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){game.addObserver(&rob);});
     game.getCamera()->setCustomTranslate([&rob](Camera *camera_arg)
                                          {
-                                             camera_arg->preset().preTranslate(b2Vec2(-rob.getPosition().x+PX_TO_M(disp_data.width)/2, 0/*-rob.getPosition().y-PX_TO_M(disp_data.height)*2/3*/));
+                                             camera_arg->postset().postTranslate(b2Vec2(-rob.getPosition().x+PX_TO_M(disp_data.width)/2, 0/*-rob.getPosition().y-PX_TO_M(disp_data.height)*2/3*/));
                                          }
                                          );
     game.addObserver(&rob);

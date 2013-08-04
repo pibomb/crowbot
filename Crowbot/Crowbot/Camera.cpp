@@ -91,7 +91,7 @@ void Camera::setCustomTranslate(std::function<void(Camera*)> customTranslate_arg
 
 void Camera::setNormalTranslate()
 {
-    translateFunction=[](Camera* camera_arg){camera_arg->preset().preTranslate(camera_arg->getX(), camera_arg->getY());};
+    translateFunction=[](Camera* camera_arg){camera_arg->postset().postTranslate(camera_arg->getX(), camera_arg->getY());};
 }
 
 void Camera::transformation()

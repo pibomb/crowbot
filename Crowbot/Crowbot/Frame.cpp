@@ -432,7 +432,7 @@ void Frame::start(FRAMETYPE id_arg)
                     48,
                     30.0,
                     0.0,
-                    "[[]]Decimus and company arrive at Tarrius. As they set up camp, Musia walks up to Decimus.\n[[Decimus]]What is it, Musia?\n[[Musia]]It's just that... I don't actually have any dialogue, and this is all filler text! I mean seriously, whoever came up with the dumb idea of testing whether long text really gets separated into two pages or not? Who cares? Not me, that's for sure. So what are you up to, Decimus? Want to talk to me more?\n[[Decimus]]That's alright, I really have nothing to say either.\n[[Musia]]Oh...\n[[]]And with that, the fight continues..."
+                    "[[???]]Al! Hey Al! Wake up, Alphonse!\n[[Alphonse]]... huh? What's up, Gosphene?\n[[Gosphene]]We've got an intruder on our hands! He's made it past all the guards, and he's coming directly to us!\n[[Alphonse]]This early in the morning? I haven't even had breakfast yet... what a tough job. Anyways, please get CROW ready while I prepare myself.\n[[Gosphene]]Gotcha!"
                     );
         switch(dl.run())
         {
@@ -666,7 +666,7 @@ void Frame::onLeftClick()
 
 void Frame::transformation()
 {
-    preset().preTranslate(region.getTL());
+    postset().postTranslate(region.getTL());
 }
 
 void Frame::onDraw()

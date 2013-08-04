@@ -35,24 +35,24 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
     case ALLEGRO_KEY_W:
     {
-        shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(90), 5);
+        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(90), 5);
         break;
     }
     case ALLEGRO_KEY_A:
     {
         facingRight=false;
-        shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(180), 5);
+        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(180), 5);
         break;
     }
     case ALLEGRO_KEY_S:
     {
-        shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(270), 5);
+        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(270), 5);
         break;
     }
     case ALLEGRO_KEY_D:
     {
         facingRight=true;
-        shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), 5);
+        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(0), 5);
         break;
     }
     case ALLEGRO_KEY_UP:
@@ -79,11 +79,11 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
         if(facingRight)
         {
-            shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), 2000);
+            shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(0), 2000);
         }
         else
         {
-            shootProjectile(0, b2Vec2(0, 0), DEG_TO_RAD(0), -2000);
+            shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(180), 2000);
         }
         break;
     }
@@ -129,20 +129,16 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
     */
 }
 
-void Robot::shootProjectile(int id_arg, b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
+void Robot::shootProjectile(b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
 {
-    Bullet *proj=new Bullet;
-    b2Vec2 linearVelocity(cos(angle_arg)*linearVelocity_arg, sin(angle_arg)*linearVelocity_arg);
-    ent_body->ApplyLinearImpulseAtCenter(-linearVelocity);
     if(facingRight)
     {
-        proj->set(b2Vec2(getPosition().x+PX_TO_M(140)/2, getPosition().y)+pos_arg, linearVelocity, 10000, DEG_TO_RAD(0));
+        make_bullet(this, b2Vec2(getPosition().x+PX_TO_M(140)/2, getPosition().y)+pos_arg, angle_arg, linearVelocity_arg);
     }
     else
     {
-        proj->set(b2Vec2(getPosition().x-PX_TO_M(140)/2, getPosition().y)+pos_arg, linearVelocity, 10000, DEG_TO_RAD(180));
+        make_bullet(this, b2Vec2(getPosition().x-PX_TO_M(140)/2, getPosition().y)+pos_arg, angle_arg, linearVelocity_arg);
     }
-    proj->push(frame->getCamera()->foreground);
 }
 
 void Robot::addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg)
