@@ -220,7 +220,6 @@ int main(int argc, char **argv)
     game.start(FRAMETYPE::STARTSCREEN);
     std::chrono::steady_clock::time_point current_time;
     current_time=std::chrono::steady_clock::now();
-    resource.getFont(FONT_DEFAULT_GAME, 32);
     while(game)
     {
         //menu flickering caused by unlimited framerate?

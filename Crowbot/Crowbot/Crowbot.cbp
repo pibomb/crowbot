@@ -46,6 +46,7 @@
 					<Add library="C:\Program Files (x86)\CodeBlocks\allegro-5.0.10-mingw-4.7.0\lib\libogg-1.2.1-static-mt.a" />
 					<Add library="C:\Program Files (x86)\CodeBlocks\allegro-5.0.10-mingw-4.7.0\lib\libzlib-1.2.5-static-mt.a" />
 					<Add library="..\..\tools\enet\enet.lib" />
+					<Add library="..\..\tools\lua\liblua.a" />
 					<Add library="..\..\tools\lua\liblua52.a" />
 					<Add library="..\..\tools\Box2D\libBox2D.a" />
 					<Add library="C:\Program Files (x86)\CodeBlocks\MinGW\lib\libgdiplus.a" />
@@ -108,6 +109,7 @@
 					<Add library="C:\Program Files (x86)\CodeBlocks\allegro-5.0.10-mingw-4.7.0\lib\libogg-1.2.1-static-mt.a" />
 					<Add library="C:\Program Files (x86)\CodeBlocks\allegro-5.0.10-mingw-4.7.0\lib\libzlib-1.2.5-static-mt.a" />
 					<Add library="..\..\tools\enet\enet.lib" />
+					<Add library="..\..\tools\lua\liblua.a" />
 					<Add library="..\..\tools\lua\liblua52.a" />
 					<Add library="..\..\tools\Box2D\libBox2D.a" />
 					<Add library="C:\Program Files (x86)\CodeBlocks\MinGW\lib\libgdiplus.a" />

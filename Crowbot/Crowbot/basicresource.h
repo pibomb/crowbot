@@ -197,7 +197,7 @@ enum class MOUSEBUTTON : int
 #define RAD_TO_DEG(_a) (_a/M_PI*180.0)
 
 // Lua Macros
-#define lua_emptystack(_a) {lua_settop(_a, 0)}
+#define lua_emptystack(_a) {lua_settop(_a,0)}
 #define lua_makecfunction(_a, _b, _c) {lua_pushcfunction(_a,_b);lua_setglobal(_a,_c);}
 #define lua_makelfunction(_a, _b, _c) {if(luaL_loadfile(_a,_b)==LUA_OK)lua_setglobal(_a,_c);}
 #define lua_regmfunctions(_a, _b) {luaL_newmetatable(_a,_b);lua_pushvalue(_a,-1);lua_setfield(_a,-2,"__index");}
@@ -212,7 +212,7 @@ enum class MOUSEBUTTON : int
 #define luaE_endmfunctions() _lua_temp_char_ptr=nullptr;}
 
 // Other Macros
-#define registerFont(_a, _b) {initializeFont(_a, [](){return al_open_memfile(__##_b##_data,__##_b##_size,"r");});}
+#define registerFont(_a, _b) {initializeFont(_a,[](){return al_open_memfile(__##_b##_data,__##_b##_size,"r");});}
 #define registerImage(_a, _b) {ALLEGRO_FILE*_mf=al_open_memfile(__##_b##_data,__##_b##_size,"r");ALLEGRO_BITMAP*_mb=al_load_bitmap_f(_mf,".png");internalImages[_a]=_mb;al_fclose(_mf);}
 #define internalData(_a) internal##_a##AnimatedConstructorData
 #define PX_TO_M(_a) ((_a)/32.0)
