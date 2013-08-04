@@ -35,11 +35,6 @@ void GarbageCollection::cleanup()
     }
 }
 
-void GarbageCollection::watchEntity(Entity *entity_arg)
-{
-    entityGC.push_front(entity_arg);
-}
-
 void GarbageCollection::watchButton(Button *button_arg)
 {
     buttonGC.push_front(button_arg);
@@ -55,6 +50,11 @@ void GarbageCollection::watchb2Body(b2Body *body_arg)
     b2BodyGC.push_front(body_arg);
 }
 
+void GarbageCollection::watchEntity(Entity *entity_arg)
+{
+    entityGC.push_front(entity_arg);
+}
+
 void GarbageCollection::watchProjectile(Projectile *projectile_arg)
 {
     projectileGC.push_front(projectile_arg);
@@ -62,6 +62,32 @@ void GarbageCollection::watchProjectile(Projectile *projectile_arg)
 
 void GarbageCollection::collectGarbage()
 {
+    if(!buttonGC.empty())
+    {
+        for(auto &it : buttonGC)
+        {
+            it->pull();
+            delete it;
+        }
+        buttonGC.clear();
+    }
+    if(!eventHandlerGC.empty())
+    {
+        for(auto &it : eventHandlerGC)
+        {
+            it->destroy();
+            delete it;
+        }
+        eventHandlerGC.clear();
+    }
+    if(!b2BodyGC.empty())
+    {
+        for(auto &it : b2BodyGC)
+        {
+            world.DestroyBody(it);
+        }
+        b2BodyGC.clear();
+    }
     for(auto it=entityGC.begin(); it!=entityGC.end();)
     {
         if(((*it)->isDeletable()))
@@ -74,23 +100,6 @@ void GarbageCollection::collectGarbage()
             it++;
         }
     }
-    for(auto &it : buttonGC)
-    {
-        it->pull();
-        delete it;
-    }
-    buttonGC.clear();
-    for(auto &it : eventHandlerGC)
-    {
-        it->destroy();
-        delete it;
-    }
-    eventHandlerGC.clear();
-    for(auto &it : b2BodyGC)
-    {
-        world.DestroyBody(it);
-    }
-    b2BodyGC.clear();
     for(auto it=projectileGC.begin(); it!=projectileGC.end();)
     {
         if(!((*it)->isActive()))
