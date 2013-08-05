@@ -146,8 +146,7 @@ void Camera::setNormalTranslate()
 
 void Camera::transformation()
 {
-    Pixel px=translateFunction();
-    postset().postTranslate(-px.getX(), -px.getY());
+    postset().postTranslate(translateFunction());
 }
 
 void Camera::onDraw()

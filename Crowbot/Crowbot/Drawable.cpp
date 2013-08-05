@@ -245,3 +245,24 @@ void Drawable::invalidate(const Rect& world_area)
         al_use_transform(&old);
     }
 }
+
+PhysicalDrawable::PhysicalDrawable(int collisions_arg):
+    Drawable(),
+    obj_body(resource.createb2Resource()),
+    collisions(collisions_arg)
+{
+    //
+}
+
+PhysicalDrawable::PhysicalDrawable(Rect drawable_rgn_arg, int collisions_arg):
+    Drawable(drawable_rgn_arg),
+    obj_body(resource.createb2Resource()),
+    collisions(collisions_arg)
+{
+    //
+}
+
+b2Body* PhysicalDrawable::getb2Body()
+{
+    return obj_body->getBody();
+}

@@ -46,6 +46,7 @@ int main(int argc, char **argv)
     Box rightWall(brx-10, 0, brx, bry);
     Chain chn;
     chn.getResource()->registerChainShape(&chn, b2Vec2(0, 0),
+        PHYSICAL_ENVIRONMENT, PHYSICAL_ALL,
         0, -PX_TO_M(bry)/3,
         PX_TO_M(brx)*1/10, -PX_TO_M(bry)*3/9,
         PX_TO_M(brx)*2/10, -PX_TO_M(bry)*5/9,
@@ -168,6 +169,11 @@ int main(int argc, char **argv)
         (*obj)->move(luaL_checknumber(l, 1), luaL_checknumber(l, 2));
         return 0;
     });
+    lua_makemfunction(lua_state, "shoot", "BatbotMT", Batbot*,
+    {
+        (*obj)->shootProjectile(b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
+        return 0;
+    });
     lua_prepmfunctions(lua_state, "batbot", "BatbotMT", Batbot*, activeBatbot);
 
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
@@ -200,7 +206,7 @@ int main(int argc, char **argv)
     game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){game.addObserver(&rob);});
     game.getCamera()->setCustomTranslate([&rob]() -> Pixel
     {
-        return Pixel(M_TO_PX(rob.getPosition().x)-disp_data.width/2, 0/*-rob.getPosition().y-PX_TO_M(disp_data.height)*2/3*/);
+        return Pixel(-M_TO_PX(rob.getPosition().x)+disp_data.width/2, 0/*-rob.getPosition().y-PX_TO_M(disp_data.height)*2/3*/);
     }
                                          );
     game.addObserver(&rob);

@@ -5,8 +5,8 @@ Robot::Robot(ENTITYTYPE entity_type_arg, const unsigned int& id_arg, const b2Vec
     facingRight(true),
     touchingGround(0)
 {
-    ent_body->registerDynamicBox(this, pos_arg, PX_TO_M(120), PX_TO_M(160), 7.85, 0.7);
-    ent_body->addGroundSensor(((void*)(static_cast<void(*)(PhysicalDrawable*, PhysicalDrawable*, COLLISIONTYPE)>([](PhysicalDrawable* self, PhysicalDrawable* other, COLLISIONTYPE col_type)
+    obj_body->registerDynamicBox(this, pos_arg, PHYSICAL_PLAYER, PHYSICAL_ALL&~PHYSICAL_PLAYER, PX_TO_M(120), PX_TO_M(160), 7.85, 0.7);
+    obj_body->addGroundSensor(((void*)(static_cast<void(*)(PhysicalDrawable*, PhysicalDrawable*, COLLISIONTYPE)>([](PhysicalDrawable* self, PhysicalDrawable* other, COLLISIONTYPE col_type)
                                                                                                                    {
     switch(col_type)
     {
@@ -25,14 +25,64 @@ Robot::Robot(ENTITYTYPE entity_type_arg, const unsigned int& id_arg, const b2Vec
        break;
     }
     }
-                                                                                                                   }))));
-    ent_body->getBody()->SetFixedRotation(true);
+                                                                                                                   }))),
+    PHYSICAL_PLAYER,
+    PHYSICAL_ALL&~PHYSICAL_PLAYER
+    );
+    obj_body->getBody()->SetFixedRotation(true);
 }
 
 void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
 {
     switch(keycode)
     {
+    case ALLEGRO_KEY_C:
+    {
+        QueryCallback qc;
+        b2AABB aabb;
+        aabb.lowerBound=getPosition()-b2Vec2(PX_TO_M(200), PX_TO_M(200));
+        aabb.upperBound=getPosition()+b2Vec2(PX_TO_M(200), PX_TO_M(200));
+        world.QueryAABB(&qc, aabb);
+        std::cout<<"****Begin"<<std::endl;
+        for(auto &it : qc.foundBodies)
+        {
+            switch(static_cast<PhysicalDrawable*>(it->GetUserData())->getDrawableType())
+            {
+        case DRAWABLETYPE::ROBOT:
+            {
+                std::cout<<"Robot"<<std::endl;
+                break;
+            }
+        case DRAWABLETYPE::BATBOT:
+            {
+                std::cout<<"Batbot"<<std::endl;
+                break;
+            }
+        case DRAWABLETYPE::CHAIN:
+            {
+                std::cout<<"Chain"<<std::endl;
+                break;
+            }
+        case DRAWABLETYPE::BOX:
+            {
+                std::cout<<"Box"<<std::endl;
+                break;
+            }
+        case DRAWABLETYPE::BULLET:
+            {
+                std::cout<<"Bullet"<<std::endl;
+                break;
+            }
+        default:
+            {
+                std::cout<<"Default"<<std::endl;
+                break;
+            }
+            }
+        }
+        std::cout<<"****End"<<std::endl;
+        break;
+    }
     case ALLEGRO_KEY_Z:
     {
         if(facingRight)
@@ -95,20 +145,20 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     {
         if(touchingGround)
         {
-            ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, ent_body->getBody()->GetMass()*30));
+            obj_body->ApplyLinearImpulseAtCenter(b2Vec2(0, obj_body->getBody()->GetMass()*30));
         }
         break;
     }
     case ALLEGRO_KEY_LEFT:
     {
         facingRight=false;
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()*2, 0));
+        obj_body->ApplyLinearImpulseAtCenter(b2Vec2(-obj_body->getBody()->GetMass()*2, 0));
         break;
     }
     case ALLEGRO_KEY_RIGHT:
     {
         facingRight=true;
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(ent_body->getBody()->GetMass()*2, 0));
+        obj_body->ApplyLinearImpulseAtCenter(b2Vec2(obj_body->getBody()->GetMass()*2, 0));
         break;
     }
     case ALLEGRO_KEY_SPACE:
@@ -145,36 +195,29 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 {
     if(!touchingGround)
     {
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -ent_body->getBody()->GetMass()*3));
+        obj_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -obj_body->getBody()->GetMass()*3));
     }
     if(keystates[ALLEGRO_KEY_LEFT])
     {
         facingRight=false;
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(-ent_body->getBody()->GetMass()*2/5, 0));
+        obj_body->ApplyLinearImpulseAtCenter(b2Vec2(-obj_body->getBody()->GetMass()*2/5, 0));
     }
     if(keystates[ALLEGRO_KEY_RIGHT])
     {
         facingRight=true;
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(ent_body->getBody()->GetMass()*2/5, 0));
+        obj_body->ApplyLinearImpulseAtCenter(b2Vec2(obj_body->getBody()->GetMass()*2/5, 0));
     }
     /*
     if(keystates[ALLEGRO_KEY_DOWN])
     {
-        ent_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -100));
+        obj_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -100));
     }
     */
 }
 
 void Robot::shootProjectile(b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
 {
-    if(facingRight)
-    {
-        make_bullet(this, b2Vec2(getPosition().x+PX_TO_M(140)/2, getPosition().y)+pos_arg, angle_arg, linearVelocity_arg);
-    }
-    else
-    {
-        make_bullet(this, b2Vec2(getPosition().x-PX_TO_M(140)/2, getPosition().y)+pos_arg, angle_arg, linearVelocity_arg);
-    }
+    make_bullet(this, getPosition()+pos_arg, PHYSICAL_PLAYER, PHYSICAL_ALL&~PHYSICAL_PLAYER, angle_arg, linearVelocity_arg);
 }
 
 void Robot::addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg)

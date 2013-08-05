@@ -54,7 +54,7 @@ Pixel Pixel::transformBy(const ALLEGRO_TRANSFORM *trans) const
     return Pixel(fx, fy);
 }
 
-Pixel Pixel::operator+ (const Pixel& px_arg)
+Pixel Pixel::operator+ (const Pixel px_arg)
 {
     return Pixel(getX()+px_arg.getX(), getY()+px_arg.getY());
 }
@@ -62,6 +62,21 @@ Pixel Pixel::operator+ (const Pixel& px_arg)
 void Pixel::operator+= (const Pixel& px_arg)
 {
     add(px_arg);
+}
+
+Pixel Pixel::operator- (const Pixel px_arg)
+{
+    return Pixel(getX()-px_arg.getX(), getY()-px_arg.getY());
+}
+
+void Pixel::operator-= (const Pixel& px_arg)
+{
+    add(-px_arg.getX(), -px_arg.getY());
+}
+
+Pixel Pixel::operator* (const float val_arg)
+{
+    return Pixel(getX()*val_arg, getY()*val_arg);
 }
 
 #ifndef NDEBUG

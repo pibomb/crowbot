@@ -7,7 +7,7 @@
 class Bullet : public Projectile
 {
 private:
-    void setAttributes(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg) override;
+    void setAttributes(b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg) override;
 public:
     Bullet(PROJECTILETYPE projectile_type_arg=PROJECTILETYPE::BULLET);
     void move(b2Vec2 linearVelocity_arg) override;

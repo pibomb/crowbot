@@ -110,13 +110,15 @@ b2ChainShape* b2Resource::getChain()
     return static_cast<b2ChainShape*>(getBody()->GetFixtureList()->GetShape());
 }
 
-void b2Resource::addGroundSensor(void *userData_arg)
+void b2Resource::addGroundSensor(void *userData_arg, uint16 categoryBits, uint16 maskBits)
 {
     b2PolygonShape shape;
     b2AABB aabb=body->GetFixtureList()->GetAABB(0);
     shape.SetAsBox((aabb.upperBound.x-aabb.lowerBound.x)/2-0.05, (aabb.upperBound.y-aabb.lowerBound.y)/2, b2Vec2(0, -0.02), 0);
     b2FixtureDef fixtureDef;
     fixtureDef.shape=&shape;
+    fixtureDef.filter.categoryBits=categoryBits;
+    fixtureDef.filter.maskBits=maskBits;
     fixtureDef.density=0;
     fixtureDef.friction=0;
     fixtureDef.isSensor=true;
@@ -124,7 +126,7 @@ void b2Resource::addGroundSensor(void *userData_arg)
     body->CreateFixture(&fixtureDef);
 }
 
-void b2Resource::registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, std::vector<b2Vec2> chainPoints)
+void b2Resource::registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, uint16 categoryBits, uint16 maskBits, std::vector<b2Vec2> chainPoints)
 {
     b2BodyDef bodyDef;
     bodyDef.position=bodyDef_position_arg;
@@ -133,6 +135,8 @@ void b2Resource::registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_
     shape.CreateChain(&chainPoints[0], chainPoints.size());
     b2FixtureDef fixtureDef;
     fixtureDef.shape=&shape;
+    fixtureDef.filter.categoryBits=categoryBits;
+    fixtureDef.filter.maskBits=maskBits;
     body->CreateFixture(&fixtureDef);
     body->SetUserData(userData_arg);
 }
@@ -148,7 +152,7 @@ void b2Resource::registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_a
     body->SetUserData(userData_arg);
 }
 
-void b2Resource::registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg)
+void b2Resource::registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, uint16 categoryBits, uint16 maskBits, float length_arg, float width_arg, float density_arg, float friction_arg)
 {
     b2BodyDef bodyDef;
     bodyDef.type=b2_dynamicBody;
@@ -158,6 +162,8 @@ void b2Resource::registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_
     shape.SetAsBox(length_arg/2, width_arg/2);
     b2FixtureDef fixtureDef;
     fixtureDef.shape=&shape;
+    fixtureDef.filter.categoryBits=categoryBits;
+    fixtureDef.filter.maskBits=maskBits;
     fixtureDef.density=density_arg;
     fixtureDef.friction=friction_arg;
     body->CreateFixture(&fixtureDef);

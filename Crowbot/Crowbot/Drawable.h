@@ -5,6 +5,7 @@
 #include "Pixel.h"
 
 class Vec2;
+class b2Resource;
 
 class Drawable
 {
@@ -56,24 +57,17 @@ public:
 
 class PhysicalDrawable : public Drawable
 {
+protected:
+	b2Resource *obj_body;
 public:
     int collisions;
-    PhysicalDrawable(int collisions_arg=0):
-        Drawable(),
-        collisions(collisions_arg)
-    {
-        //
-    }
-    PhysicalDrawable(Rect drawable_rgn_arg, int collisions_arg=0):
-        Drawable(drawable_rgn_arg),
-        collisions(collisions_arg)
-    {
-        //
-    }
+    PhysicalDrawable(int collisions_arg=0);
+    PhysicalDrawable(Rect drawable_rgn_arg, int collisions_arg);
     virtual ~PhysicalDrawable()
     {
         //
     }
+    b2Body* getb2Body();
     virtual DRAWABLETYPE getDrawableType()=0;
     virtual void beginCollision(PhysicalDrawable *other)=0;
     virtual void endCollision(PhysicalDrawable *other)=0;

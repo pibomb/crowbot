@@ -11,7 +11,6 @@ class Projectile : public PhysicalAnimated
 {
 protected:
     PROJECTILETYPE projectile_type;
-    b2Resource *pro_body;
 	EventTriggerHandler *updateTrigger;
     Entity *parent;
 	int hits_left;
@@ -20,14 +19,14 @@ protected:
 	virtual void transformation() override;
 	virtual void onDraw() override;
 	virtual void postDraw() override;
-    virtual void setAttributes(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)=0;
+    virtual void setAttributes(b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)=0;
 public:
     Projectile(Rect region_arg, PROJECTILETYPE projectile_type_arg);
     virtual ~Projectile()
     {
         //
     }
-    void set(Entity *parent_arg, b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg);
+    void set(Entity *parent_arg, b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg);
     bool isActive();
     bool canHit();
     DRAWABLETYPE getDrawableType() override;

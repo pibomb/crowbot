@@ -139,3 +139,9 @@ void ContactListener::EndContact(b2Contact* contact)
         physB->endCollision(physA);
     }
 }
+
+bool QueryCallback::ReportFixture(b2Fixture *fixture)
+{
+    foundBodies.insert(fixture->GetBody());
+    return true;
+}

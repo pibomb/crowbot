@@ -2,7 +2,6 @@
 
 Entity::Entity(Rect region_arg, ENTITYTYPE entity_type_arg, const unsigned int& id, const int& max_health_arg, Frame *frame_arg):
     PhysicalAnimated(region_arg, resource.getData(entity_type_arg)),
-    ent_body(resource.createb2Resource()),
     ent_health(max_health_arg),
     ent_max_health(max_health_arg),
     ent_id(id),
@@ -24,32 +23,32 @@ Frame* Entity::getFrame()
 
 b2Vec2 Entity::getPosition()
 {
-    return ent_body->getBody()->GetPosition();
+    return obj_body->getBody()->GetPosition();
 }
 
 float Entity::getMass()
 {
-    return ent_body->getBody()->GetMass();
+    return obj_body->getBody()->GetMass();
 }
 
 float Entity::getX()
 {
-    return ent_body->getBody()->GetPosition().x;
+    return obj_body->getBody()->GetPosition().x;
 }
 
 float Entity::getY()
 {
-    return ent_body->getBody()->GetPosition().y;
+    return obj_body->getBody()->GetPosition().y;
 }
 
 void Entity::move(float x, float y)
 {
-    ent_body->ApplyLinearImpulseAtCenter(b2Vec2(x, y));
+    obj_body->ApplyLinearImpulseAtCenter(b2Vec2(x, y));
 }
 
 void Entity::move(b2Vec2 amt)
 {
-    ent_body->ApplyLinearImpulseAtCenter(amt);
+    obj_body->ApplyLinearImpulseAtCenter(amt);
 }
 
 void Entity::beginDestroy()
@@ -58,9 +57,9 @@ void Entity::beginDestroy()
     {
         is_destroying=true;
         pull();
-        if(ent_body)
+        if(obj_body)
         {
-            resource.destroyb2Resource(ent_body);
+            resource.destroyb2Resource(obj_body);
         }
         destroy();
         sysGC.watchEntity(this);

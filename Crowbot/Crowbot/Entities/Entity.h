@@ -11,7 +11,6 @@ class Entity : public PhysicalAnimated
 {
 protected:
     ENTITYTYPE entity_type;
-	b2Resource *ent_body;
 	int ent_health;
 	int ent_max_health;
 	unsigned int ent_id;

@@ -77,7 +77,7 @@ public:
         return new std::pair<b2Vec2, void*>(chainPoint, static_cast<void*>(addb2Vec2ToArray(args...)));
     }
     template<class... Args>
-    void registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, Args... args)
+    void registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, uint16 categoryBits, uint16 maskBits, Args... args)
     {
         const int elements=sizeof...(args)/2;
         b2Vec2 chainPoints[elements];
@@ -99,13 +99,15 @@ public:
         shape.CreateChain(chainPoints, elements);
         b2FixtureDef fixtureDef;
         fixtureDef.shape=&shape;
+        fixtureDef.filter.categoryBits=categoryBits;
+        fixtureDef.filter.maskBits=maskBits;
         body->CreateFixture(&fixtureDef);
         body->SetUserData(userData_arg);
     }
-    void addGroundSensor(void *userData_arg);
-    void registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, std::vector<b2Vec2> chainPoints);
+    void addGroundSensor(void *userData_arg, uint16 categoryBits, uint16 maskBits);
+    void registerChainShape(void *userData_arg, b2Vec2 bodyDef_position_arg, uint16 categoryBits, uint16 maskBits, std::vector<b2Vec2> chainPoints);
     void registerStaticBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg);
-    void registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, float length_arg, float width_arg, float density_arg, float friction_arg);
+    void registerDynamicBox(void *userData_arg, b2Vec2 bodyDef_position_arg, uint16 categoryBits, uint16 maskBits, float length_arg, float width_arg, float density_arg, float friction_arg);
     void ApplyLinearImpulseAtCenter(b2Vec2 impulse_arg);
 };
 

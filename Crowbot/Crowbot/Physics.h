@@ -317,4 +317,11 @@ private:
     void EndContact(b2Contact *contact);
 };
 
+class QueryCallback : public b2QueryCallback
+{
+public:
+    std::set<b2Body*> foundBodies;
+    bool ReportFixture(b2Fixture* fixture);
+};
+
 #endif // PHYSICS_H_INCLUDED
