@@ -7,19 +7,19 @@
 		<Option compiler="gcc" />
 		<Build>
 			<Target title="Debug">
-				<Option output="bin\Debug\Crowbot" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\Debug\" />
+				<Option output="bin/Debug/Crowbot" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
 					<Add option="-std=c++11" />
 					<Add option="-DALLEGRO_STATICLINK" />
-					<Add directory="..\..\tools\allegro-5.0.10-mingw-4.7.0\include" />
-					<Add directory="..\..\tools\enet\include" />
-					<Add directory="..\..\tools\lua\include" />
-					<Add directory="..\..\tools" />
-					<Add directory="..\Crowbot" />
+					<Add directory="../../tools/allegro-5.0.10-mingw-4.7.0/include" />
+					<Add directory="../../tools/enet/include" />
+					<Add directory="../../tools/lua/include" />
+					<Add directory="../../tools" />
+					<Add directory="../Crowbot" />
 					<Add directory="Entities" />
 					<Add directory="Projectiles" />
 				</Compiler>
@@ -68,8 +68,8 @@
 				</Linker>
 			</Target>
 			<Target title="Release">
-				<Option output="bin\Release\Crowbot" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj\Release\" />
+				<Option output="bin/Release/Crowbot" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
 				<Option type="0" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -77,11 +77,11 @@
 					<Add option="-std=c++11" />
 					<Add option="-DALLEGRO_STATICLINK" />
 					<Add option="-DNDEBUG" />
-					<Add directory="..\..\tools\allegro-5.0.10-mingw-4.7.0\include" />
-					<Add directory="..\..\tools\enet\include" />
-					<Add directory="..\..\tools\lua\include" />
-					<Add directory="..\..\tools" />
-					<Add directory="..\Crowbot" />
+					<Add directory="../../tools/allegro-5.0.10-mingw-4.7.0/include" />
+					<Add directory="../../tools/enet/include" />
+					<Add directory="../../tools/lua/include" />
+					<Add directory="../../tools" />
+					<Add directory="../Crowbot" />
 					<Add directory="Entities" />
 					<Add directory="Projectiles" />
 				</Compiler>
@@ -153,12 +153,12 @@
 		<Unit filename="Dialogue.h" />
 		<Unit filename="Drawable.cpp" />
 		<Unit filename="Drawable.h" />
-		<Unit filename="Entities\Batbot.cpp" />
-		<Unit filename="Entities\Batbot.h" />
-		<Unit filename="Entities\Entity.cpp" />
-		<Unit filename="Entities\Entity.h" />
-		<Unit filename="Entities\Robot.cpp" />
-		<Unit filename="Entities\Robot.h" />
+		<Unit filename="Entities/Batbot.cpp" />
+		<Unit filename="Entities/Batbot.h" />
+		<Unit filename="Entities/Entity.cpp" />
+		<Unit filename="Entities/Entity.h" />
+		<Unit filename="Entities/Robot.cpp" />
+		<Unit filename="Entities/Robot.h" />
 		<Unit filename="Event.cpp" />
 		<Unit filename="Event.h" />
 		<Unit filename="Frame.cpp" />
@@ -179,60 +179,70 @@
 		<Unit filename="Physics.h" />
 		<Unit filename="Pixel.cpp" />
 		<Unit filename="Pixel.h" />
-		<Unit filename="Projectiles\Bullet.cpp" />
-		<Unit filename="Projectiles\Bullet.h" />
-		<Unit filename="Projectiles\Projectile.cpp" />
-		<Unit filename="Projectiles\Projectile.h" />
+		<Unit filename="Projectiles/Bullet.cpp" />
+		<Unit filename="Projectiles/Bullet.h" />
+		<Unit filename="Projectiles/Projectile.cpp" />
+		<Unit filename="Projectiles/Projectile.h" />
 		<Unit filename="ResourceSystem.h" />
 		<Unit filename="SystemFunctions.cpp" />
 		<Unit filename="SystemFunctions.h" />
 		<Unit filename="basicresource.h" />
-		<Unit filename="fonts\Amble\Amble_BI_font.cpp" />
-		<Unit filename="fonts\Amble\Amble_BI_font.h" />
-		<Unit filename="fonts\Amble\Amble_B_font.cpp" />
-		<Unit filename="fonts\Amble\Amble_B_font.h" />
-		<Unit filename="fonts\Amble\Amble_I_font.cpp" />
-		<Unit filename="fonts\Amble\Amble_I_font.h" />
-		<Unit filename="fonts\Amble\Amble_font.cpp" />
-		<Unit filename="fonts\Amble\Amble_font.h" />
-		<Unit filename="fonts\FFF_Tusj\FFF_Tusj_font.cpp" />
-		<Unit filename="fonts\FFF_Tusj\FFF_Tusj_font.h" />
-		<Unit filename="fonts\FREEDOM\FREEDOM_font.cpp" />
-		<Unit filename="fonts\FREEDOM\FREEDOM_font.h" />
-		<Unit filename="fonts\Montserrat\Montserrat_B_font.cpp" />
-		<Unit filename="fonts\Montserrat\Montserrat_B_font.h" />
-		<Unit filename="fonts\Montserrat\Montserrat_font.cpp" />
-		<Unit filename="fonts\Montserrat\Montserrat_font.h" />
-		<Unit filename="fonts\Orbitron\Orbitron_B_font.cpp" />
-		<Unit filename="fonts\Orbitron\Orbitron_B_font.h" />
-		<Unit filename="fonts\Orbitron\Orbitron_LT_font.cpp" />
-		<Unit filename="fonts\Orbitron\Orbitron_LT_font.h" />
-		<Unit filename="fonts\Orbitron\Orbitron_font.cpp" />
-		<Unit filename="fonts\Orbitron\Orbitron_font.h" />
-		<Unit filename="fonts\arial_font.cpp" />
-		<Unit filename="fonts\arial_font.h" />
-		<Unit filename="images\batbot_spritesheet.cpp" />
-		<Unit filename="images\batbot_spritesheet.h" />
-		<Unit filename="images\bullet_spritesheet.cpp" />
-		<Unit filename="images\bullet_spritesheet.h" />
-		<Unit filename="images\default_button_d_spritesheet.cpp" />
-		<Unit filename="images\default_button_d_spritesheet.h" />
-		<Unit filename="images\default_button_h_spritesheet.cpp" />
-		<Unit filename="images\default_button_h_spritesheet.h" />
-		<Unit filename="images\default_button_spritesheet.cpp" />
-		<Unit filename="images\default_button_spritesheet.h" />
-		<Unit filename="images\hp_bar_spritesheet.cpp" />
-		<Unit filename="images\hp_bar_spritesheet.h" />
-		<Unit filename="images\player_spritesheet.cpp" />
-		<Unit filename="images\player_spritesheet.h" />
-		<Unit filename="images\rectangle_spritesheet.cpp" />
-		<Unit filename="images\rectangle_spritesheet.h" />
+		<Unit filename="fonts/Amble/Amble_BI_font.cpp" />
+		<Unit filename="fonts/Amble/Amble_BI_font.h" />
+		<Unit filename="fonts/Amble/Amble_B_font.cpp" />
+		<Unit filename="fonts/Amble/Amble_B_font.h" />
+		<Unit filename="fonts/Amble/Amble_I_font.cpp" />
+		<Unit filename="fonts/Amble/Amble_I_font.h" />
+		<Unit filename="fonts/Amble/Amble_font.cpp" />
+		<Unit filename="fonts/Amble/Amble_font.h" />
+		<Unit filename="fonts/FFF_Tusj/FFF_Tusj_font.cpp" />
+		<Unit filename="fonts/FFF_Tusj/FFF_Tusj_font.h" />
+		<Unit filename="fonts/FREEDOM/FREEDOM_font.cpp" />
+		<Unit filename="fonts/FREEDOM/FREEDOM_font.h" />
+		<Unit filename="fonts/Montserrat/Montserrat_B_font.cpp" />
+		<Unit filename="fonts/Montserrat/Montserrat_B_font.h" />
+		<Unit filename="fonts/Montserrat/Montserrat_font.cpp" />
+		<Unit filename="fonts/Montserrat/Montserrat_font.h" />
+		<Unit filename="fonts/Orbitron/Orbitron_B_font.cpp" />
+		<Unit filename="fonts/Orbitron/Orbitron_B_font.h" />
+		<Unit filename="fonts/Orbitron/Orbitron_LT_font.cpp" />
+		<Unit filename="fonts/Orbitron/Orbitron_LT_font.h" />
+		<Unit filename="fonts/Orbitron/Orbitron_font.cpp" />
+		<Unit filename="fonts/Orbitron/Orbitron_font.h" />
+		<Unit filename="fonts/arial_font.cpp" />
+		<Unit filename="fonts/arial_font.h" />
+		<Unit filename="images/batbot_spritesheet.cpp" />
+		<Unit filename="images/batbot_spritesheet.h" />
+		<Unit filename="images/bullet_spritesheet.cpp" />
+		<Unit filename="images/bullet_spritesheet.h" />
+		<Unit filename="images/default_button_d_spritesheet.cpp" />
+		<Unit filename="images/default_button_d_spritesheet.h" />
+		<Unit filename="images/default_button_h_spritesheet.cpp" />
+		<Unit filename="images/default_button_h_spritesheet.h" />
+		<Unit filename="images/default_button_spritesheet.cpp" />
+		<Unit filename="images/default_button_spritesheet.h" />
+		<Unit filename="images/hp_bar_spritesheet.cpp" />
+		<Unit filename="images/hp_bar_spritesheet.h" />
+		<Unit filename="images/player_spritesheet.cpp" />
+		<Unit filename="images/player_spritesheet.h" />
+		<Unit filename="images/rectangle_spritesheet.cpp" />
+		<Unit filename="images/rectangle_spritesheet.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="resource.cpp" />
 		<Unit filename="resource.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
+			<DoxyBlocks>
+				<comment_style block="0" line="0" />
+				<doxyfile_project />
+				<doxyfile_build />
+				<doxyfile_warnings />
+				<doxyfile_output />
+				<doxyfile_dot />
+				<general />
+			</DoxyBlocks>
+			<envvars />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>
