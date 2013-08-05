@@ -213,12 +213,11 @@ int main(int argc, char **argv)
     game.start(FRAMETYPE::STARTSCREEN);
     std::chrono::steady_clock::time_point current_time;
     current_time=std::chrono::steady_clock::now();
-    Rect game_region(0, 0, disp_data.width, disp_data.height);
     while(game)
     {
         sysEvents[EVENTTYPE::COLLECTGARBAGE].fire();
         //lua_runlfunction(lua_state, "updatelua");
-        game.delayTime(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count());
+        game.delayTime(std::chrono::duration_cast<std::chrono::duration<float>>(std::chrono::steady_clock::now()-current_time).count());
         current_time=std::chrono::steady_clock::now();
         game.update();
         game.render();

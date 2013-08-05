@@ -275,6 +275,14 @@ void Robot::beginCollision(PhysicalDrawable *other)
 {
     switch(other->getDrawableType())
     {
+    case DRAWABLETYPE::BULLET:
+    {
+        if(static_cast<Bullet*>(other)->canHit())
+        {
+            setHp(-1);
+        }
+        break;
+    }
     default:
     {
         break;

@@ -23,12 +23,12 @@ protected:
 public:
 	Entity(Rect region_arg, ENTITYTYPE entity_type_arg, const unsigned int& id, const int& max_health_arg, Frame *frame_arg);
 	virtual ~Entity();
-	unsigned int getId() {return ent_id;};
-	int getHp() const {return ent_health;};
-	void setHp(int amt) {ent_health+=amt;};
-	bool isAlive() const {return ent_health > 0;};
-	void setAABB(AABB& ent_bb_arg) {ent_bb = ent_bb_arg;};
-	AABB getAABB() const {return ent_bb;};
+	unsigned int getId();
+	int getHp() const;
+	void setHp(int amt);
+	bool isAlive() const;
+	void setAABB(AABB& ent_bb_arg);
+	AABB getAABB() const;
 	Frame* getFrame();
 	b2Vec2 getPosition();
 	float getMass();

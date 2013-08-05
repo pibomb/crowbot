@@ -16,6 +16,44 @@ Entity::~Entity()
     //
 }
 
+unsigned int Entity::getId()
+{
+    return ent_id;
+}
+
+int Entity::getHp() const
+{
+    return ent_health;
+}
+
+void Entity::setHp(int amt)
+{
+    ent_health+=amt;
+    if(ent_health<0)
+    {
+        ent_health=0;
+    }
+    else if(ent_health>ent_max_health)
+    {
+        ent_health=ent_max_health;
+    }
+}
+
+bool Entity::isAlive() const
+{
+    return ent_health>0;
+}
+
+void Entity::setAABB(AABB& ent_bb_arg)
+{
+    ent_bb = ent_bb_arg;
+}
+
+AABB Entity::getAABB() const
+{
+    return ent_bb;
+}
+
 Frame* Entity::getFrame()
 {
     return frame;

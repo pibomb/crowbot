@@ -10,6 +10,7 @@ class Batbot : public Entity
 {
 private:
     EventTriggerHandler *updateTrigger;
+    std::chrono::steady_clock::time_point bulletCooldown;
 public:
     Batbot(ENTITYTYPE entity_type_arg, const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg);
     ~Batbot();
