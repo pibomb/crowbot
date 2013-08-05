@@ -125,50 +125,50 @@ int main(int argc, char **argv)
 
     lua_regmfunctions(lua_state, "FrameMT");
     lua_makemfunction(lua_state, "spawn_batbot", "FrameMT", Frame,
-                                             {
-                                                 make_batbot(luaL_checkinteger(l, 1), b2Vec2(luaL_checknumber(l, 2), luaL_checknumber(l, 3)), luaL_checkinteger(l, 4), obj)->push(obj->getCamera()->midground);
-                                                 return 0;
-                                             });
+    {
+        make_batbot(luaL_checkinteger(l, 1), b2Vec2(luaL_checknumber(l, 2), luaL_checknumber(l, 3)), luaL_checkinteger(l, 4), obj)->push(obj->getCamera()->midground);
+        return 0;
+    });
     lua_prepmfunctions(lua_state, "__game", "FrameMT", Frame, &game);
 
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
-                                             {
-                                                 obj->shootProjectile(b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
-                                                 return 0;
-                                             });
+    {
+        obj->shootProjectile(b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
+        return 0;
+    });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
 
     lua_regmfunctions(lua_state, "BulletMT");
     lua_makemfunction(lua_state, "move", "BulletMT", Projectile*,
-                                             {
-                                                 (*obj)->move(b2Vec2(luaL_checknumber(l, 1), luaL_checknumber(l, 2)));
-                                                 return 0;
-                                             });
+    {
+        (*obj)->move(b2Vec2(luaL_checknumber(l, 1), luaL_checknumber(l, 2)));
+        return 0;
+    });
     lua_prepmfunctions(lua_state, "activeBullet", "BulletMT", Projectile*, activeBullet);
 
 
     lua_regmfunctions(lua_state, "BatbotMT");
     lua_makemfunction(lua_state, "x", "BatbotMT", Batbot*,
-                                             {
-                                                 lua_pushnumber(l, (*obj)->getX());
-                                                 return 1;
-                                             });
+    {
+        lua_pushnumber(l, (*obj)->getX());
+        return 1;
+    });
     lua_makemfunction(lua_state, "y", "BatbotMT", Batbot*,
-                                             {
-                                                 lua_pushnumber(l, (*obj)->getY());
-                                                 return 1;
-                                             });
+    {
+        lua_pushnumber(l, (*obj)->getY());
+        return 1;
+    });
     lua_makemfunction(lua_state, "mass", "BatbotMT", Batbot*,
-                                             {
-                                                 lua_pushnumber(l, (*obj)->getMass());
-                                                 return 1;
-                                             });
+    {
+        lua_pushnumber(l, (*obj)->getMass());
+        return 1;
+    });
     lua_makemfunction(lua_state, "move", "BatbotMT", Batbot*,
-                                             {
-                                                 (*obj)->move(luaL_checknumber(l, 1), luaL_checknumber(l, 2));
-                                                 return 0;
-                                             });
+    {
+        (*obj)->move(luaL_checknumber(l, 1), luaL_checknumber(l, 2));
+        return 0;
+    });
     lua_prepmfunctions(lua_state, "batbot", "BatbotMT", Batbot*, activeBatbot);
 
     lua_makelfunction(lua_state, "luascripts/updatelua.lua", "updatelua");
