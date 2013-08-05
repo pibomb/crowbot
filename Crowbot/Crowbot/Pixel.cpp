@@ -174,11 +174,11 @@ void Rect::tlrender(int r_arg, int g_arg, int b_arg, float translucent_arg)
 {
     if(r_arg || g_arg || b_arg)
     {
-        //al_draw_tinted_scaled_bitmap(idToImage[IMG_RECTANGLE].get(), al_map_rgba_f(r_arg/255.0, g_arg/255.0, b_arg/255.0, translucent_arg), 1, 0, 2, 1, tl.getX(), tl.getY(), br.getX(), br.getY(), 0);
+        al_draw_tinted_scaled_bitmap(resource.getImage(IMAGETYPE::RECTANGLE), al_map_rgba_f(r_arg/255.0, g_arg/255.0, b_arg/255.0, translucent_arg), 1, 0, 2, 1, tl.getX(), tl.getY(), br.getX(), br.getY(), 0);
     }
     else
     {
-        //al_draw_tinted_scaled_bitmap(idToImage[IMG_RECTANGLE].get(), al_map_rgba_f(1, 1, 1, translucent_arg), 0, 0, 1, 1, tl.getX(), tl.getY(), br.getX(), br.getY(), 0);
+        al_draw_tinted_scaled_bitmap(resource.getImage(IMAGETYPE::RECTANGLE), al_map_rgba_f(1, 1, 1, translucent_arg), 0, 0, 1, 1, tl.getX(), tl.getY(), br.getX(), br.getY(), 0);
     }
 }
 
@@ -198,6 +198,11 @@ bool Rect::contains(Pixel px_arg)
 bool Rect::contains(float x_arg, float y_arg)
 {
     return x_arg>tl.getX() && x_arg<br.getX() && y_arg>tl.getY() && y_arg<br.getY();
+}
+
+Rect Rect::transformBy(const ALLEGRO_TRANSFORM *trans) const
+{
+    return Rect(tl.transformBy(trans), br.transformBy(trans));
 }
 
 #ifndef NDEBUG

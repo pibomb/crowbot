@@ -1,11 +1,12 @@
 #include "resource.h"
 
-Entity::Entity(ENTITYTYPE entity_type_arg, const unsigned int& id, const int& max_health_arg, Frame *frame_arg):
-    PhysicalAnimated(resource.getData(entity_type_arg)),
+Entity::Entity(Rect region_arg, ENTITYTYPE entity_type_arg, const unsigned int& id, const int& max_health_arg, Frame *frame_arg):
+    PhysicalAnimated(region_arg, resource.getData(entity_type_arg)),
     ent_body(resource.createb2Resource()),
     ent_health(max_health_arg),
     ent_max_health(max_health_arg),
     ent_id(id),
+    is_destroying(false),
     frame(frame_arg)
 {
     //
@@ -53,13 +54,17 @@ void Entity::move(b2Vec2 amt)
 
 void Entity::beginDestroy()
 {
-    pull();
-    if(ent_body)
+    if(!is_destroying)
     {
-        resource.destroyb2Resource(ent_body);
+        is_destroying=true;
+        pull();
+        if(ent_body)
+        {
+            resource.destroyb2Resource(ent_body);
+        }
+        destroy();
+        sysGC.watchEntity(this);
     }
-    destroy();
-    sysGC.watchEntity(this);
 }
 
 bool Entity::isDeletable()

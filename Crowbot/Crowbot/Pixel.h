@@ -68,9 +68,7 @@ public:
     void drawBoundingBox(ALLEGRO_COLOR color_arg, int stroke_arg);
     bool contains(Pixel px_arg);
     bool contains(float x_arg, float y_arg);
-    Rect transformBy(const ALLEGRO_TRANSFORM*trans)const{
-        return Rect(tl.transformBy(trans),br.transformBy(trans));
-    }
+    Rect transformBy(const ALLEGRO_TRANSFORM *trans) const;
 #ifndef NDEBUG
     void print();
 #endif

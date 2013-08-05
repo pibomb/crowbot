@@ -1,5 +1,46 @@
 #include "resource.h"
 
+Camera::Camera():
+    Drawable(),
+    x(0),
+    y(0),
+    width(0),
+    height(0),
+    lastMouseX(0),
+    lastMouseY(0),
+    translateFunction([]() -> Pixel
+                      {
+                          return Pixel(0, 0);
+                      }
+                      ),
+    background(nullptr),
+    midground(nullptr),
+    foreground(nullptr)
+{
+    //
+}
+
+Camera::Camera(int x_arg, int y_arg, int width_arg, int height_arg, int mouseX_arg, int mouseY_arg):
+    Drawable(Rect(0, 0, width_arg, height_arg)),
+    x(x_arg),
+    y(y_arg),
+    width(width_arg),
+    height(height_arg),
+    lastMouseX(mouseX_arg),
+    lastMouseY(mouseY_arg),
+    translateFunction([this]() -> Pixel
+                        {
+                            return Pixel(getX(), getY());
+                        }),
+    background(new Layer),
+    midground(new Layer),
+    foreground(new Layer)
+{
+    background->push(this);
+    midground->push(this);
+    foreground->push(this);
+}
+
 int Camera::getX()
 {
     return x;
@@ -76,6 +117,12 @@ int Camera::getAbsY(int curY)
     return curY-y;
 }
 
+Rect Camera::getRegion()
+{
+    Pixel newtl=translateFunction();
+    return Rect(newtl.getX(), newtl.getY(), newtl.getX()+getWidth(), newtl.getY()+getHeight());
+}
+
 void Camera::moveMouse(int newX, int newY)
 {
     x+=newX-lastMouseX;
@@ -84,19 +131,23 @@ void Camera::moveMouse(int newX, int newY)
     lastMouseY=newY;
 }
 
-void Camera::setCustomTranslate(std::function<void(Camera*)> customTranslate_arg)
+void Camera::setCustomTranslate(std::function<Pixel()> customTranslate_arg)
 {
     translateFunction=customTranslate_arg;
 }
 
 void Camera::setNormalTranslate()
 {
-    translateFunction=[](Camera* camera_arg){camera_arg->postset().postTranslate(camera_arg->getX(), camera_arg->getY());};
+    translateFunction=[this]() -> Pixel
+                        {
+                            return Pixel(getX(), getY());
+                        };
 }
 
 void Camera::transformation()
 {
-    translateFunction(this);
+    Pixel px=translateFunction();
+    postset().postTranslate(-px.getX(), -px.getY());
 }
 
 void Camera::onDraw()

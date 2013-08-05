@@ -17,6 +17,7 @@ void Frame::update()
             case ALLEGRO_EVENT_TIMER:
             {
                 invalidate();
+                //invalidate(getCamera()->getRegion());
                 break;
             }
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
@@ -1394,13 +1395,14 @@ void Frame::update()
                 {
                     camera->setX(camera->getX()-8);
                 }
-                */
                 if(mouse[MOUSEBUTTON::RIGHT])
                 {
                     al_get_mouse_state(&cursorState);
                     camera->moveMouse(cursorState.x, cursorState.y);
                 }
+                */
                 invalidate();
+                //invalidate(getCamera()->getRegion());
                 break;
             }
             case ALLEGRO_EVENT_DISPLAY_CLOSE:
@@ -2910,6 +2912,7 @@ void Frame::update()
                     camera->moveMouse(cursorState.x, cursorState.y);
                 }
                 invalidate();
+                //invalidate(getCamera()->getRegion());
                 break;
             }
             case ALLEGRO_EVENT_DISPLAY_CLOSE:

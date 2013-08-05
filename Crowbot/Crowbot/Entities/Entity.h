@@ -15,13 +15,14 @@ protected:
 	int ent_health;
 	int ent_max_health;
 	unsigned int ent_id;
+	bool is_destroying;
 	AABB ent_bb;
 	Frame *frame;
 	virtual void transformation() override;
 	virtual void onDraw() override;
 	virtual void postDraw() override;
 public:
-	explicit Entity(ENTITYTYPE entity_type_arg, const unsigned int& id, const int& max_health_arg, Frame *frame_arg);
+	Entity(Rect region_arg, ENTITYTYPE entity_type_arg, const unsigned int& id, const int& max_health_arg, Frame *frame_arg);
 	virtual ~Entity();
 	unsigned int getId() {return ent_id;};
 	int getHp() const {return ent_health;};

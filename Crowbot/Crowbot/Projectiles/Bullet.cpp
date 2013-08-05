@@ -1,5 +1,11 @@
 #include "resource.h"
 
+Bullet::Bullet(PROJECTILETYPE projectile_type_arg):
+    Projectile(Rect(0, 0, 16, 6), projectile_type_arg)
+{
+    //
+}
+
 void Bullet::move(b2Vec2 linearVelocity_arg)
 {
     pro_body->ApplyLinearImpulseAtCenter(linearVelocity_arg);

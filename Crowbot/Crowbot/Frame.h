@@ -77,28 +77,7 @@ public:
     {
         return valid;
     }
-    Frame(Rect region_arg=Rect(0, 0, disp_data.width, disp_data.height), int mapid_arg=1):
-        mapID(mapid_arg),
-        frames_per_second(60),
-        valid(true),
-#ifdef ENET_ENABLED
-        enet(false),
-        peer_valid(false),
-        enet_state(ENETSTATE::IS_INVALID),
-#endif
-        region(region_arg),
-        input(al_ustr_new("")),
-        event_queue(nullptr),
-        timer(nullptr),
-#ifdef ENET_ENABLED
-        host(nullptr),
-        peer(nullptr),
-#endif
-        camera(new Camera(0, 0, region.getWidth(), region.getHeight(), 0, 0)),
-        activeButton(nullptr)
-    {
-        camera->push(this);
-    }
+    Frame(Rect region_arg=Rect(0, 0, disp_data.width, disp_data.height), int mapid_arg=1);
     virtual ~Frame()
     {
         //

@@ -264,7 +264,7 @@ private:
     void postDraw() override;
 public:
     Box():
-        PhysicalDrawable(),
+        PhysicalDrawable(Rect(0, 0, 0, 0)),
         bounding_box(0, 0, 0, 0),
         box_body(nullptr),
         collisions(0)
@@ -272,7 +272,7 @@ public:
         //
     }
     Box(float tlx_arg, float tly_arg, float brx_arg, float bry_arg):
-        PhysicalDrawable(),
+        PhysicalDrawable(Rect(tlx_arg, tly_arg, brx_arg, bry_arg)),
         bounding_box(tlx_arg, tly_arg, brx_arg, bry_arg),
         box_body(resource.createb2Resource()),
         collisions(0)

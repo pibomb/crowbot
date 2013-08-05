@@ -1,5 +1,18 @@
 #include "resource.h"
 
+Projectile::Projectile(Rect region_arg, PROJECTILETYPE projectile_type_arg):
+    PhysicalAnimated(region_arg, resource.getData(projectile_type_arg)),
+    projectile_type(projectile_type_arg),
+    pro_body(nullptr),
+    updateTrigger(nullptr),
+    parent(nullptr),
+    hits_left(0),
+    fuel_left(0),
+    is_valid(false)
+{
+    //
+}
+
 void Projectile::set(Entity *parent_arg, b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)
 {
     is_valid=true;

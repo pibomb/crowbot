@@ -12,7 +12,7 @@ private:
     int x, y;
     int width, height;
     int lastMouseX, lastMouseY;
-    std::function<void(Camera*)> translateFunction;
+    std::function<Pixel()> translateFunction;
     void transformation() override;
     void onDraw() override;
     void postDraw() override;
@@ -20,36 +20,8 @@ public:
     Layer *background;
     Layer *midground;
     Layer *foreground;
-    Camera():
-        x(0),
-        y(0),
-        width(0),
-        height(0),
-        lastMouseX(0),
-        lastMouseY(0),
-        translateFunction([](Camera*){}),
-        background(nullptr),
-        midground(nullptr),
-        foreground(nullptr)
-    {
-        //
-    }
-    Camera(int x_arg, int y_arg, int width_arg, int height_arg, int mouseX_arg, int mouseY_arg):
-        x(x_arg),
-        y(y_arg),
-        width(width_arg),
-        height(height_arg),
-        lastMouseX(mouseX_arg),
-        lastMouseY(mouseY_arg),
-        translateFunction([](Camera* camera_arg){camera_arg->postset().postTranslate(camera_arg->getX(), camera_arg->getY());}),
-        background(new Layer),
-        midground(new Layer),
-        foreground(new Layer)
-    {
-        background->push(this);
-        midground->push(this);
-        foreground->push(this);
-    }
+    Camera();
+    Camera(int x_arg, int y_arg, int width_arg, int height_arg, int mouseX_arg, int mouseY_arg);
     virtual ~Camera()
     {
         if(background)
@@ -80,8 +52,9 @@ public:
     void setMouseY(int mouseY_arg);
     int getAbsX(int curX);
     int getAbsY(int curY);
+    Rect getRegion();
     void moveMouse(int newX, int newY);
-    void setCustomTranslate(std::function<void(Camera*)> customTranslate_arg);
+    void setCustomTranslate(std::function<Pixel()> customTranslate_arg);
     void setNormalTranslate();
 };
 

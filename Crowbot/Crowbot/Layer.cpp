@@ -2,7 +2,7 @@
 
 void Layer::transformation()
 {
-    preset();
+    //preset();
 }
 
 void Layer::onDraw()

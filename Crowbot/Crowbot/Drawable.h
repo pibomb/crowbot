@@ -20,22 +20,8 @@ protected:
     virtual void postDraw()=0;
 public:
     std::list<Drawable*> inner;
-    Drawable():
-        drawable_is_dirty(true),
-        drawable_rgn(Rect(-10000, -10000, 10000, 10000)),
-        drawable_outer(nullptr)
-    {
-        preset();
-        postset();
-    }
-    Drawable(Rect drawable_rgn_arg):
-        drawable_is_dirty(true),
-        drawable_rgn(drawable_rgn_arg),
-        drawable_outer(nullptr)
-    {
-        preset();
-        postset();
-    }
+    Drawable();
+    Drawable(Rect drawable_rgn_arg);
     virtual ~Drawable()
     {
         //
@@ -44,6 +30,7 @@ public:
     void pull();
     void decompose();
     void render();
+    void render(const Rect& world_area);
     Drawable& preset();
     Drawable& postset();
     Drawable& preScale(float sx, float sy);
@@ -60,11 +47,11 @@ public:
     Drawable& postRotate(float theta);
     Drawable& preAll(float x, float y, float sx, float sy, float theta);
     Drawable& postAll(float x, float y, float sx, float sy, float theta);
-    Pixel getTransformedTL();
+    void getFinalTransform(ALLEGRO_TRANSFORM *transform_arg, const ALLEGRO_TRANSFORM *original_transform_arg=nullptr);
     ALLEGRO_TRANSFORM* getPreTransform();
     ALLEGRO_TRANSFORM* getPostTransform();
     void invalidate();
-    void invalidateRegion(const Rect& _area);
+    void invalidate(const Rect& world_area);
 };
 
 class PhysicalDrawable : public Drawable

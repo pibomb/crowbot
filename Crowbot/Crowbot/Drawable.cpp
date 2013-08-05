@@ -1,5 +1,23 @@
 #include "resource.h"
 
+Drawable::Drawable():
+    drawable_is_dirty(true),
+    drawable_rgn(Rect(-1000000000, -1000000000, 1000000000, 1000000000)),
+    drawable_outer(nullptr)
+{
+    preset();
+    postset();
+}
+
+Drawable::Drawable(Rect drawable_rgn_arg):
+    drawable_is_dirty(true),
+    drawable_rgn(drawable_rgn_arg),
+    drawable_outer(nullptr)
+{
+    preset();
+    postset();
+}
+
 void Drawable::push(Drawable *other)
 {
     other->inner.push_back(this);
@@ -28,24 +46,23 @@ void Drawable::decompose()
 
 void Drawable::render()
 {
-    ALLEGRO_TRANSFORM old=*al_get_current_transform();
     if(drawable_is_dirty)
     {
         drawable_is_dirty=false;
-        ALLEGRO_TRANSFORM cur;
+        ALLEGRO_TRANSFORM old=*al_get_current_transform();
         transformation();
-        al_copy_transform(&cur, &drawable_pre_trans);
-        al_compose_transform(&cur, &old);
-        al_compose_transform(&cur, &drawable_post_trans);
+        ALLEGRO_TRANSFORM cur;
+        getFinalTransform(&cur, &old);
         al_use_transform(&cur);
         onDraw();
         for(auto &it : inner)
         {
-            it->invalidate();
             it->render();
         }
         postDraw();
+        al_use_transform(&old);
     }
+    /*
     else
     {
         for(auto &it : inner)
@@ -53,7 +70,36 @@ void Drawable::render()
             it->render();
         }
     }
-    al_use_transform(&old);
+    */
+}
+
+void Drawable::render(const Rect& world_area)
+{
+    if(drawable_is_dirty)
+    {
+        drawable_is_dirty=false;
+        ALLEGRO_TRANSFORM old=*al_get_current_transform();
+        transformation();
+        ALLEGRO_TRANSFORM cur;
+        getFinalTransform(&cur, &old);
+        al_use_transform(&cur);
+        onDraw();
+        for(auto &it : inner)
+        {
+            it->render(world_area);
+        }
+        postDraw();
+        al_use_transform(&old);
+    }
+    /*
+    else
+    {
+        for(auto &it : inner)
+        {
+            it->render(world_area);
+        }
+    }
+    */
 }
 
 Drawable& Drawable::preset()
@@ -152,11 +198,14 @@ Drawable& Drawable::postAll(float x, float y, float sx, float sy, float theta)
     return *this;
 }
 
-Pixel Drawable::getTransformedTL()
+void Drawable::getFinalTransform(ALLEGRO_TRANSFORM *transform_arg, const ALLEGRO_TRANSFORM *original_transform_arg)
 {
-    float x=0, y=0;
-    al_transform_coordinates(&drawable_pre_trans, &x, &y);
-    return Pixel(x, y);
+    al_copy_transform(transform_arg, &drawable_pre_trans);
+    if(original_transform_arg)
+    {
+        al_compose_transform(transform_arg, original_transform_arg);
+    }
+    al_compose_transform(transform_arg, &drawable_post_trans);
 }
 
 ALLEGRO_TRANSFORM* Drawable::getPreTransform()
@@ -172,17 +221,27 @@ ALLEGRO_TRANSFORM* Drawable::getPostTransform()
 void Drawable::invalidate()
 {
     drawable_is_dirty=true;
+    for(auto &it : inner)
+    {
+        it->invalidate();
+    }
 }
 
-void Drawable::invalidateRegion(const Rect& _area)
+void Drawable::invalidate(const Rect& world_area)
 {
-    const Rect area=_area.transformBy(&drawable_pre_trans).transformBy(&drawable_post_trans);
-    if(area&drawable_rgn)
+    ALLEGRO_TRANSFORM old=*al_get_current_transform();
+    transformation();
+    ALLEGRO_TRANSFORM cur;
+    getFinalTransform(&cur, &old);
+    const Rect transformed_local_area=drawable_rgn.transformBy(&cur);
+    if(transformed_local_area&world_area)
     {
         drawable_is_dirty=true;
+        al_use_transform(&cur);
         for(auto &it : inner)
         {
-            it->invalidateRegion(area);
+            it->invalidate(world_area);
         }
+        al_use_transform(&old);
     }
 }

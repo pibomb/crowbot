@@ -9,16 +9,12 @@ class Counter : public Drawable
 private:
     std::function<std::string()> getVal;
     ALLEGRO_BITMAP *background;
+    Pixel pos;
     void transformation() override;
     void onDraw() override;
     void postDraw() override;
 public:
-    Counter(std::function<std::string()> getVal_arg, ALLEGRO_BITMAP *background_arg):
-        getVal(getVal_arg),
-        background(background_arg)
-    {
-        //
-    }
+    Counter(float x_arg, float y_arg, std::function<std::string()> getVal_arg, ALLEGRO_BITMAP *background_arg);
     virtual ~Counter()
     {
         //

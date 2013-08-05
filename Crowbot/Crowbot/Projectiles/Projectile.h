@@ -22,18 +22,7 @@ protected:
 	virtual void postDraw() override;
     virtual void setAttributes(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg)=0;
 public:
-    Projectile(PROJECTILETYPE projectile_type_arg):
-        PhysicalAnimated(resource.getData(projectile_type_arg)),
-        projectile_type(projectile_type_arg),
-        pro_body(nullptr),
-        updateTrigger(nullptr),
-        parent(nullptr),
-        hits_left(0),
-        fuel_left(0),
-        is_valid(false)
-    {
-        //
-    }
+    Projectile(Rect region_arg, PROJECTILETYPE projectile_type_arg);
     virtual ~Projectile()
     {
         //

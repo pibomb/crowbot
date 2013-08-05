@@ -1,5 +1,14 @@
 #include "resource.h"
 
+Counter::Counter(float x_arg, float y_arg, std::function<std::string()> getVal_arg, ALLEGRO_BITMAP *background_arg):
+    Drawable(Rect(x_arg, y_arg, x_arg+al_get_bitmap_width(background_arg), y_arg+al_get_bitmap_height(background_arg))),
+    getVal(getVal_arg),
+    background(background_arg),
+    pos(x_arg, y_arg)
+{
+    //
+}
+
 void Counter::transformation()
 {
     preset();

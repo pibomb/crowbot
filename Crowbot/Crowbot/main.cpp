@@ -198,18 +198,18 @@ int main(int argc, char **argv)
     game.addOnRestart([](FRAMETYPE){return true;}, [&leftWall, &game](){leftWall.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&rightWall, &game](){rightWall.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){game.addObserver(&rob);});
-    game.getCamera()->setCustomTranslate([&rob](Camera *camera_arg)
+    game.getCamera()->setCustomTranslate([&rob]() -> Pixel
     {
-        camera_arg->postset().postTranslate(b2Vec2(-rob.getPosition().x+PX_TO_M(disp_data.width)/2, 0/*-rob.getPosition().y-PX_TO_M(disp_data.height)*2/3*/));
+        return Pixel(M_TO_PX(rob.getPosition().x)-disp_data.width/2, 0/*-rob.getPosition().y-PX_TO_M(disp_data.height)*2/3*/);
     }
                                          );
     game.addObserver(&rob);
     game.start(FRAMETYPE::STARTSCREEN);
     std::chrono::steady_clock::time_point current_time;
     current_time=std::chrono::steady_clock::now();
+    Rect game_region(0, 0, disp_data.width, disp_data.height);
     while(game)
     {
-        //menu flickering caused by unlimited framerate?
         sysEvents[EVENTTYPE::COLLECTGARBAGE].fire();
         //lua_runlfunction(lua_state, "updatelua");
         game.delayTime(std::chrono::duration_cast<std::chrono::duration<double>>(std::chrono::steady_clock::now()-current_time).count());
