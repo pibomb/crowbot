@@ -121,7 +121,7 @@ int main(int argc, char **argv)
     activeBullet=new Projectile*;
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
-    Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 0, &game);
+    Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 100, &game);
 
     lua_regmfunctions(lua_state, "FrameMT");
     lua_makemfunction(lua_state, "spawn_batbot", "FrameMT", Frame,

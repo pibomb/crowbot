@@ -207,6 +207,21 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
         facingRight=true;
         obj_body->ApplyLinearImpulseAtCenter(b2Vec2(obj_body->getBody()->GetMass()*2/5, 0));
     }
+    if(keystates[ALLEGRO_KEY_V])
+    {
+        if(facingRight)
+        {
+            shootProjectile(b2Vec2(PX_TO_M(5), PX_TO_M(15)), DEG_TO_RAD(0), 5);
+            shootProjectile(b2Vec2(PX_TO_M(10), PX_TO_M(0)), DEG_TO_RAD(0), 5);
+            shootProjectile(b2Vec2(PX_TO_M(0), PX_TO_M(-15)), DEG_TO_RAD(0), 5);
+        }
+        else
+        {
+            shootProjectile(b2Vec2(-PX_TO_M(5), PX_TO_M(15)), DEG_TO_RAD(180), 5);
+            shootProjectile(b2Vec2(-PX_TO_M(10), PX_TO_M(0)), DEG_TO_RAD(180), 5);
+            shootProjectile(b2Vec2(-PX_TO_M(0), PX_TO_M(-15)), DEG_TO_RAD(180), 5);
+        }
+    }
     /*
     if(keystates[ALLEGRO_KEY_DOWN])
     {

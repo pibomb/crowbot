@@ -85,6 +85,6 @@ void Entity::postDraw()
 {
     ALLEGRO_BITMAP *hp_bar_bmp=resource.getImage(IMAGETYPE::HP_BAR);
     Rect region=get_current_region(acd.sequence[acd.current_sequence].start+current_count);
-    al_draw_bitmap_region(hp_bar_bmp, 0, 0, al_get_bitmap_width(hp_bar_bmp)*((double)ent_health/ent_max_health), al_get_bitmap_height(hp_bar_bmp), -region.getWidth()/2, -al_get_bitmap_height(hp_bar_bmp)-region.getHeight()/2, 0);
+    al_draw_bitmap_region(hp_bar_bmp, 0, 0, al_get_bitmap_width(hp_bar_bmp)*((float)ent_health/ent_max_health), al_get_bitmap_height(hp_bar_bmp), -region.getWidth()/2, -al_get_bitmap_height(hp_bar_bmp)-region.getHeight()/2, 0);
     Rect(-region.getWidth()/2, -al_get_bitmap_height(hp_bar_bmp)-region.getHeight()/2, al_get_bitmap_width(hp_bar_bmp)-region.getWidth()/2, -region.getHeight()/2).drawBoundingBox(AL_COL_BLACK, 2);
 }
