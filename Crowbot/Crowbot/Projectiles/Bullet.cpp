@@ -43,10 +43,7 @@ void Bullet::setAttributes(b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits,
 
 void Bullet::beginCollision(PhysicalDrawable *other)
 {
-    if(shouldCollide(getb2Body(), other->getb2Body()))
-    {
-        beginDestroy();
-    }
+    beginDestroy();
 }
 
 void Bullet::endCollision(PhysicalDrawable *other)
