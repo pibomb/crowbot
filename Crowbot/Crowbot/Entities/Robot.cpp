@@ -33,6 +33,42 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
 {
     switch(keycode)
     {
+    case ALLEGRO_KEY_Z:
+    {
+        if(facingRight)
+        {
+            for(int i=270; i<450; i+=10)
+            {
+                shootProjectile(b2Vec2(0, PX_TO_M((i-270)/10-9)*6), DEG_TO_RAD(i), 5);
+            }
+        }
+        else
+        {
+            for(int i=90; i<=270; i+=10)
+            {
+                shootProjectile(b2Vec2(0, PX_TO_M(-(i-90)/10+9)*6), DEG_TO_RAD(i), 5);
+            }
+        }
+        break;
+    }
+    case ALLEGRO_KEY_X:
+    {
+        if(facingRight)
+        {
+            for(int i=270; i<450; i+=10)
+            {
+                shootProjectile(b2Vec2(0, -(i-270)/10+9), DEG_TO_RAD(i), 5);
+            }
+        }
+        else
+        {
+            for(int i=90; i<=270; i+=10)
+            {
+                shootProjectile(b2Vec2(0, (i-90)/10-9), DEG_TO_RAD(i), 5);
+            }
+        }
+        break;
+    }
     case ALLEGRO_KEY_W:
     {
         shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(90), 5);

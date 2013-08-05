@@ -55,7 +55,7 @@ void Batbot::beginCollision(PhysicalDrawable *other)
     {
         if(static_cast<Bullet*>(other)->canHit())
         {
-            setHp(-5);
+            setHp(-2);
         }
         break;
     }
