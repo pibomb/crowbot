@@ -65,11 +65,6 @@ void Projectile::postDraw()
     //
 }
 
-DRAWABLETYPE Projectile::getDrawableType()
-{
-    return DRAWABLETYPE::BULLET;
-}
-
 void Projectile::beginDestroy()
 {
     if(isActive())

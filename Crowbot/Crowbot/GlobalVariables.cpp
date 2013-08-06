@@ -8,5 +8,6 @@ ResourceSystem resource;
 GarbageCollection sysGC;
 EventSystem sysEvents;
 Batbot **activeBatbot;
-Projectile **activeBullet;
+Bullet **activeBullet;
+Missile **activeMissile;
 char *_lua_temp_char_ptr=nullptr;

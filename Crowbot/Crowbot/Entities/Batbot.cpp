@@ -66,6 +66,10 @@ void Batbot::update()
             {
                 break;
             }
+            case DRAWABLETYPE::MISSILE:
+            {
+                break;
+            }
             default:
             {
                 break;
@@ -108,6 +112,14 @@ void Batbot::beginCollision(PhysicalDrawable *other)
         if(static_cast<Bullet*>(other)->canHit())
         {
             setHp(-2);
+        }
+        break;
+    }
+    case DRAWABLETYPE::MISSILE:
+    {
+        if(static_cast<Missile*>(other)->canHit())
+        {
+            setHp(-5);
         }
         break;
     }

@@ -21,6 +21,7 @@
 #include "images/player_spritesheet.h"
 #include "images/batbot_spritesheet.h"
 #include "images/bullet_spritesheet.h"
+#include "images/missile_spritesheet.h"
 
 // Font
 
@@ -280,7 +281,9 @@ void ResourceSystem::initialize()
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_CROWBOT, player_spritesheet);
     registerImage(IMAGETYPE::SPRITESHEET_ENTITY_BATBOT, batbot_spritesheet);
     registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_BULLET, bullet_spritesheet);
+    registerImage(IMAGETYPE::SPRITESHEET_PROJECTILE_MISSILE, missile_spritesheet);
     // Entity Animation Data
+    /// Crowbot
     internalData(Entity)[ENTITYTYPE::CROWBOT]=AnimatedConstructorData
     (
         // Spritesheet
@@ -305,6 +308,7 @@ void ResourceSystem::initialize()
         [3]=AnimationData(18, 3, 150);
     internalData(Entity)[ENTITYTYPE::CROWBOT].sequence
         [4]=AnimationData(24, 2, 150);
+    /// Batbot
     internalData(Entity)[ENTITYTYPE::BATBOT]=AnimatedConstructorData
     (
         // Spritesheet
@@ -322,6 +326,7 @@ void ResourceSystem::initialize()
     internalData(Entity)[ENTITYTYPE::BATBOT].sequence
         [0]=AnimationData(0, 1, -1);
     // Projectile Animation Data
+    /// Bullet
     internalData(Projectile)[PROJECTILETYPE::BULLET]=AnimatedConstructorData
     (
         // Spritesheet
@@ -337,6 +342,23 @@ void ResourceSystem::initialize()
         0
     );
     internalData(Projectile)[PROJECTILETYPE::BULLET].sequence
+        [0]=AnimationData(0, 1, -1);
+    /// Missile
+    internalData(Projectile)[PROJECTILETYPE::MISSILE]=AnimatedConstructorData
+    (
+        // Spritesheet
+        getImage(IMAGETYPE::SPRITESHEET_PROJECTILE_MISSILE),
+        // Width
+        16,
+        // Height
+        6,
+        // Frames
+        1,
+        // Sequence (optional)
+        // Current Sequence
+        0
+    );
+    internalData(Projectile)[PROJECTILETYPE::MISSILE].sequence
         [0]=AnimationData(0, 1, -1);
 }
 

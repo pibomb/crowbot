@@ -6,6 +6,11 @@ Bullet::Bullet(PROJECTILETYPE projectile_type_arg):
     //
 }
 
+DRAWABLETYPE Bullet::getDrawableType()
+{
+    return DRAWABLETYPE::BULLET;
+}
+
 void Bullet::move(b2Vec2 linearVelocity_arg)
 {
     obj_body->ApplyLinearImpulseAtCenter(linearVelocity_arg);

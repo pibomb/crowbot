@@ -73,6 +73,11 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
                 std::cout<<"Bullet"<<std::endl;
                 break;
             }
+        case DRAWABLETYPE::MISSILE:
+            {
+                std::cout<<"Missile"<<std::endl;
+                break;
+            }
         default:
             {
                 std::cout<<"Default"<<std::endl;
@@ -89,14 +94,14 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
         {
             for(int i=270; i<450; i+=10)
             {
-                shootProjectile(b2Vec2(0, PX_TO_M((i-270)/10-9)*6), DEG_TO_RAD(i), 5);
+                shootBullet(b2Vec2(0, PX_TO_M((i-270)/10-9)*6), DEG_TO_RAD(i), 5);
             }
         }
         else
         {
             for(int i=90; i<=270; i+=10)
             {
-                shootProjectile(b2Vec2(0, PX_TO_M(-(i-90)/10+9)*6), DEG_TO_RAD(i), 5);
+                shootBullet(b2Vec2(0, PX_TO_M(-(i-90)/10+9)*6), DEG_TO_RAD(i), 5);
             }
         }
         break;
@@ -107,14 +112,14 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
         {
             for(int i=270; i<450; i+=10)
             {
-                shootProjectile(b2Vec2(0, -(i-270)/10+9), DEG_TO_RAD(i), 5);
+                shootBullet(b2Vec2(0, -(i-270)/10+9), DEG_TO_RAD(i), 5);
             }
         }
         else
         {
             for(int i=90; i<=270; i+=10)
             {
-                shootProjectile(b2Vec2(0, (i-90)/10-9), DEG_TO_RAD(i), 5);
+                shootBullet(b2Vec2(0, (i-90)/10-9), DEG_TO_RAD(i), 5);
             }
         }
         break;
@@ -139,15 +144,27 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
         obj_body->ApplyLinearImpulseAtCenter(b2Vec2(obj_body->getBody()->GetMass()*2, 0));
         break;
     }
+    case ALLEGRO_KEY_Q:
+    {
+        if(facingRight)
+        {
+            shootMissile(b2Vec2(0, 0), b2Vec2(5, 0), 10000);
+        }
+        else
+        {
+            shootMissile(b2Vec2(0, 0), b2Vec2(-5, 0), 10000);
+        }
+        break;
+    }
     case ALLEGRO_KEY_SPACE:
     {
         if(facingRight)
         {
-            shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(0), 2000);
+            shootBullet(b2Vec2(0, 0), DEG_TO_RAD(0), 2000);
         }
         else
         {
-            shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(180), 2000);
+            shootBullet(b2Vec2(0, 0), DEG_TO_RAD(180), 2000);
         }
         break;
     }
@@ -172,7 +189,7 @@ void Robot::onKeyRelease(int unichar, int keycode, unsigned int modifiers)
 void Robot::onMouseClick(int x_pos, int y_pos)
 {
     float angle=atan2(-y_pos-M_TO_PX(getPosition().y), x_pos-disp_data.width/2);
-    shootProjectile(b2Vec2(0, 0), angle, 5);
+    shootBullet(b2Vec2(0, 0), angle, 5);
     if(fabs(angle)>DEG_TO_RAD(90))
     {
         facingRight=false;
@@ -203,15 +220,15 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
     {
         if(facingRight)
         {
-            shootProjectile(b2Vec2(PX_TO_M(5), PX_TO_M(15)), DEG_TO_RAD(0), 5);
-            shootProjectile(b2Vec2(PX_TO_M(10), PX_TO_M(0)), DEG_TO_RAD(0), 5);
-            shootProjectile(b2Vec2(PX_TO_M(0), PX_TO_M(-15)), DEG_TO_RAD(0), 5);
+            shootBullet(b2Vec2(PX_TO_M(5), PX_TO_M(15)), DEG_TO_RAD(0), 5);
+            shootBullet(b2Vec2(PX_TO_M(10), PX_TO_M(0)), DEG_TO_RAD(0), 5);
+            shootBullet(b2Vec2(PX_TO_M(0), PX_TO_M(-15)), DEG_TO_RAD(0), 5);
         }
         else
         {
-            shootProjectile(b2Vec2(-PX_TO_M(5), PX_TO_M(15)), DEG_TO_RAD(180), 5);
-            shootProjectile(b2Vec2(-PX_TO_M(10), PX_TO_M(0)), DEG_TO_RAD(180), 5);
-            shootProjectile(b2Vec2(-PX_TO_M(0), PX_TO_M(-15)), DEG_TO_RAD(180), 5);
+            shootBullet(b2Vec2(-PX_TO_M(5), PX_TO_M(15)), DEG_TO_RAD(180), 5);
+            shootBullet(b2Vec2(-PX_TO_M(10), PX_TO_M(0)), DEG_TO_RAD(180), 5);
+            shootBullet(b2Vec2(-PX_TO_M(0), PX_TO_M(-15)), DEG_TO_RAD(180), 5);
         }
     }
     /*
@@ -222,9 +239,14 @@ void Robot::onTimerKeyState(const std::vector<bool> &keystates)
     */
 }
 
-void Robot::shootProjectile(b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
+void Robot::shootBullet(b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg)
 {
     make_bullet(this, getPosition()+pos_arg, PHYSICAL_PLAYER, PHYSICAL_ALL&~PHYSICAL_PLAYER, angle_arg, linearVelocity_arg);
+}
+
+void Robot::shootMissile(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, float fuel_arg)
+{
+    make_missile(this, getPosition()+pos_arg, PHYSICAL_PLAYER, PHYSICAL_ALL&~PHYSICAL_PLAYER, linearVelocity_arg, fuel_arg);
 }
 
 void Robot::addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg)

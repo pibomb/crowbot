@@ -1367,6 +1367,7 @@ void Frame::update()
     case FRAMETYPE::STAGE:
     {
         world.Step(1.0/60.0, 8, 3);
+        lua_runlfunction(lua_state, "userscript");
         for(ALLEGRO_EVENT ev; valid && al_get_next_event(event_queue, &ev);)
         {
             switch(ev.type)

@@ -79,14 +79,23 @@ bool shouldCollide(b2Body *bodyA, b2Body *bodyB)
     return true;
 }
 
-Bullet* make_bullet(Entity *parent_arg, b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, float angle_arg, float linearVelocity_arg)
+Bullet* make_bullet(Entity *parent_arg, b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, float angle_arg, float linearVelocity_arg, float fuel_arg)
 {
     Bullet *bullet=new Bullet;
     b2Vec2 linearVelocity(cos(angle_arg)*linearVelocity_arg, sin(angle_arg)*linearVelocity_arg);
     parent_arg->move(-linearVelocity);
-    bullet->set(parent_arg, pos_arg, categoryBits, maskBits, linearVelocity, 0, angle_arg);
+    bullet->set(parent_arg, pos_arg, categoryBits, maskBits, linearVelocity, fuel_arg, angle_arg);
     bullet->push(parent_arg->getFrame()->getCamera()->foreground);
     return bullet;
+}
+
+Missile* make_missile(Entity *parent_arg, b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, b2Vec2 linearVelocity_arg, float fuel_arg)
+{
+    Missile *missile=new Missile;
+    parent_arg->move(-linearVelocity_arg);
+    missile->set(parent_arg, pos_arg, categoryBits, maskBits, linearVelocity_arg, fuel_arg, 0);
+    missile->push(parent_arg->getFrame()->getCamera()->foreground);
+    return missile;
 }
 
 Batbot* make_batbot(const unsigned int& id_arg, const b2Vec2& pos_arg, const int& startHp, Frame *frame_arg)

@@ -111,7 +111,8 @@ enum class IMAGETYPE : int
     HP_BAR,
     SPRITESHEET_ENTITY_CROWBOT,
     SPRITESHEET_ENTITY_BATBOT,
-    SPRITESHEET_PROJECTILE_BULLET
+    SPRITESHEET_PROJECTILE_BULLET,
+    SPRITESHEET_PROJECTILE_MISSILE
 };
 
 // Drawable Definitions
@@ -122,7 +123,8 @@ enum class DRAWABLETYPE : int
     BATBOT,
     CHAIN,
     BOX,
-    BULLET
+    BULLET,
+    MISSILE
 };
 
 // Collision Definitions
@@ -145,7 +147,8 @@ enum class ENTITYTYPE : int
 enum class PROJECTILETYPE : int
 {
     INVALID=0,
-    BULLET
+    BULLET,
+    MISSILE
 };
 
 // Event Definitions

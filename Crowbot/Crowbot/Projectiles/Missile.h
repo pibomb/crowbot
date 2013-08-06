@@ -1,15 +1,16 @@
-#ifndef BULLET_H_INCLUDED
-#define BULLET_H_INCLUDED
+#ifndef MISSILE_H_INCLUDED
+#define MISSILE_H_INCLUDED
 
 #include "basicresource.h"
 #include "Projectile.h"
 
-class Bullet : public Projectile
+class Missile : public Projectile
 {
 private:
+    void transformation() override;
     void setAttributes(b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg) override;
 public:
-    Bullet(PROJECTILETYPE projectile_type_arg=PROJECTILETYPE::BULLET);
+    Missile(PROJECTILETYPE projectile_type_arg=PROJECTILETYPE::MISSILE);
     DRAWABLETYPE getDrawableType() override;
     void move(b2Vec2 linearVelocity_arg) override;
     void update() override;
@@ -18,4 +19,4 @@ public:
 	virtual void endCollision(PhysicalDrawable *other) override;
 };
 
-#endif // BULLET_H_INCLUDED
+#endif // MISSILE_H_INCLUDED

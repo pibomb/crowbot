@@ -118,7 +118,8 @@ int main(int argc, char **argv)
     */
 
     activeBatbot=new Batbot*;
-    activeBullet=new Projectile*;
+    activeBullet=new Bullet*;
+    activeMissile=new Missile*;
 
     Frame game(Rect(0, 0, disp_data.width, disp_data.height), 0);
     Robot rob(ENTITYTYPE::CROWBOT, 0, b2Vec2(PX_TO_M(20), -PX_TO_M(20)), 100, &game);
@@ -134,19 +135,26 @@ int main(int argc, char **argv)
     lua_regmfunctions(lua_state, "RobotMT");
     lua_makemfunction(lua_state, "shoot", "RobotMT", Robot,
     {
-        obj->shootProjectile(b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
+        obj->shootBullet(b2Vec2(0, 0), luaL_checknumber(l, 1), luaL_checknumber(l, 2));
         return 0;
     });
     lua_prepmfunctions(lua_state, "the_robot", "RobotMT", Robot, &rob);
 
     lua_regmfunctions(lua_state, "BulletMT");
-    lua_makemfunction(lua_state, "move", "BulletMT", Projectile*,
+    lua_makemfunction(lua_state, "move", "BulletMT", Bullet*,
     {
         (*obj)->move(b2Vec2(luaL_checknumber(l, 1), luaL_checknumber(l, 2)));
         return 0;
     });
-    lua_prepmfunctions(lua_state, "activeBullet", "BulletMT", Projectile*, activeBullet);
+    lua_prepmfunctions(lua_state, "activeBullet", "BulletMT", Bullet*, activeBullet);
 
+    lua_regmfunctions(lua_state, "MissileMT");
+    lua_makemfunction(lua_state, "move", "MissileMT", Missile*,
+    {
+        (*obj)->move(b2Vec2(luaL_checknumber(l, 1), luaL_checknumber(l, 2)));
+        return 0;
+    });
+    lua_prepmfunctions(lua_state, "activeMissile", "MissileMT", Missile*, activeMissile);
 
     lua_regmfunctions(lua_state, "BatbotMT");
     lua_makemfunction(lua_state, "x", "BatbotMT", Batbot*,
@@ -191,12 +199,14 @@ int main(int argc, char **argv)
     luaE_prepmfunctions("the_robot", Robot, &rob);
     luaE_endmfunctions();
     */
+    /*
     rob.push(game.getCamera()->midground);
     chn.push(game.getCamera()->background);
     ground.push(game.getCamera()->background);
     ceiling.push(game.getCamera()->background);
     leftWall.push(game.getCamera()->background);
     rightWall.push(game.getCamera()->background);
+    */
     game.addOnRestart([](FRAMETYPE){return true;}, [&rob, &game](){rob.push(game.getCamera()->midground);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&chn, &game](){chn.push(game.getCamera()->background);});
     game.addOnRestart([](FRAMETYPE){return true;}, [&ground, &game](){ground.push(game.getCamera()->background);});
@@ -221,12 +231,12 @@ int main(int argc, char **argv)
         current_time=std::chrono::steady_clock::now();
         game.update();
         game.render();
-        lua_runlfunction(lua_state, "userscript");
         al_flip_display();
     }
     rob.pull();
     delete activeBatbot;
     delete activeBullet;
+    delete activeMissile;
     lua_close(lua_state);
     resource.cleanup();
     sysGC.cleanup();

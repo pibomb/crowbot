@@ -18,7 +18,8 @@ public:
     {
         //
     }
-    void shootProjectile(b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg);
+    void shootBullet(b2Vec2 pos_arg, float angle_arg, float linearVelocity_arg);
+    void shootMissile(b2Vec2 pos_arg, b2Vec2 linearVelocity_arg, float fuel_arg);
     void addFunction(std::string function_name, std::function<void(Robot*, std::vector<int>)> function_arg);
     void executeFunction(std::string function_name, std::vector<int> args=std::vector<int>());
     void onKeyPress(int unichar, int keycode, unsigned int modifiers) override;
