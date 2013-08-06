@@ -23,6 +23,7 @@ public:
     void executeFunction(std::string function_name, std::vector<int> args=std::vector<int>());
     void onKeyPress(int unichar, int keycode, unsigned int modifiers) override;
     void onKeyRelease(int unichar, int keycode, unsigned int modifiers) override;
+    void onMouseClick(int x_pos, int y_pos) override;
     void onTimerKeyState(const std::vector<bool> &keystates) override;
     void destroy() override;
     DRAWABLETYPE getDrawableType() override;

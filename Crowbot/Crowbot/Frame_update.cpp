@@ -2694,6 +2694,10 @@ void Frame::update()
             {
                 if(region.contains(ev.mouse.x, ev.mouse.y))
                 {
+                    for(auto &it : observers)
+                    {
+                        it->onMouseClick(ev.mouse.x, ev.mouse.y);
+                    }
                     switch(ev.mouse.button)
                     {
                     case 1:

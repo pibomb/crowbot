@@ -121,41 +121,19 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     }
     case ALLEGRO_KEY_W:
     {
-        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(90), 5);
-        break;
-    }
-    case ALLEGRO_KEY_A:
-    {
-        facingRight=false;
-        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(180), 5);
-        break;
-    }
-    case ALLEGRO_KEY_S:
-    {
-        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(270), 5);
-        break;
-    }
-    case ALLEGRO_KEY_D:
-    {
-        facingRight=true;
-        shootProjectile(b2Vec2(0, 0), DEG_TO_RAD(0), 5);
-        break;
-    }
-    case ALLEGRO_KEY_UP:
-    {
         if(touchingGround)
         {
             obj_body->ApplyLinearImpulseAtCenter(b2Vec2(0, obj_body->getBody()->GetMass()*30));
         }
         break;
     }
-    case ALLEGRO_KEY_LEFT:
+    case ALLEGRO_KEY_A:
     {
         facingRight=false;
         obj_body->ApplyLinearImpulseAtCenter(b2Vec2(-obj_body->getBody()->GetMass()*2, 0));
         break;
     }
-    case ALLEGRO_KEY_RIGHT:
+    case ALLEGRO_KEY_D:
     {
         facingRight=true;
         obj_body->ApplyLinearImpulseAtCenter(b2Vec2(obj_body->getBody()->GetMass()*2, 0));
@@ -191,18 +169,32 @@ void Robot::onKeyRelease(int unichar, int keycode, unsigned int modifiers)
     }
 }
 
+void Robot::onMouseClick(int x_pos, int y_pos)
+{
+    float angle=atan2(-y_pos-M_TO_PX(getPosition().y), x_pos-disp_data.width/2);
+    shootProjectile(b2Vec2(0, 0), angle, 5);
+    if(fabs(angle)>DEG_TO_RAD(90))
+    {
+        facingRight=false;
+    }
+    else
+    {
+        facingRight=true;
+    }
+}
+
 void Robot::onTimerKeyState(const std::vector<bool> &keystates)
 {
     if(!touchingGround)
     {
         obj_body->ApplyLinearImpulseAtCenter(b2Vec2(0, -obj_body->getBody()->GetMass()*3));
     }
-    if(keystates[ALLEGRO_KEY_LEFT])
+    if(keystates[ALLEGRO_KEY_A])
     {
         facingRight=false;
         obj_body->ApplyLinearImpulseAtCenter(b2Vec2(-obj_body->getBody()->GetMass()*2/5, 0));
     }
-    if(keystates[ALLEGRO_KEY_RIGHT])
+    if(keystates[ALLEGRO_KEY_D])
     {
         facingRight=true;
         obj_body->ApplyLinearImpulseAtCenter(b2Vec2(obj_body->getBody()->GetMass()*2/5, 0));
