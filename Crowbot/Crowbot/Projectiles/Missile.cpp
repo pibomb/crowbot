@@ -28,7 +28,7 @@ void Missile::update()
         {
             *activeMissile=this;
             obj_body->ApplyLinearImpulseAtCenter(b2Vec2(0.1, 0.01));
-            fuel_left-=10;
+            fuel_left-=100;
         }
         //lua_runlfunction(lua_state, "updatemissile", obj_body->getBody()->GetPosition().x, obj_body->getBody()->GetPosition().y);
         /*
@@ -50,7 +50,7 @@ void Missile::transformation()
     if(isActive())
     {
         b2Vec2 linearVelocity=obj_body->getBody()->GetLinearVelocity();
-        preset().preRotate(atan2(linearVelocity.y, linearVelocity.x));
+        preset().preRotate(DEG_TO_RAD(360)-atan2(linearVelocity.y, linearVelocity.x));
         postset().postTranslate(obj_body->getBody()->GetPosition());
     }
 }
@@ -67,7 +67,7 @@ void Missile::setAttributes(b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits
 
 void Missile::beginCollision(PhysicalDrawable *other)
 {
-    beginDestroy();
+    //beginDestroy();
 }
 
 void Missile::endCollision(PhysicalDrawable *other)
