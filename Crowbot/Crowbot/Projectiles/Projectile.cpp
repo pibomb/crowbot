@@ -28,6 +28,11 @@ void Projectile::set(Entity *parent_arg, b2Vec2 pos_arg, uint16 categoryBits, ui
     sysGC.watchProjectile(this);
 }
 
+b2Vec2 Projectile::getPosition()
+{
+    return obj_body->getBody()->GetPosition();
+}
+
 bool Projectile::isActive()
 {
     return is_valid;

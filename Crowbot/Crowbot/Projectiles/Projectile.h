@@ -27,6 +27,7 @@ public:
         //
     }
     void set(Entity *parent_arg, b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits, b2Vec2 linearVelocity_arg, int fuel_left_arg, float angle_arg);
+    b2Vec2 getPosition();
     bool isActive();
     bool canHit();
     virtual void beginDestroy();

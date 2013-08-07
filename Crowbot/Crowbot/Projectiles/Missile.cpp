@@ -27,8 +27,29 @@ void Missile::update()
         else
         {
             *activeMissile=this;
-            obj_body->ApplyLinearImpulseAtCenter(b2Vec2(0.1, 0.01));
-            fuel_left-=100;
+            QueryCallback qc;
+            b2AABB aabb;
+            aabb.lowerBound=getPosition()-b2Vec2(PX_TO_M(2000), PX_TO_M(2000));
+            aabb.upperBound=getPosition()+b2Vec2(PX_TO_M(2000), PX_TO_M(2000));
+            world.QueryAABB(&qc, aabb);
+            float minDist=2000000000;
+            b2Vec2 target_location(0, 0);
+            for(auto &it : qc.foundBodies)
+            {
+                if(static_cast<PhysicalDrawable*>(it->GetUserData())->getDrawableType()==DRAWABLETYPE::BATBOT)
+                {
+                    float x=it->GetPosition().x-getPosition().x, y=it->GetPosition().y-getPosition().y;
+                    if(x*x+y*y<minDist)
+                    {
+                        minDist=x*x+y*y;
+                        target_location.x=x;
+                        target_location.y=y;
+                    }
+                }
+            }
+            float ang=atan2(target_location.y, target_location.x);
+            obj_body->ApplyLinearImpulseAtCenter(b2Vec2(cos(ang)/10, sin(ang)/10));
+            fuel_left-=10;
         }
         //lua_runlfunction(lua_state, "updatemissile", obj_body->getBody()->GetPosition().x, obj_body->getBody()->GetPosition().y);
         /*
@@ -67,7 +88,10 @@ void Missile::setAttributes(b2Vec2 pos_arg, uint16 categoryBits, uint16 maskBits
 
 void Missile::beginCollision(PhysicalDrawable *other)
 {
-    //beginDestroy();
+    if(other->getDrawableType()==DRAWABLETYPE::BATBOT)
+    {
+        beginDestroy();
+    }
 }
 
 void Missile::endCollision(PhysicalDrawable *other)

@@ -181,6 +181,8 @@
 		<Unit filename="Pixel.h" />
 		<Unit filename="Projectiles/Bullet.cpp" />
 		<Unit filename="Projectiles/Bullet.h" />
+		<Unit filename="Projectiles/Missile.cpp" />
+		<Unit filename="Projectiles/Missile.h" />
 		<Unit filename="Projectiles/Projectile.cpp" />
 		<Unit filename="Projectiles/Projectile.h" />
 		<Unit filename="ResourceSystem.h" />
@@ -223,6 +225,8 @@
 		<Unit filename="images/default_button_spritesheet.h" />
 		<Unit filename="images/hp_bar_spritesheet.cpp" />
 		<Unit filename="images/hp_bar_spritesheet.h" />
+		<Unit filename="images/missile_spritesheet.cpp" />
+		<Unit filename="images/missile_spritesheet.h" />
 		<Unit filename="images/player_spritesheet.cpp" />
 		<Unit filename="images/player_spritesheet.h" />
 		<Unit filename="images/rectangle_spritesheet.cpp" />
