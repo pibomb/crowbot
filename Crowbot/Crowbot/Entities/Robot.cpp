@@ -146,6 +146,22 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
     }
     case ALLEGRO_KEY_Q:
     {
+        shootMissile(b2Vec2(0, 0), b2Vec2(-5, 2), 10000);
+        shootMissile(b2Vec2(0, 0), b2Vec2(-5, 0), 10000);
+        shootMissile(b2Vec2(0, 0), b2Vec2(-5, -2), 10000);
+
+        break;
+    }
+    case ALLEGRO_KEY_E:
+    {
+        shootMissile(b2Vec2(0, 0), b2Vec2(5, 2), 10000);
+        shootMissile(b2Vec2(0, 0), b2Vec2(5, 0), 10000);
+        shootMissile(b2Vec2(0, 0), b2Vec2(5, -2), 10000);
+
+        break;
+    }
+    case ALLEGRO_KEY_LCTRL:
+    {
         if(facingRight)
         {
             shootMissile(b2Vec2(0, 0), b2Vec2(5, 0), 10000);
@@ -154,7 +170,6 @@ void Robot::onKeyPress(int unichar, int keycode, unsigned int modifiers)
         {
             shootMissile(b2Vec2(0, 0), b2Vec2(-5, 0), 10000);
         }
-        break;
     }
     case ALLEGRO_KEY_SPACE:
     {
